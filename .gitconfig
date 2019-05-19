@@ -1,0 +1,120 @@
+[user]
+	name = Mihai Cristescu
+	email = mihai.cristescu@gmail.com
+
+[pull]
+	rebase = false
+
+[core]
+	excludesfile = /Users/mihaicris/.gitignore_global
+	longpaths = true
+	pager = diff-so-fancy | less --tabs=4 -RFX
+	editor = vim
+
+[merge]
+    tool = code
+[mergetool "code"]
+    cmd = code --wait $MERGED
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[diff]
+    tool = code
+[difftool]
+    prompt = false
+[difftool "code"]
+    cmd = code \"$LOCAL\" \"$REMOTE\" --diff --wait
+    trustExitCode = false
+
+
+[alias]
+  # List alias commands
+  la = "!git config -l | grep alias | cut -c 7-"
+  list-alias = "!git la"
+  # List commits in increasing detail
+  l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+  lll = log -u
+  # Most common diffs
+  diffc = diff --cached HEAD^
+  diffw = diff --color --word-diff
+  
+  # Committing 
+  c = commit
+  # Commit with message
+  cm = "!cim() { git commit -m \"$1\"; }; cim" 
+  # Ammend last commit
+  ca = commit --amend --no-edit
+  
+  # Make new branch (or set branch to current commit)
+  mb = checkout -B
+  # Check out particular file ($2) form branch ($1) 
+  cof = "!cb() { git checkout $1 -- $2; }; cb"
+  brr = "!brr() { git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes | grep $1; }; brr"
+
+  # Reset
+  re = reset
+  # Soft reset one commit
+  re1 = reset HEAD^
+  # Hard reset
+  reh = reset --hard
+  # Hard reset and clean
+  rec = !git reh && git clean -fd
+  
+  # Gerrit
+  review = "!review() { git push origin HEAD:refs/for/$1; }; review"
+  draft = "!draft() { git push origin HEAD:refs/drafts/$1; }; draft"
+  
+  # Rebase
+  r = rebase
+  # Rebase interactively from $1 number of commits back
+  ri = "!ri() { git rebase -i HEAD~$1; }; ri"
+  ra = rebase --abort
+  rc = rebase --continue
+ 
+  # Staging
+  # Numbered modifications
+  st = "!git status -s | cat -n"
+  # Add number of file to stage
+  s = "!stage() { git add `git st | sed -n $1p | awk -F' ' '{ print $3 }'`; git st; }; stage"
+  # Add number of file to unstage
+  u = "!unstage() { git reset HEAD `git st | sed -n $1p | awk -F' ' '{ print $3 }'`; git st; }; unstage"
+  ## Stage all changes
+  sa = !git add -u && git add . && git st
+  aa = !git sa
+  rmall = "!git status -s | grep '^ D' | awk -F' ' '{ print $2 }' | xargs git rm"
+  
+  # Search 
+  grep = grep -Ii
+  
+  # Search for files
+  f = "!git ls-files | grep --color -i"
+  
+
+  # How many commits per author
+  who = shortlog -n -s --no-merges
+  
+  # Add executable to file
+  addx = update-index --chmod=+x
+  
+  # Misstype
+  k = !gitk
+  ui = gui
+  
+  # Abbreviations
+  br = branch
+  cp = cherry-pick 
+  co = checkout
+  mt = mergetool
+[sequence]
+	editor = interactive-rebase-tool
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
