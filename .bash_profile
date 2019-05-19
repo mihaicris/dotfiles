@@ -6,40 +6,13 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
-# Edit this file
-alias eb="vim ~/.bash_profile"
-# Reload this file
-alias rb="source ~/.bash_profile"
+# Java Versions
+eval "$(jenv init -)"
 
-#Edit vimrc file
-alias ev="vim ~/.vimrc"
-
-# Aliases
-alias ls="ls -G"
-alias ll="ls -Flh"
-alias lla="ll -A"
-alias ..="cd .. && ll"
-
-# === GIT ALIASES ===
-alias gb="git branch"
-alias gba="git branch --all"
-alias gco="git checkout"
-alias ggfa="git fetch --all --progress && git status"
-alias gclean="git clean -xdf -e Carthage/"
-alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
-alias gbf="git branch --contains" # argument a commit hash
-alias gtf="git tag --contains" # argument a commit hash
-alias gcount="git rev-list --count" # argument a branch name
-alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
-
-# === GIT ALIASES ===
-
-# checks for any files flagged w/ --skip-worktree alias
-alias check="git ls-files -v|grep '^S'"
-
-alias metrics="swift-code-metrics --source EssentialFeed --tests-paths EssentialFeedTests/ EssentialFeedAPIEndToEndTests/ --artifacts ~/essential-metrics --generate-graphs"
-
+# Ruby Versions
+eval "$(rbenv init -)"
 # Bash Complewtions
+
 function addBashCompletion { 
 	if [ -f $1 ] 
 	then 
@@ -58,36 +31,50 @@ addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/carthage
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
 
+# Edit this file
+alias eb="vim ~/.bash_profile"
+# Reload this file
+alias rb="source ~/.bash_profile"
+#Edit vimrc file
+alias ev="vim ~/.vimrc"
+alias ls="ls -G"
+alias ll="ls -Flh"
+alias lla="ll -A"
+alias ..="cd .. && ll"
+
+# === GIT ALIASES ===
+alias gb="git branch"
+alias gba="git branch --all"
+alias gco="git checkout"
+alias ggfa="git fetch --all --progress && git status"
+alias gclean="git clean -xdf -e Carthage/"
+alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
+alias gbf="git branch --contains" # argument a commit hash
+alias gtf="git tag --contains" # argument a commit hash
+alias gcount="git rev-list --count" # argument a branch name
+alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
+
+# checks for any files flagged w/ --skip-worktree alias
+alias check="git ls-files -v|grep '^S'"
+
+alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
+
 # add --skip-worktree flag to file
 skip() {  git update-index --skip-worktree "$@";  git status; }
 
 # remove --skip-worktree flag from file
 unskip() {  git update-index --no-skip-worktree "$@";  git status; }
 
-clean_git() {
-	pushd $(pwd) 
-	cd $(git rev-parse --show-toplevel)/../main/.git/refs/remotes/origin/
-	rm -rf *
-	popd
-}
-
-alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
- 
-# Java Versions
-eval "$(jenv init -)"
-
-# Ruby Versions
-eval "$(rbenv init -)"
-
-
-
 b() { 
 	cart 
 	xcodebuild build -workspace Cura.xcworkspace -scheme Cura -sdk iphonesimulator12.1 -configuration Debug | xcpretty 
 }
 
-hh() {
-	git checkout HEAD~1
+hh() { git checkout HEAD~1; }
+
+
+change_to_ios_folder() {
+	cd $(git rev-parse --show-toplevel)/ios
 }
 
 t() {
@@ -98,10 +85,6 @@ t() {
 oo() {
 	change_to_ios_folder
 	xed .
-}
-
-change_to_ios_folder() {
-	cd $(git rev-parse --show-toplevel)/ios
 }
 
 cart() { 
