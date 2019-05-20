@@ -5,7 +5,7 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-
+export PATH="/usr/local/sbin:$PATH"
 # Java Versions
 eval "$(jenv init -)"
 
@@ -60,18 +60,20 @@ alias check="git ls-files -v|grep '^S'"
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
 # add --skip-worktree flag to file
-skip() {  git update-index --skip-worktree "$@";  git status; }
+skip() {  git update-index --skip-worktree "$@"; git status; }
 
 # remove --skip-worktree flag from file
-unskip() {  git update-index --no-skip-worktree "$@";  git status; }
+unskip() {  git update-index --no-skip-worktree "$@"; git status; }
 
 b() { 
+    change_to_ios_folder
 	cart 
 	xcodebuild build -workspace Cura.xcworkspace -scheme Cura -sdk iphonesimulator12.1 -configuration Debug | xcpretty 
 }
 
-hh() { git checkout HEAD~1; }
-
+function hh { 
+    git checkout HEAD~1
+}
 
 change_to_ios_folder() {
 	cd $(git rev-parse --show-toplevel)/ios
