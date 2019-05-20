@@ -6,6 +6,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+
 # Java Versions
 eval "$(jenv init -)"
 
@@ -22,48 +23,44 @@ function addBashCompletion {
 	fi 
 }
 
-addBashCompletion $(brew --prefix)/etc/bash_completion
-addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/git-completion.bash
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/carthage
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
-
-# Edit this file
-alias eb="vim ~/.bash_profile"
-# Reload this file
-alias rb="source ~/.bash_profile"
-#Edit vimrc file
-alias ev="vim ~/.vimrc"
-alias ls="ls -G"
-alias ll="ls -Flh"
-alias lla="ll -A"
 alias ..="cd .. && ll"
-
-# === GIT ALIASES ===
+alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
+alias check="git ls-files -v|grep '^S'"
+alias eb="vim ~/.bash_profile"
+alias ev="vim ~/.vimrc"
 alias gb="git branch"
 alias gba="git branch --all"
-alias gco="git checkout"
-alias ggfa="git fetch --all --progress && git status"
-alias gclean="git clean -xdf -e Carthage/"
-alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
 alias gbf="git branch --contains" # argument a commit hash
-alias gtf="git tag --contains" # argument a commit hash
+alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
+alias gclean="git clean -xdf -e Carthage/"
+alias gco="git checkout"
 alias gcount="git rev-list --count" # argument a branch name
-alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
-
-# checks for any files flagged w/ --skip-worktree alias
-alias check="git ls-files -v|grep '^S'"
-
+alias ggfa="git fetch --all --progress && git status"
+alias gtf="git tag --contains" # argument a commit hash
+alias ll="ls -Flh"
+alias lla="ll -A"
+alias ls="ls -G"
+alias rb="source ~/.bash_profile"
+alias si="kill ; server && integrations"
+alias sic="kill ; server && integrations && load_catalog_data"
+alias sicw="kill ; server && integrations && load_catalog_data && webclient"
+alias siw="kill ; server && integrations && webclient"
+alias skw="kill ; server && keycloak && webclient"
+alias ss="kill ; server"
+alias sw="kill ; server && webclient"
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
 # add --skip-worktree flag to file
-skip() {  git update-index --skip-worktree "$@"; git status; }
+skip() { 
+    git update-index --skip-worktree "$@"
+    git status
+}
 
 # remove --skip-worktree flag from file
-unskip() {  git update-index --no-skip-worktree "$@"; git status; }
+unskip() { 
+    git update-index --no-skip-worktree "$@"
+    git status
+}
 
 b() { 
     change_to_ios_folder
@@ -197,10 +194,11 @@ load_catalog_data() {
 	echo "Done."
 }
 
-alias ss="kill ; server"
-alias sw="kill ; server && webclient"
-alias skw="kill ; server && keycloak && webclient"
-alias si="kill ; server && integrations"
-alias siw="kill ; server && integrations && webclient"
-alias sic="kill ; server && integrations && load_catalog_data"
-alias sicw="kill ; server && integrations && load_catalog_data && webclient"
+addBashCompletion $(brew --prefix)/etc/bash_completion
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/carthage
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/git-completion.bash
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
+addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
