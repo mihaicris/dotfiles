@@ -13,6 +13,7 @@
 
 [merge]
     tool = code
+
 [mergetool "code"]
     cmd = code --wait $MERGED
 
@@ -24,12 +25,13 @@
 
 [diff]
     tool = code
+
 [difftool]
     prompt = false
+
 [difftool "code"]
     cmd = code \"$LOCAL\" \"$REMOTE\" --diff --wait
     trustExitCode = false
-
 
 [alias]
   # List alias commands
@@ -93,7 +95,6 @@
   
   # Search for files
   f = "!git ls-files | grep --color -i"
-  
 
   # How many commits per author
   who = shortlog -n -s --no-merges
@@ -101,20 +102,12 @@
   # Add executable to file
   addx = update-index --chmod=+x
   
-  # Misstype
-  k = !gitk
-  ui = gui
-  
-  # Abbreviations
-  br = branch
-  cp = cherry-pick 
-  co = checkout
-  mt = mergetool
-[sequence]
-	editor = interactive-rebase-tool
+  editor = interactive-rebase-tool
+
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
+
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
