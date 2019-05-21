@@ -6,6 +6,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export ANDROID_HOME=C:\\SDK
 
 # Java Versions
 eval "$(jenv init -)"
