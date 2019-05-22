@@ -131,6 +131,7 @@ server() {
 	heading "STARTING FHIR SERVER"
 	cd $(git rev-parse --show-toplevel)/services
 	./gradlew installServer
+    ./gradlew publishToMavenLocalApi 
 }
 
 keycloak() {
@@ -155,7 +156,7 @@ webclient() {
 integrations() {
 	heading "STARTING INTEGRATIONS SERVER"
 
-	echo "Task: Patch URL of Integrations Database ( -> DB in Romania)"
+	echo "> Task Patch URL of Integrations Database ( -> DB in Romania)"
 
 	cd $(git rev-parse --show-toplevel)/integrations/datasource/src/test/resources/config/
 	sed -b -i 's/dc1-orac005/buc-proj001/' datasource.properties
