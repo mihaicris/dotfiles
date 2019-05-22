@@ -198,9 +198,11 @@ load_catalog_data() {
 
 addBashCompletion $(brew --prefix)/etc/bash_completion
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/tmux
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/carthage
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/git-completion.bash
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
 addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
+addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh 
