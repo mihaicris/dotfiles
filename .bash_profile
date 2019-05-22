@@ -15,18 +15,10 @@ eval "$(jenv init -)"
 eval "$(rbenv init -)"
 # Bash Complewtions
 
-function addBashCompletion { 
-	if [ -f $1 ] 
-	then 
-		. $1 
-	else 
-		echo "Warning, bash completion file not found: $1" 
-	fi 
-}
-
 alias ..="cd .. && ll"
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
 alias check="git ls-files -v|grep '^S'"
+alias dotf="cd ~/.dotfiles && git pull"
 alias eb="vim ~/.bash_profile"
 alias ev="vim ~/.vimrc"
 alias gb="git branch"
@@ -50,7 +42,6 @@ alias skw="kill ; server && keycloak && webclient"
 alias ss="kill ; server"
 alias sw="kill ; server && webclient"
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
-
 # add --skip-worktree flag to file
 skip() { 
     git update-index --skip-worktree "$@"
@@ -194,6 +185,15 @@ load_catalog_data() {
 
 	cd $(git rev-parse --show-toplevel)/
 	echo "Done."
+}
+
+function addBashCompletion { 
+	if [ -f $1 ] 
+	then 
+		. $1 
+	else 
+		echo "Warning, bash completion file not found: $1" 
+	fi 
 }
 
 addBashCompletion $(brew --prefix)/etc/bash_completion
