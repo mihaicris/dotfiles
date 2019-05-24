@@ -1,0 +1,105 @@
+export ANDROID_HOME=C:\\SDK
+
+alias rbm="source ~/.bash_prifile_mingw64"
+alias si="kill ; server && integrations"
+alias sic="kill ; server && integrations && load_catalog_data"
+alias sicw="kill ; server && integrations && load_catalog_data && webclient"
+alias siw="kill ; server && integrations && webclient"
+alias skw="kill ; server && keycloak && webclient"
+alias ss="kill ; server"
+alias sw="kill ; server && webclient"
+
+kill() {
+    heading "TERMINATING PROCESSES"
+    taskkill //F //IM node.exe //IM java.exe
+    # alternativa: wmic Path win32_process Where "CommandLine Like '%%java%%'" call terminate
+}
+
+heading() {
+    #MAG='\033[0;35m'
+    #CLR='\033[0m'
+    echo ""
+    echo "========================================="
+    #echo "${MAG}** $@ **${CLR}"
+    echo "$@"
+    echo "========================================="
+    echo ""
+}
+
+database() {
+    heading "UPDATE LOCAL SETTINGS"
+    #cd $(git rev-parse --show-toplevel)
+    #sed -b -i 's/DC1-ORAC005/buc-proj001/' services/gradle.properties
+    #sed -b -i 's/DC1-ORAC005/buc-proj001/' webclient/admin/gradle.properties
+    #sed -b -i 's/DC1-ORAC005/buc-proj001/' webclient/depot/gradle.properties
+}
+
+server() {
+    heading "STARTING FHIR SERVER"
+    cd $(git rev-parse --show-toplevel)/services
+    ./gradlew installServer
+    ./gradlew publishToMavenLocalApi
+}
+
+keycloak() {
+    heading "STARTING KEYCLOAK SERVER"
+    cd $(git rev-parse --show-toplevel)/keycloak
+    ./gradlew installServer
+}
+
+depot() {
+    heading "STARTING DEPOT SERVER"
+    cd $(git rev-parse --show-toplevel)/services
+    ./gradlew installServerDepot
+}
+
+webclient() {
+    heading "STARTING WEB CLIENT"
+    cd $(git rev-parse --show-toplevel)/webclient
+    sed -b -i 's/da_DK/en_US/' admin/src/main/assets/angular/app.js
+    ./gradlew bootRun
+}
+
+integrations() {
+    heading "STARTING INTEGRATIONS SERVER"
+
+    echo "> Task Patch URL of Integrations Database ( -> DB in Romania)"
+
+    cd $(git rev-parse --show-toplevel)/integrations/datasource/src/test/resources/config/
+    sed -b -i 's/dc1-orac005/buc-proj001/' datasource.properties
+    sed -b -i 's/dc1-orac005/buc-proj001/' datasource-oracle.properties
+
+    cd $(git rev-parse --show-toplevel)/integrations
+    #./installServer.bat
+    ./gradlew clean dbClean dbBootstrap installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
+    #./gradlew clean installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
+    #./gradlew installTestServer startTestServer
+}
+
+load_catalog_data() {
+    heading "LOAD CATALOG DATA"
+
+    cd $(git rev-parse --show-toplevel)/integrations/build/eap/jboss-eap-7.0/standalone/deployments/
+
+    echo "Task: Undeploy CPR module"
+    cd ../deployments/
+    rm cpr.war.deployed
+    while [ ! -f cpr.war.undeployed ]; do sleep 1; done
+
+    echo "Task: Patch CPR environment properties"
+    cd ../properties/
+    sed -b -i 's/SKRS_MAX_RECORDS_PER_ITERATION=100/SKRS_MAX_RECORDS_PER_ITERATION=2000/' cpr-environment.properties
+    sed -b -i 's/SKRS_MAX_RECORDS_PER_TRIGGERING=100/SKRS_MAX_RECORDS_PER_TRIGGERING=-1/' cpr-environment.properties
+
+    echo "Task: Redeploy CPR module"
+    cd ../deployments/
+    rm cpr.war.undeployed
+    while [ ! -f cpr.war.deployed ]; do sleep 1; done
+
+    echo "Task: Load Catalog Data"
+    curl "http://localhost:8100/cpr/forceSkrsImport/"
+
+    cd $(git rev-parse --show-toplevel)/
+    echo "Done."
+}
+
