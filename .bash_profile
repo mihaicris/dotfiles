@@ -10,9 +10,6 @@ else
 	source ~/.bash_profile_unix
 fi
 
-eval "$(jenv init -)"
-eval "$(rbenv init -)"
-
 alias ..="cd .. && ll"
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
 alias dotf="cd ~/.dotfiles && git pull"

@@ -5,6 +5,9 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 
+eval "$(jenv init -)"
+eval "$(rbenv init -)"
+
 alias rbx="source ~/.bash_profile_unix"
 
 b() {
