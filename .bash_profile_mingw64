@@ -1,6 +1,6 @@
 export ANDROID_HOME=C:\\SDK
 
-alias rbm="source ~/.bash_prifile_mingw64"
+alias ebm="vim ~/.bash_profile_mingw64"
 alias si="kill ; server && integrations"
 alias sic="kill ; server && integrations && load_catalog_data"
 alias sicw="kill ; server && integrations && load_catalog_data && webclient"
