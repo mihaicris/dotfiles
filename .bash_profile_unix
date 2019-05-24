@@ -8,7 +8,7 @@ export PATH="/usr/local/sbin:$PATH"
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
-alias rbx="source ~/.bash_profile_unix"
+alias ebx="vim ~/.bash_profile_unix"
 
 b() {
     change_to_ios_folder
@@ -61,5 +61,4 @@ addBashCompletion $(brew --prefix)/etc/bash_completion.d/git-completion.bash
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
-addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
 addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
