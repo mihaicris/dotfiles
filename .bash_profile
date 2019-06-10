@@ -43,3 +43,41 @@ unskip() {
     git update-index --no-skip-worktree "$@"
     git status
 }
+
+ccb() {
+	criteria="$@"
+	prefix="origin/"
+
+	if [ -z "$criteria" ]
+	then
+	      echo -e "\n\033[92mPlease a specifiy string contained in the branch.\033[0m\n"
+	else
+	    branch_name_remote=$(git branch -r | grep $criteria)
+	    count=`git branch -r | grep $criteria | wc -l`
+	    if [[ $count -lt 1 ]]; then
+	        echo -e "\nThere are no remote branches containing this string: \033[91m$criteria\033[0m\n"
+	    	return 0
+	    fi
+
+	    if [[ $count -gt 1 ]]; then
+			echo -e "\n\033[92mThere are multiple branches containg this string.\033[0m"
+	        echo -e "\033[34m" 
+	        git branch -r | grep $criteria
+	        echo -e "\033[0m"
+	        return 0
+	    fi
+	    branch_name=`echo $branch_name_remote | sed 's/^origin\///'`
+        isLocalBranch=`git branch | grep $branch_name`
+        if [ ! -z "$isLocalBranch" ]
+        then
+            echo -e "Branch \033[34m$branch_name\033[0m is already created locally."
+        else
+            status=`git checkout -q -b $branch_name --track $branch_name_remote`
+            status=$?
+            if [ $status -eq 0 ] ; then
+                echo -e "Branch \033[92m$branch_name\033[0m successfuly checked out."
+                return 0
+            fi
+        fi
+	fi
+}

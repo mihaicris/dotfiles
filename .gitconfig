@@ -6,7 +6,6 @@
 	rebase = false
 
 [core]
-	excludesfile = /Users/mihaicris/.gitignore_global
 	longpaths = true
 	pager = diff-so-fancy | less --tabs=4 -RFX
 	editor = vim
@@ -111,3 +110,5 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+[commit]
+	template = /Users/cris/.stCommitMsg
