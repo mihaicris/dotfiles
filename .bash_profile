@@ -50,7 +50,7 @@ ccb() {
 
 	if [ -z "$criteria" ]
 	then
-	      echo -e "\n\033[92mPlease a specifiy string contained in the branch.\033[0m\n"
+	      echo -e "\n\033[92mPlease specifiy a string contained in the branch.\033[0m\n"
 	else
 	    branch_name_remote=$(git branch -r | grep $criteria)
 	    count=`git branch -r | grep $criteria | wc -l`
