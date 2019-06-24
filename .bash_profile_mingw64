@@ -16,14 +16,9 @@ kill() {
 }
 
 heading() {
-    #MAG='\033[0;35m'
-    #CLR='\033[0m'
-    echo ""
-    echo "========================================="
-    #echo "${MAG}** $@ **${CLR}"
-    echo "$@"
-    echo "========================================="
-    echo ""
+    echo -e "\n========================================="
+    echo -e "\033[0;35m** $@ ** \033[0m"
+    echo -e "=========================================\n"
 }
 
 database() {
@@ -71,9 +66,9 @@ integrations() {
 
     cd $(git rev-parse --show-toplevel)/integrations
     #./installServer.bat
-    ./gradlew clean dbClean dbBootstrap installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
+    #./gradlew clean dbClean dbBootstrap installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
     #./gradlew clean installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
-    #./gradlew installTestServer startTestServer
+    ./gradlew clean dbClean installTestServer startTestServer
 }
 
 load_catalog_data() {
