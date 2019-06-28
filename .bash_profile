@@ -30,6 +30,10 @@ alias ls="ls -G"
 alias rb="source ~/.bash_profile"
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
+hh() {
+    git checkout HEAD~1
+}
+
 check() {
 	git ls-files -v | grep '^S'
 }

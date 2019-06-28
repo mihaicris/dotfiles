@@ -17,10 +17,6 @@ b() {
     xcodebuild build -workspace Cura.xcworkspace -scheme Cura -sdk iphonesimulator12.1 -configuration Debug | xcpretty
 }
 
-hh() {
-    git checkout HEAD~1
-}
-
 change_to_ios_folder() {
     cd $(git rev-parse --show-toplevel)/ios
 }
