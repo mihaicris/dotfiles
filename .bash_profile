@@ -22,7 +22,7 @@ alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
 alias gclean="git clean -xdf -e Carthage/"
 alias gco="git checkout"
 alias gcount="git rev-list --count" # argument a branch name
-alias ggfa="git fetch --all --progress && git status"
+alias ggfa="git remote prune origin && git fetch --prune --all && git status"
 alias gtf="git tag --contains" # argument a commit hash
 alias ll="ls -Flh"
 alias lla="ll -A"
