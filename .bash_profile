@@ -74,7 +74,9 @@ ccb() {
         isLocalBranch=`git branch | grep $branch_name`
         if [ ! -z "$isLocalBranch" ]
         then
+        	git checkout $branch_name
             echo -e "Branch \033[34m$branch_name\033[0m is already created locally."
+            echo -e "Branch \033[92m$branch_name\033[0m successfuly checked out."
         else
             status=`git checkout -q -b $branch_name --track $branch_name_remote`
             status=$?
