@@ -61,8 +61,8 @@ integrations() {
     #./installServer.bat
     #./gradlew clean dbClean dbBootstrap installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
     #./gradlew clean installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
-    ./gradlew clean dbClean installTestServer startTestServer
-	#./gradlew clean dbClean installTestServer :signaturecentral:deploy :cpr:deploy startTestServer
+    ./gradlew installTestServer startTestServer
+    #./gradlew clean dbClean installTestServer :signaturecentral:deploy :cpr:deploy startTestServer
 }
 
 load_catalog_data() {
