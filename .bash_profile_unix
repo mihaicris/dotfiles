@@ -4,7 +4,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-export ANDROID_HOME="/Users/mihaicris/Library/Android/sdk"
+export ANDROID_HOME="$HOME/Library/Android/sdk"
 
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
@@ -54,6 +54,11 @@ cart() {
 cart_update() {
     change_to_ios_folder
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries
+}
+
+gen() {
+    cd $(git rev-parse --show-toplevel)/ios/CuraFHIR/curacodegen/swift-services-api
+    ./gradlew generateSwiftClasses
 }
 
 addBashCompletion() {
