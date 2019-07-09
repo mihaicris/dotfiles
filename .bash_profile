@@ -59,12 +59,12 @@ ccb() {
 	    branch_name_remote=$(git branch -r | grep $criteria)
 	    count=`git branch -r | grep $criteria | wc -l`
 	    if [[ $count -lt 1 ]]; then
-	        echo -e "\nThere are no remote branches containing this string: \033[91m$criteria\033[0m\n"
+	        echo -e "\nThere are no remote branches containing \033[91m$criteria\033[0m.\n"
 	    	return 0
 	    fi
 
 	    if [[ $count -gt 1 ]]; then
-			echo -e "\n\033[92mThere are multiple branches containg this string.\033[0m"
+			echo -e "\nThere are multiple branches containing \033[91m$criteria\033[0m:\n"
 	        echo -e "\033[34m" 
 	        git branch -r | grep $criteria
 	        echo -e "\033[0m"
@@ -74,14 +74,20 @@ ccb() {
         isLocalBranch=`git branch | grep $branch_name`
         if [ ! -z "$isLocalBranch" ]
         then
-        	git checkout $branch_name
-            echo -e "Branch \033[34m$branch_name\033[0m is already created locally."
-            echo -e "Branch \033[92m$branch_name\033[0m successfuly checked out."
+            status=`git checkout -q $branch_name`
+            status=$?
+            if [ $status -eq 0 ] ; then
+                echo -e "\nLocal branch \033[92m$branch_name\033[0m successfuly checked out.\n"
+                return 0
+            else
+                echo -e "\nCould not checkout branch\033[34m$branch_name\033[0m.\n"
+                return 1
+            fi
         else
             status=`git checkout -q -b $branch_name --track $branch_name_remote`
             status=$?
             if [ $status -eq 0 ] ; then
-                echo -e "Branch \033[92m$branch_name\033[0m successfuly checked out."
+                echo -e "\nRemote branch \033[92m$branch_name\033[0m successfuly checked out locally.\n"
                 return 0
             fi
         fi
