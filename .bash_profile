@@ -65,7 +65,7 @@ ccb() {
 	    fi
 
 	    if [[ $count -gt 1 ]]; then
-			echo -e "\nThere are multiple branches containing \033[91m$criteria\033[0m:\n"
+			echo -e "\nThere are multiple branches containing \033[91m$criteria\033[0m:"
 	        echo -e "\033[34m" 
 	        git branch -r | grep $criteria
 	        echo -e "\033[0m"
