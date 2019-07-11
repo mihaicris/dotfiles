@@ -56,11 +56,6 @@ cart_update() {
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries
 }
 
-gen() {
-    cd $(git rev-parse --show-toplevel)/ios/CuraFHIR/curacodegen/swift-services-api
-    ./gradlew generateSwiftClasses
-}
-
 addBashCompletion() {
     if [ -f $1 ]; then
         . $1
