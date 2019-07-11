@@ -7,9 +7,9 @@ source ~/.bash_profile_common
 
 if [[ -n "$mingw64" ]]
 then
-	source ~/.bash_profile_mingw64
+    source ~/.bash_profile_mingw64
 else
-	source ~/.bash_profile_unix
+    source ~/.bash_profile_unix
 fi
 
 alias ..="cd .. && ll"
