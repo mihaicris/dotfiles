@@ -15,6 +15,9 @@ unskip() {
     git update-index --no-skip-worktree "$@"
     git status
 }
+sedi () {
+    sed --version >/dev/null 2>&1 && sed -i -- "$@" || sed -i "" "$@"
+}
 
 ccb() {
 	criteria="$@"
@@ -90,9 +93,8 @@ gen_java() {
 }
 
 android() {
-	maven
 	heading "APPLYING PATCHES TO ANDROID CODE"
     pushd $(git rev-parse --show-toplevel)/client/core/src/main/java/com/systematic/cura/client/core/service/security
-    sed -i '' 's/\s+assertTimeZone/\/\/assertTimeZone/' LoginService.java
+    sedi 's/assertTimeZone(tenantService/\/\/assertTimeZone(tenantService/' LoginService.java
 	popd
 }

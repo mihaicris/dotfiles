@@ -19,7 +19,7 @@ kill() {
 server() {
     heading "INSTALLING FHIR SERVER"
     cd $(git rev-parse --show-toplevel)/services
-    sed -i '' 's/DC1-ORAC005/buc-proj001/' gradle.properties
+    sedi 's/DC1-ORAC005/buc-proj001/' gradle.properties
     ./gradlew installServer
 }
 
@@ -38,17 +38,17 @@ depot() {
 webclient() {
     heading "STARTING WEB CLIENT"
     cd $(git rev-parse --show-toplevel)/webclient
-    sed -i '' 's/DC1-ORAC005/buc-proj001/' admin/gradle.properties
-    sed -i '' 's/DC1-ORAC005/buc-proj001/' depot/gradle.properties
-    sed -i '' 's/da_DK/en_US/' admin/src/main/assets/angular/app.js
+    sedi 's/DC1-ORAC005/buc-proj001/' admin/gradle.properties
+    sedi 's/DC1-ORAC005/buc-proj001/' depot/gradle.properties
+    sedi 's/da_DK/en_US/' admin/src/main/assets/angular/app.js
     ./gradlew bootRun
 }
 
 integrations() {
     heading "STARTING INTEGRATIONS SERVER"
     cd $(git rev-parse --show-toplevel)/integrations/datasource/src/test/resources/config/
-    sed -i '' 's/dc1-orac005/buc-proj001/' datasource.properties
-    sed -i '' 's/dc1-orac005/buc-proj001/' datasource-oracle.properties
+    sedi 's/dc1-orac005/buc-proj001/' datasource.properties
+    sedi 's/dc1-orac005/buc-proj001/' datasource-oracle.properties
     cd $(git rev-parse --show-toplevel)/integrations
     #./installServer.bat
     #./gradlew clean dbClean dbBootstrap installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
@@ -76,8 +76,8 @@ load_catalog_data() {
 
     echo "Task: Patch CPR environment properties"
     cd ../properties/
-    sed -i '' 's/SKRS_MAX_RECORDS_PER_ITERATION=100/SKRS_MAX_RECORDS_PER_ITERATION=2000/' cpr-environment.properties
-    sed -i '' 's/SKRS_MAX_RECORDS_PER_TRIGGERING=100/SKRS_MAX_RECORDS_PER_TRIGGERING=-1/' cpr-environment.properties
+    sedi 's/SKRS_MAX_RECORDS_PER_ITERATION=100/SKRS_MAX_RECORDS_PER_ITERATION=2000/' cpr-environment.properties
+    sedi 's/SKRS_MAX_RECORDS_PER_TRIGGERING=100/SKRS_MAX_RECORDS_PER_TRIGGERING=-1/' cpr-environment.properties
 
     echo "Task: Redeploy CPR module"
     cd ../deployments/
