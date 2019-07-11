@@ -8,6 +8,7 @@ alias siw="kill ; server && integrations && webclient"
 alias skw="kill ; server && keycloak && webclient"
 alias ss="kill ; server"
 alias sw="kill ; server && webclient"
+alias slw="kill ; server && locking_tool && webclient"
 
 kill() {
     heading "TERMINATING PROCESSES"

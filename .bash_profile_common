@@ -88,3 +88,11 @@ gen_java() {
     ./gradlew generateJavaClasses
     popd
 }
+
+android() {
+	maven
+	heading "APPLYING PATCHES TO ANDROID CODE"
+    pushd $(git rev-parse --show-toplevel)/client/core/src/main/java/com/systematic/cura/client/core/service/security
+	sed -b -i 's/assertTimeZone(tenantService/\/\/assertTimeZone(tenantService/' LoginService.java
+	popd
+}
