@@ -1,3 +1,20 @@
+heading() {
+    echo -e "\033[0;35m"
+    echo -e "-----------------------------------"
+    echo -e "$@"
+    echo -e "-----------------------------------"
+    echo -e "\033[0m\n"
+}
+
+ggfa() {
+    heading 'Pruning branches:'
+    git remote prune origin 
+    heading 'Fetching remotes:'
+    git fetch --prune --all 
+    heading 'Status:'
+    git status
+}
+
 check() {
 	git ls-files -v | grep '^S'
 }
@@ -12,7 +29,7 @@ unskip() {
     git status
 }
 
-sedi () {
+sedi() {
     sed --version >/dev/null 2>&1 && sed -b -i -- "$@" || sed -i "" "$@"
 }
 
@@ -60,14 +77,6 @@ ccb() {
             fi
         fi
 	fi
-}
-
-heading() {
-    echo -e "\n\033[0;35m"
-    echo -e "==================================="
-    echo -e "$@"
-    echo -e "==================================="
-    echo -e "\033[0m\n"
 }
 
 maven() {
