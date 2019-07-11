@@ -3,13 +3,13 @@ export LANG=en_US.UTF-8
 
 mingw64=$(uname -a | grep MINGW64)
 
-source ~/.bash_profile_common
+source ~/.bash_profile_common.sh
 
 if [[ -n "$mingw64" ]]
 then
-    source ~/.bash_profile_mingw64
+    source ~/.bash_profile_mingw64.sh
 else
-    source ~/.bash_profile_unix
+    source ~/.bash_profile_unix.sh
 fi
 
 alias ..="cd .. && ll"
