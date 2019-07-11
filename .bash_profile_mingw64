@@ -58,7 +58,7 @@ integrations() {
 
 locking_tool() {
     heading "STARTING LOCKING RESOURCES TOOL"
-    push $(git rev-parse --show-toplevel)/services
+    pushd $(git rev-parse --show-toplevel)/services
     ./gradlew :installation:deployTest
     popd
 }
