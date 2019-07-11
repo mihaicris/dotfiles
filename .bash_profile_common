@@ -72,7 +72,7 @@ heading() {
 
 maven() {
     heading "PUBLISHING TO LOCAL MAVEN"
-    pushd $(git rev-parse --show-toplevel)/services
+    pushd $(git rev-parse --show-toplevel)/servicesapi
     ./gradlew publishToMavenLocalApi
     popd
 }
