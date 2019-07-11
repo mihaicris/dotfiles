@@ -76,18 +76,6 @@
   ri = "!ri() { git rebase -i HEAD~$1; }; ri"
   ra = rebase --abort
   rc = rebase --continue
- 
-  # Staging
-  # Numbered modifications
-  st = "!git status -s | cat -n"
-  # Add number of file to stage
-  s = "!stage() { git add `git st | sed -n $1p | awk -F' ' '{ print $3 }'`; git st; }; stage"
-  # Add number of file to unstage
-  u = "!unstage() { git reset HEAD `git st | sed -n $1p | awk -F' ' '{ print $3 }'`; git st; }; unstage"
-  ## Stage all changes
-  sa = !git add -u && git add . && git st
-  aa = !git sa
-  rmall = "!git status -s | grep '^ D' | awk -F' ' '{ print $2 }' | xargs git rm"
   
   # Search 
   grep = grep -Ii
