@@ -1,14 +1,14 @@
 export ANDROID_HOME=C:\\SDK
 
 alias ebm="vim ~/.bash_profile_mingw64"
-alias si="kill ; server && integrations"
-alias sic="kill ; server && integrations && load_catalog_data"
-alias sicw="kill ; server && integrations && load_catalog_data && webclient"
-alias siw="kill ; server && integrations && webclient"
-alias skw="kill ; server && keycloak && webclient"
-alias ss="kill ; server"
-alias sw="kill ; server && webclient"
-alias slw="kill ; server && locking_tool && webclient"
+alias si="kill ; server && maven && integrations"
+alias sic="kill ; server && maven && integrations && load_catalog_data"
+alias sicw="kill ; server && maven && integrations && load_catalog_data && webclient"
+alias siw="kill ; server && maven && integrations && webclient"
+alias skw="kill ; server && maven && keycloak && webclient"
+alias ss="kill ; server && maven"
+alias sw="kill ; server && maven && webclient"
+alias slw="kill ; server && maven && locking_tool && webclient"
 
 kill() {
     heading "TERMINATING PROCESSES"
@@ -33,6 +33,10 @@ depot() {
     heading "STARTING DEPOT SERVER"
     cd $(git rev-parse --show-toplevel)/services
     ./gradlew installServerDepot
+}
+
+client() {
+	android
 }
 
 webclient() {
