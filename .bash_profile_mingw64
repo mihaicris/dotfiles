@@ -56,6 +56,13 @@ integrations() {
     #./gradlew clean dbClean installTestServer :signaturecentral:deploy :cpr:deploy startTestServer
 }
 
+locking_tool() {
+    heading "STARTING LOCKING RESOURCES TOOL"
+    push $(git rev-parse --show-toplevel)/services
+    ./gradlew :installation:deployTest
+    popd
+}
+
 load_catalog_data() {
     heading "LOAD CATALOG DATA"
 
