@@ -18,21 +18,24 @@ kill() {
 
 server() {
     heading "INSTALLING FHIR SERVER"
-    cd $(git rev-parse --show-toplevel)/services
+    pushd $(git rev-parse --show-toplevel)/services
     sedi 's/DC1-ORAC005/buc-proj001/' gradle.properties
     ./gradlew installServer
+	popd
 }
 
 keycloak() {
     heading "STARTING KEYCLOAK SERVER"
-    cd $(git rev-parse --show-toplevel)/keycloak
+    pushed $(git rev-parse --show-toplevel)/keycloak
     ./gradlew installServer
+	popd
 }
 
 depot() {
     heading "STARTING DEPOT SERVER"
-    cd $(git rev-parse --show-toplevel)/services
+    pushd $(git rev-parse --show-toplevel)/services
     ./gradlew installServerDepot
+	popd
 }
 
 client() {
@@ -46,19 +49,22 @@ webclient() {
     sedi 's/DC1-ORAC005/buc-proj001/' depot/gradle.properties
     sedi 's/da_DK/en_US/' admin/src/main/assets/angular/app.js
     ./gradlew bootRun
+	
 }
 
 integrations() {
     heading "STARTING INTEGRATIONS SERVER"
-    cd $(git rev-parse --show-toplevel)/integrations/datasource/src/test/resources/config/
+    pushd $(git rev-parse --show-toplevel)/integrations/datasource/src/test/resources/config/
     sedi 's/dc1-orac005/buc-proj001/' datasource.properties
     sedi 's/dc1-orac005/buc-proj001/' datasource-oracle.properties
-    cd $(git rev-parse --show-toplevel)/integrations
+    pushd $(git rev-parse --show-toplevel)/integrations
     #./installServer.bat
     #./gradlew clean dbClean dbBootstrap installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
     #./gradlew clean installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
     ./gradlew installTestServer startTestServer
     #./gradlew clean dbClean installTestServer :signaturecentral:deploy :cpr:deploy startTestServer
+	popd
+	popd
 }
 
 locking_tool() {
