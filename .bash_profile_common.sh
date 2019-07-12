@@ -3,30 +3,60 @@ heading() {
     echo -e "-----------------------------------"
     echo -e "$@"
     echo -e "-----------------------------------"
-    echo -e "\033[0m\n"
+    echo -e "\033[0m"
+}
+
+prune() {
+    heading 'Pruning branches'
+    git remote prune origin 
+}
+
+fetch() {
+    heading 'Fetching remotes'
+    git fetch --prune --all 
+}
+
+status() {
+	heading 'Status'
+	git status
+}
+
+unstage() {
+	heading 'Local changes unstaged'
+	git reset HEAD
+}
+
+discard() {
+	heading 'Discarded local changes'
+	git checkout .
 }
 
 ggfa() {
-    heading 'Pruning branches:'
-    git remote prune origin 
-    heading 'Fetching remotes:'
-    git fetch --prune --all 
-    heading 'Status:'
-    git status
+	prune
+	fetch
+    status
+}
+
+rr() {
+	unstage
+    discard
+	check
+	status
 }
 
 check() {
+	heading 'Skipped from git'
 	git ls-files -v | grep '^S'
 }
 
 skip() { 
 	git update-index --skip-worktree "$@"
-    git status
+	status
 }
 
 unskip() { 
     git update-index --no-skip-worktree "$@"
-    git status
+    status
 }
 
 sedi() {

@@ -1,14 +1,25 @@
 export ANDROID_HOME=C:\\SDK
 
 alias ebm="vim ~/.bash_profile_mingw64"
-alias si="kill ; server && maven && integrations"
-alias sic="kill ; server && maven && integrations && load_catalog_data"
-alias sicw="kill ; server && maven && integrations && load_catalog_data && webclient"
-alias siw="kill ; server && maven && integrations && webclient"
-alias skw="kill ; server && maven && keycloak && webclient"
-alias ss="kill ; server && maven"
-alias sw="kill ; server && maven && webclient"
-alias slw="kill ; server && maven && locking_tool && webclient"
+
+alias ss="kill ; server"
+alias sw="ss && webclient"
+
+alias sc="ss ; client"
+alias scw="sc && webclient"
+alias sci="sc && integrations"
+alias sciw="sci && webclient"
+
+
+alias st="ss && locking_tool"
+alias stc="sl && client"
+alias stw="sl && webclient"
+alias sti="sl && integrations"
+
+alias scilw="scil && webclient"
+
+alias kscw="kill ; keycloak && scw"
+
 
 kill() {
     heading "TERMINATING PROCESSES"
@@ -26,7 +37,7 @@ server() {
 
 keycloak() {
     heading "STARTING KEYCLOAK SERVER"
-    pushed $(git rev-parse --show-toplevel)/keycloak
+    pushd $(git rev-parse --show-toplevel)/keycloak
     ./gradlew installServer
 	popd
 }
