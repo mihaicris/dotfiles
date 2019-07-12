@@ -14,14 +14,12 @@ fi
 
 alias ..="cd .. && ll"
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
+alias edot="subl ~/.dotfiles"
 alias dotf="cd ~/.dotfiles && git pull"
-alias eb="vim ~/.bash_profile"
-alias ev="vim ~/.vimrc"
 alias gb="git branch"
 alias gba="git branch --all"
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
-alias gclean="git clean -xdf -e Carthage/"
 alias gco="git checkout"
 alias gcount="git rev-list --count" # argument a branch name
 alias gtf="git tag --contains" # argument a commit hash

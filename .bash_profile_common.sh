@@ -37,10 +37,16 @@ ggfa() {
     status
 }
 
+gclean() {
+    heading 'Cleaning ignored files'
+    git clean -xdf -e Carthage/
+}
+
 rr() {
+    unstage
     unskipAll
-	unstage
     discard
+    gclean
 	status
 }
 
