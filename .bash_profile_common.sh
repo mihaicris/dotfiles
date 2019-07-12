@@ -22,12 +22,12 @@ status() {
 }
 
 unstage() {
-	heading 'Local changes unstaged'
+	heading 'Unstaging local changes'
 	git reset HEAD
 }
 
 discard() {
-	heading 'Discarded local changes'
+	heading 'Discarding local changes'
 	git checkout .
 }
 
@@ -38,15 +38,21 @@ ggfa() {
 }
 
 rr() {
+    unskipAll
 	unstage
     discard
-	check
 	status
 }
 
 check() {
 	heading 'Skipped from git'
-	git ls-files -v | grep '^S'
+	git ls-files -v | grep '^S' | cut -d ' ' -f 2
+    echo -e "\n"
+}
+
+unskipAll() {
+    heading 'Unskipping all files'
+    git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
 }
 
 skip() { 
