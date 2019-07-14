@@ -56,7 +56,6 @@ gclean() {
 
 rr() {
     unstage
-    unskipAll
     discard
     status
 }
