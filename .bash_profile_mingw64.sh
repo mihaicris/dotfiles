@@ -32,25 +32,25 @@ server() {
     pushd $(git rev-parse --show-toplevel)/services
     sedi 's/DC1-ORAC005/buc-proj001/' gradle.properties
     ./gradlew installServer
-	popd
+    popd
 }
 
 keycloak() {
     heading "STARTING KEYCLOAK SERVER"
     pushd $(git rev-parse --show-toplevel)/keycloak
     ./gradlew installServer
-	popd
+    popd
 }
 
 depot() {
     heading "STARTING DEPOT SERVER"
     pushd $(git rev-parse --show-toplevel)/services
     ./gradlew installServerDepot
-	popd
+    popd
 }
 
 client() {
-	android
+    android
 }
 
 webclient() {
@@ -60,7 +60,7 @@ webclient() {
     sedi 's/DC1-ORAC005/buc-proj001/' depot/gradle.properties
     sedi 's/da_DK/en_US/' admin/src/main/assets/angular/app.js
     ./gradlew bootRun
-	
+    
 }
 
 integrations() {
@@ -74,8 +74,8 @@ integrations() {
     #./gradlew clean installTestServer :signaturecentral:deploy :cpr:deploy :fmk:deploy startTestServer
     ./gradlew installTestServer startTestServer
     #./gradlew clean dbClean installTestServer :signaturecentral:deploy :cpr:deploy startTestServer
-	popd
-	popd
+    popd
+    popd
 }
 
 locking_tool() {

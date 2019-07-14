@@ -1,14 +1,14 @@
 [user]
-	name = Mihai Cristescu
-	email = mihai.cristescu@gmail.com
+  name = Mihai Cristescu
+  email = mihai.cristescu@gmail.com
 
 [pull]
-	rebase = false
+  rebase = false
 
 [core]
-	longpaths = true
-	pager = diff-so-fancy | less --tabs=4 -RFX
-	editor = vim
+  longpaths = true
+  pager = diff-so-fancy | less --tabs=4 -RFX
+  editor = vim
 
 [merge]
     tool = code
@@ -17,10 +17,10 @@
     cmd = code --wait $MERGED
 
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 
 [diff]
     tool = code
@@ -92,11 +92,11 @@
   editor = interactive-rebase-tool
 
 [difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  path = 
 
 [mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+  cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true
 [commit]
-	template = /Users/cris/.stCommitMsg
+  template = /Users/cris/.stCommitMsg

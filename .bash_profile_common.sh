@@ -25,25 +25,25 @@ fetch() {
 }
 
 status() {
-	heading 'Status'
-	git status
+    heading 'Status'
+    git status
 }
 
 unstage() {
-	heading 'Unstaging local changes'
-	git reset HEAD
+    heading 'Unstaging local changes'
+    git reset HEAD
 }
 
 discard() {
-	heading 'Discarding local changes'
+    heading 'Discarding local changes'
     pushd $(git rev-parse --show-toplevel)
-	git checkout .
+    git checkout .
     popd
 }
 
 ggfa() {
-	prune
-	fetch
+    prune
+    fetch
     status
 }
 
@@ -58,7 +58,7 @@ rr() {
     unstage
     unskipAll
     discard
-	status
+    status
 }
 
 rra() {
@@ -70,8 +70,8 @@ rra() {
 }
 
 check() {
-	heading 'Skipped from git'
-	git ls-files -v | grep '^S' | cut -d ' ' -f 2
+    heading 'Skipped from git'
+    git ls-files -v | grep '^S' | cut -d ' ' -f 2
     echo -e "\n"
 }
 
@@ -81,8 +81,8 @@ unskipAll() {
 }
 
 skip() { 
-	git update-index --skip-worktree "$@"
-	status
+    git update-index --skip-worktree "$@"
+    status
 }
 
 unskip() { 
@@ -95,28 +95,28 @@ sedi() {
 }
 
 ccb() {
-	criteria="$@"
-	prefix="origin/"
+    criteria="$@"
+    prefix="origin/"
 
-	if [ -z "$criteria" ]
-	then
-	      echo -e "\n\033[92mPlease specifiy a string contained in the branch.\033[0m\n"
-	else
-	    branch_name_remote=$(git branch -r | grep $criteria)
-	    count=`git branch -r | grep $criteria | wc -l`
-	    if [[ $count -lt 1 ]]; then
-	        echo -e "\nThere are no remote branches containing \033[91m$criteria\033[0m.\n"
-	    	return 0
-	    fi
+    if [ -z "$criteria" ]
+    then
+          echo -e "\n\033[92mPlease specifiy a string contained in the branch.\033[0m\n"
+    else
+        branch_name_remote=$(git branch -r | grep $criteria)
+        count=`git branch -r | grep $criteria | wc -l`
+        if [[ $count -lt 1 ]]; then
+            echo -e "\nThere are no remote branches containing \033[91m$criteria\033[0m.\n"
+            return 0
+        fi
 
-	    if [[ $count -gt 1 ]]; then
-			echo -e "\nThere are multiple branches containing \033[91m$criteria\033[0m:"
-	        echo -e "\033[34m" 
-	        git branch -r | grep $criteria
-	        echo -e "\033[0m"
-	        return 0
-	    fi
-	    branch_name=`echo $branch_name_remote | sed 's/^origin\///'`
+        if [[ $count -gt 1 ]]; then
+            echo -e "\nThere are multiple branches containing \033[91m$criteria\033[0m:"
+            echo -e "\033[34m" 
+            git branch -r | grep $criteria
+            echo -e "\033[0m"
+            return 0
+        fi
+        branch_name=`echo $branch_name_remote | sed 's/^origin\///'`
         isLocalBranch=`git branch | grep $branch_name`
         if [ ! -z "$isLocalBranch" ]
         then
@@ -137,7 +137,7 @@ ccb() {
                 return 0
             fi
         fi
-	fi
+    fi
 }
 
 devteam() {
@@ -172,8 +172,8 @@ gen_java() {
 }
 
 android() {
-	heading "APPLYING PATCHES TO ANDROID CODE"
+    heading "APPLYING PATCHES TO ANDROID CODE"
     pushd $(git rev-parse --show-toplevel)/client/core/src/main/java/com/systematic/cura/client/core/service/security
     sedi 's/assertTimeZone(tenantService/\/\/assertTimeZone(tenantService/' LoginService.java
-	popd
+    popd
 }
