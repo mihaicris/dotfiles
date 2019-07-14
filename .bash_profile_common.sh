@@ -54,8 +54,15 @@ rr() {
     unstage
     unskipAll
     discard
-    gclean
 	status
+}
+
+rra() {
+    unstage
+    unskipAll
+    discard
+    gclean
+    status
 }
 
 check() {
