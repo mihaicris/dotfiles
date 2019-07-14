@@ -1,3 +1,11 @@
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
+
 heading() {
     echo -e "\033[0;35m"
     echo -e "-----------------------------------"
@@ -119,6 +127,18 @@ ccb() {
             fi
         fi
 	fi
+}
+
+devteam() {
+    if [ -z "$1" ]; then
+        team="S8V3V9GFN2"
+    else
+        team=$1
+    fi
+    pushd $(git rev-parse --show-toplevel)
+    files=$(find . -name "project.pbxproj" | xargs)
+    sedi "s/\(DEVELOPMENT_TEAM = \).*\;/\1$team\;/g" $files
+    popd
 }
 
 maven() {
