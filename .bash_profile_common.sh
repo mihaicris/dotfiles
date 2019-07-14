@@ -7,7 +7,7 @@ popd () {
 }
 
 heading() {
-    echo -e "\033[0;35m"
+    echo -e "\033[0;34m"
     echo -e "-----------------------------------"
     echo -e "$@"
     echo -e "-----------------------------------"
@@ -36,7 +36,9 @@ unstage() {
 
 discard() {
 	heading 'Discarding local changes'
+    pushd $(git rev-parse --show-toplevel)
 	git checkout .
+    popd
 }
 
 ggfa() {
@@ -47,7 +49,9 @@ ggfa() {
 
 gclean() {
     heading 'Cleaning ignored files'
+    pushd $(git rev-parse --show-toplevel)
     git clean -xdf -e Carthage/
+    popd
 }
 
 rr() {
