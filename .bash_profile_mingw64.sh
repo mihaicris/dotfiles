@@ -2,32 +2,12 @@ export ANDROID_HOME=C:\\SDK
 
 alias ebm="vim ~/.bash_profile_mingw64"
 
-alias ss="kill ; server"
-alias sw="ss && webclient"
-
-alias sc="ss ; client"
-alias scw="sc && webclient"
-alias sci="sc && integrations"
-alias sciw="sci && webclient"
-
-
-alias st="ss && locking_tool"
-alias stc="sl && client"
-alias stw="sl && webclient"
-alias sti="sl && integrations"
-
-alias scilw="scil && webclient"
-
-alias kscw="kill ; keycloak && scw"
-
-
-kill() {
+kill_java_node() {
     heading "TERMINATING PROCESSES"
     taskkill //F //IM node.exe //IM java.exe
-    # alternativa: wmic Path win32_process Where "CommandLine Like '%%java%%'" call terminate
 }
 
-server() {
+fhirserver() {
     heading "INSTALLING FHIR SERVER"
     pushd $(git rev-parse --show-toplevel)/services
     sedi 's/DC1-ORAC005/buc-proj001/' gradle.properties
@@ -59,8 +39,7 @@ webclient() {
     sedi 's/DC1-ORAC005/buc-proj001/' admin/gradle.properties
     sedi 's/DC1-ORAC005/buc-proj001/' depot/gradle.properties
     sedi 's/da_DK/en_US/' admin/src/main/assets/angular/app.js
-    ./gradlew bootRun
-    
+    ./gradlew bootRun 
 }
 
 integrations() {
@@ -83,6 +62,51 @@ locking_tool() {
     pushd $(git rev-parse --show-toplevel)/services
     ./gradlew :installation:deployTest
     popd
+}
+
+
+ss() {
+	heading "WELCOME TO CURA BUILD SCRIPT"
+	echo "Type letters to start each corresponding target:"
+	echo ""
+	echo "  k  =>  KEYCLOAK"
+	echo "  s  =>  FHIR SERVER"
+	echo "  l  =>  LOCKING TOOL"
+	echo "  i  =>  INTEGRATIONS"
+	echo "  w  =>  WEB CLIENT"
+	echo ""
+	echo "Press x to exit"
+	echo ""
+		
+	read -p "Input selection: " sel
+	
+	if [ -z "$sel" ]; then
+		echo "No input. EXIT"
+	else 
+		echo ""
+		gen="kill_java_node ; echo ''"
+		if [[ $sel == *"k"* ]]; then
+			gen="${gen} && keycloak"
+		fi
+		
+		if [[ $sel == *"s"* ]]; then
+			gen="${gen} && fhirserver"
+		fi
+		
+		if [[ $sel == *"l"* ]]; then
+			gen="${gen} && locking_tool"
+		fi
+		
+		if [[ $sel == *"i"* ]]; then
+			gen="${gen} && integrations"
+		fi
+		
+		if [[ $sel == *"w"* ]]; then
+			gen="${gen} && webclient"
+		fi
+		echo "Start building..."
+		eval $gen
+	fi
 }
 
 load_catalog_data() {

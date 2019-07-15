@@ -1,9 +1,9 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-mingw64=$(uname -a | grep MINGW64)
-
 source ~/.bash_profile_common.sh
+
+mingw64=$(uname -a | grep MINGW64)
 
 if [[ -n "$mingw64" ]]
 then
