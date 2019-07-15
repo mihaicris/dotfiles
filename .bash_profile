@@ -15,7 +15,7 @@ fi
 alias ..="cd .. && ll"
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
 alias edot="subl ~/.dotfiles"
-alias dotf="cd ~/.dotfiles && git pull"
+alias pdot="cd ~/.dotfiles && git pull"
 alias gb="git branch"
 alias gba="git branch --all"
 alias gbf="git branch --contains" # argument a commit hash
