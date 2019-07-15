@@ -9,16 +9,10 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
-alias ebx="vim ~/.bash_profile_unix"
-
 b() {
     change_to_ios_folder
     cart
     xcodebuild build -workspace Cura.xcworkspace -scheme Cura -sdk iphonesimulator12.1 -configuration Debug | xcpretty
-}
-
-change_to_ios_folder() {
-    cd $(git rev-parse --show-toplevel)/ios
 }
 
 endpoint() {
@@ -41,7 +35,15 @@ t() {
     bundler exec Fastlane ios tests
 }
 
+change_to_ios_folder() {
+    cd $(git rev-parse --show-toplevel)/ios
+}
+
 oo() {
+    xed .
+}
+
+oos() {
     change_to_ios_folder
     xed .
 }

@@ -54,6 +54,11 @@ gclean() {
     popd
 }
 
+hh() {
+    heading "Detaching HEAD to previous commit"
+    git checkout HEAD~1
+}
+
 rr() {
     unstage
     discard

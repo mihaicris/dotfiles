@@ -1,7 +1,5 @@
 export ANDROID_HOME=C:\\SDK
 
-alias ebm="vim ~/.bash_profile_mingw64"
-
 kill_java_node() {
     heading "TERMINATING PROCESSES"
     taskkill //F //IM node.exe //IM java.exe
