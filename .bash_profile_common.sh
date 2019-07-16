@@ -7,35 +7,32 @@ popd () {
 }
 
 heading() {
-    echo -e "\033[0;35m"
-    echo -e "-----------------------------------"
-    echo -e "$@"
-    echo -e "-----------------------------------"
-    echo -e "\033[0m"
+    echo -e "\n\033[0;35m* $@ \033[0m\n"
 }
 
 prune() {
-    heading 'Pruning branches'
+    heading 'Pruning branches...'
     git remote prune origin 
 }
 
 fetch() {
-    heading 'Fetching remotes'
+    heading 'Fetching remotes...'
     git fetch --prune --all 
 }
 
 status() {
     heading 'Status'
     git status
+    echo ""
 }
 
 unstage() {
-    heading 'Unstaging local changes'
+    heading 'Unstaging local changes...'
     git reset HEAD
 }
 
 discard() {
-    heading 'Discarding local changes'
+    heading 'Discarding local changes...'
     pushd $(git rev-parse --show-toplevel)
     git checkout .
     popd
@@ -48,14 +45,14 @@ ggfa() {
 }
 
 gclean() {
-    heading 'Cleaning ignored files'
+    heading 'Cleaning ignored files...'
     pushd $(git rev-parse --show-toplevel)
     git clean -xdf -e Carthage/
     popd
 }
 
 hh() {
-    heading "Detaching HEAD to previous commit"
+    heading "Detaching HEAD to previous commit..."
     git checkout HEAD~1
 }
 
@@ -74,24 +71,21 @@ rra() {
 }
 
 check() {
-    heading 'Skipped from git'
+    heading 'Skipped files'
     git ls-files -v | grep '^S' | cut -d ' ' -f 2
-    echo -e "\n"
 }
 
 unskipAll() {
-    heading 'Unskipping all files'
+    heading 'Unskipping files from git...'
     git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
 }
 
 skip() { 
     git update-index --skip-worktree "$@"
-    status
 }
 
 unskip() { 
     git update-index --no-skip-worktree "$@"
-    status
 }
 
 sedi() {
@@ -157,8 +151,9 @@ devteam() {
 }
 
 maven() {
-    heading "PUBLISHING TO LOCAL MAVEN"
+    heading "Publishing artifacts to local Maven..."
     pushd $(git rev-parse --show-toplevel)/servicesapi
+    chmod +x gradlew
     ./gradlew publishToMavenLocalApi
     popd
 }
@@ -176,8 +171,62 @@ gen_java() {
 }
 
 android() {
-    heading "APPLYING PATCHES TO ANDROID CODE"
+    maven
+    endpoint_android
+    android_patches
+}
+
+android_patches() {
+    heading "Applying patches to Android code..."
     pushd $(git rev-parse --show-toplevel)/client/core/src/main/java/com/systematic/cura/client/core/service/security
     sedi 's/assertTimeZone(tenantService/\/\/assertTimeZone(tenantService/' LoginService.java
+    skip LoginService.java
     popd
+}
+
+endpoint() {
+    if [ -z "$1" ]; then
+        server_endpoint="pc-6384"
+    else
+        server_endpoint=$1
+    fi
+    
+    endpoint_ios $server_endpoint
+    endpoint_android $server_endpoint
+    
+    echo -e "Endpoint server changed to http://172.20.17.12/CURA/\033[92m$server_endpoint\033[0m."
+}
+
+endpoint_ios() {
+    heading "Changing iOS endpoint server to: $server_endpoint ..."
+    
+    if [ -z "$1" ]; then
+        server_endpoint="pc-6384"
+    else
+        server_endpoint=$1
+    fi
+    
+    root_folder=$(git rev-parse --show-toplevel)
+    pushd $root_folder
+    echo "http://172.20.17.12/CURA/$server_endpoint" > ios/LocalConfiguration/config.default.txt
+    popd
+    echo -e "Endpoint server changed to http://172.20.17.12/CURA/\033[92m$server_endpoint\033[0m."
+    skip $root_folder/ios/LocalConfiguration/config.default.txt
+ }
+
+endpoint_android() {
+    heading "Changing Android endpoint server to: $server_endpoint ..."
+    
+    if [ -z "$1" ]; then
+        server_endpoint="pc-6384"
+    else
+        server_endpoint=$1
+    fi
+    
+    root_folder=$(git rev-parse --show-toplevel)
+    pushd $root_folder
+    sedi "s/\(CURA\/\)\" \+ InetAddress.*/\1$server_endpoint\"/" client/androidmodules.gradle
+    popd
+    echo -e "Endpoint server changed to http://172.20.17.12/CURA/\033[92m$server_endpoint\033[0m."
+    skip $root_folder/client/androidmodules.gradle
 }

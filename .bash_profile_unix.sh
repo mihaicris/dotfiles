@@ -15,21 +15,6 @@ b() {
     xcodebuild build -workspace Cura.xcworkspace -scheme Cura -sdk iphonesimulator12.1 -configuration Debug | xcpretty
 }
 
-endpoint() {
-    if [ -z "$1" ]; then
-        server_endpoint="pc-6384"
-    else
-        server_endpoint=$1
-    fi
-
-    current_folder=$(git rev-parse --show-toplevel)/ios/LocalConfiguration
-    command pushd $current_folder > /dev/null
-    echo "http://172.20.17.12/CURA/$server_endpoint" > config.default.txt
-    skip $current_folder/config.default.txt
-    command popd > /dev/null
-    echo -e "Endpoint server changed to http://172.20.17.12/CURA/\033[92m$server_endpoint\033[0m."
-}
-
 t() {
     cd $(git rev-parse --show-toplevel)/
     bundler exec Fastlane ios tests
