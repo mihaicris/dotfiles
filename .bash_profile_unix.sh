@@ -25,8 +25,7 @@ change_to_ios_folder() {
 }
 
 oo() {
-    change_to_ios_folder
-    xed .
+    xed $(git rev-parse --show-toplevel)/ios
 }
 
 oos() {
