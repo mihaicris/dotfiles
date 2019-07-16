@@ -7,7 +7,7 @@ popd () {
 }
 
 heading() {
-    echo -e "\n\033[0;35m* $@ \033[0m\n"
+    echo -e "\n\033[0;93m> $@ \033[0m\n"
 }
 
 prune() {
