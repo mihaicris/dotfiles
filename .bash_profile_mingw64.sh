@@ -1,12 +1,12 @@
 export ANDROID_HOME=C:\\SDK
 
 kill_java_node() {
-    heading "TERMINATING PROCESSES"
+    heading "Terminating Processes"
     taskkill //F //IM node.exe //IM java.exe
 }
 
 fhirserver() {
-    heading "INSTALLING FHIR SERVER"
+    heading "Starting FHIR Server"
     pushd $(git rev-parse --show-toplevel)/services
     sedi 's/DC1-ORAC005/buc-proj001/' gradle.properties
     ./gradlew installServer
@@ -14,14 +14,14 @@ fhirserver() {
 }
 
 keycloak() {
-    heading "STARTING KEYCLOAK SERVER"
+    heading "Starting Keycloak Server"
     pushd $(git rev-parse --show-toplevel)/keycloak
     ./gradlew installServer
     popd
 }
 
 depot() {
-    heading "STARTING DEPOT SERVER"
+    heading "Starting Depot Server"
     pushd $(git rev-parse --show-toplevel)/services
     ./gradlew installServerDepot
     popd
@@ -32,7 +32,7 @@ client() {
 }
 
 webclient() {
-    heading "STARTING WEB CLIENT"
+    heading "Starting Web Client"
     cd $(git rev-parse --show-toplevel)/webclient
     sedi 's/DC1-ORAC005/buc-proj001/' admin/gradle.properties
     sedi 's/DC1-ORAC005/buc-proj001/' depot/gradle.properties
@@ -41,7 +41,7 @@ webclient() {
 }
 
 integrations() {
-    heading "STARTING INTEGRATIONS SERVER"
+    heading "Starting Integrations Server"
     pushd $(git rev-parse --show-toplevel)/integrations/datasource/src/test/resources/config/
     sedi 's/dc1-orac005/buc-proj001/' datasource.properties
     sedi 's/dc1-orac005/buc-proj001/' datasource-oracle.properties
@@ -56,7 +56,7 @@ integrations() {
 }
 
 locking_tool() {
-    heading "STARTING LOCKING RESOURCES TOOL"
+    heading "Starting Locking Resources Tool"
     pushd $(git rev-parse --show-toplevel)/services
     ./gradlew :installation:deployTest
     popd
@@ -64,14 +64,14 @@ locking_tool() {
 
 
 ss() {
-	heading "WELCOME TO CURA BUILD SCRIPT"
-	echo "Type letters to start each corresponding target:"
+	heading "Welcome to Cura Build Script"
+	echo "Type letters to include each corresponding target:"
 	echo ""
-	echo "  k  =>  KEYCLOAK"
 	echo "  s  =>  FHIR SERVER"
+    echo "  w  =>  WEB CLIENT"
+    echo "  k  =>  KEYCLOAK"
 	echo "  l  =>  LOCKING TOOL"
 	echo "  i  =>  INTEGRATIONS"
-	echo "  w  =>  WEB CLIENT"
 	echo ""
 	echo "Press x to exit"
 	echo ""
@@ -102,13 +102,13 @@ ss() {
 		if [[ $sel == *"w"* ]]; then
 			gen="${gen} && webclient"
 		fi
-		echo "Start building..."
+		echo "Start building"
 		eval $gen
 	fi
 }
 
 load_catalog_data() {
-    heading "LOAD CATALOG DATA"
+    heading "Load Catalog Data"
 
     cd $(git rev-parse --show-toplevel)/integrations/build/eap/jboss-eap-7.0/standalone/deployments/
 
