@@ -25,11 +25,11 @@ change_to_ios_folder() {
 }
 
 oo() {
+    change_to_ios_folder
     xed .
 }
 
 oos() {
-    change_to_ios_folder
     xed .
 }
 
