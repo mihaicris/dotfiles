@@ -24,6 +24,6 @@ alias gtf="git tag --contains" # argument a commit hash
 alias ll="ls -Flh"
 alias lla="ll -A"
 alias ls="ls -G"
-alias pdot="cd ~/.dotfiles && git pull"
+alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
 alias rb="source ~/.bash_profile"
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
