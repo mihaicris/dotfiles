@@ -73,6 +73,7 @@ rra() {
 check() {
     heading 'Skipped files'
     git ls-files -v | grep '^S' | cut -d ' ' -f 2
+    echo ""
 }
 
 unskipAll() {
@@ -193,8 +194,6 @@ endpoint() {
     
     endpoint_ios $server_endpoint
     endpoint_android $server_endpoint
-    
-    echo -e "Endpoint server changed to http://172.20.17.12/CURA/\033[92m$server_endpoint\033[0m."
 }
 
 endpoint_ios() {
@@ -210,7 +209,6 @@ endpoint_ios() {
     pushd $root_folder
     echo "http://172.20.17.12/CURA/$server_endpoint" > ios/LocalConfiguration/config.default.txt
     popd
-    echo -e "Endpoint server changed to http://172.20.17.12/CURA/\033[92m$server_endpoint\033[0m."
     skip $root_folder/ios/LocalConfiguration/config.default.txt
  }
 
@@ -227,6 +225,5 @@ endpoint_android() {
     pushd $root_folder
     sedi "s/\(CURA\/\)\" \+ InetAddress.*/\1$server_endpoint\"/" client/androidmodules.gradle
     popd
-    echo -e "Endpoint server changed to http://172.20.17.12/CURA/\033[92m$server_endpoint\033[0m."
     skip $root_folder/client/androidmodules.gradle
 }
