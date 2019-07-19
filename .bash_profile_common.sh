@@ -51,6 +51,14 @@ gclean() {
     popd
 }
 
+recreate_files() {
+	heading 'Recreating all files'
+	pushd $(git rev-parse --show-toplevel)
+	git rm --cached -r .
+	git reset --hard
+	popd
+}
+
 hh() {
     heading "Detaching HEAD to previous commit"
     git checkout HEAD~1
@@ -68,6 +76,15 @@ rra() {
     discard
     gclean
     status
+}
+
+rraa() {
+	unstage
+	unskipAll
+	discard
+	gclean
+	recreate_files
+	status
 }
 
 check() {
