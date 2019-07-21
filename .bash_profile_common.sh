@@ -250,3 +250,13 @@ transform_ts_to_mp4() {
         ffmpeg -i "$a" -c copy "${a%.*}.mp4"
     done
 }
+
+features() {
+    if [ -z "$1" ]; then
+        author="Mihai Cristescu"
+    else
+        author=$1
+    fi
+    
+    git log --all --author="$author" --oneline | grep -o -E "\[CURA-\d*\]" | sort | uniq
+}
