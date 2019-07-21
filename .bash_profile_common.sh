@@ -244,3 +244,9 @@ endpoint_android() {
     popd
     skip $root_folder/client/androidmodules.gradle
 }
+
+transform_ts_to_mp4() {
+    for a in *.ts; do
+        ffmpeg -i "$a" -c copy "${a%.*}.mp4"
+    done
+}
