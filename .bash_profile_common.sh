@@ -10,58 +10,10 @@ heading() {
     echo -e "\n\033[7m\033[034m$@\033[0m\n"
 }
 
-prune() {
-    heading 'Pruning branches'
-    git remote prune origin 
-}
-
-fetch() {
-    heading 'Fetching remotes'
-    git fetch --prune --all 
-}
-
-status() {
-    heading 'Status'
-    git status
-    echo ""
-}
-
-unstage() {
-    heading 'Unstaging local changes'
-    git reset HEAD
-}
-
-discard() {
-    heading 'Discarding local changes'
-    pushd $(git rev-parse --show-toplevel)
-    git checkout .
-    popd
-}
-
 ggfa() {
     prune
     fetch
     status
-}
-
-gclean() {
-    heading 'Cleaning ignored files'
-    pushd $(git rev-parse --show-toplevel)
-    git clean -xdf -e Carthage/
-    popd
-}
-
-recreate_files() {
-	heading 'Recreating all files'
-	pushd $(git rev-parse --show-toplevel)
-	git rm --cached -r .
-	git reset --hard
-	popd
-}
-
-hh() {
-    heading "Detaching HEAD to previous commit"
-    git checkout HEAD~1
 }
 
 rr() {
@@ -71,39 +23,107 @@ rr() {
 }
 
 rra() {
-    unstage
     unskipAll
+    unstage
     discard
     gclean
     status
 }
 
 rraa() {
-	unstage
-	unskipAll
-	discard
-	gclean
-	recreate_files
-	status
+    unskipAll
+    unstage
+    discard
+    gclean
+    recreate_files
+    status
+}
+
+prune() {
+    heading 'Prune branches'
+    git remote prune origin
+}
+
+fetch() {
+    heading 'Fetch remotes'
+    git fetch --prune --all
+}
+
+status() {
+    heading 'Status'
+    git status
+    echo ""
+}
+
+unstage() {
+    files=`git diff --name-only --cached`
+    if [[ ${#files} -gt 0 ]]; then
+        heading 'Unstage local changes'
+        echo $files
+        echo ""
+        git reset HEAD --quiet
+    fi
+}
+
+discard() {
+    pushd $(git rev-parse --show-toplevel)
+    files=`git diff --name-only`
+    if [[ ${#files} -gt 0 ]]; then
+        heading 'Discard local changes'
+        echo "$files"
+        echo ""
+        git checkout . --quiet
+    fi
+    popd
+}
+
+gclean() {
+    pushd $(git rev-parse --show-toplevel)
+    files=`git clean -xdfn -e Carthage/`
+    if [[ ${#files} -gt 0 ]]; then
+        heading 'Clean ignored files'
+        git clean -xdf -e Carthage/
+        echo ""
+    fi
+    popd
+}
+
+recreate_files() {
+	heading 'Recreate all files'
+	pushd $(git rev-parse --show-toplevel)
+	git rm --cached -r .
+	git reset --hard
+	popd
+}
+
+unskipAll() {
+    files=`git ls-files -v | grep '^S' | cut -d ' ' -f 2`
+    if [[ ${#files} -gt 0 ]]; then
+        heading 'Reactivate skipped files from git'
+        echo "$files"
+        echo ""
+        git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
+    fi
+}
+
+skip() {
+    git update-index --skip-worktree "$@"
+}
+
+unskip() {
+    git update-index --no-skip-worktree "$@"
+}
+
+hh() {
+    heading "Detach HEAD to previous commit"
+    git checkout HEAD~1
+    echo ""
 }
 
 check() {
     heading 'Skipped files'
     git ls-files -v | grep '^S' | cut -d ' ' -f 2
     echo ""
-}
-
-unskipAll() {
-    heading 'Unskipping files from git'
-    git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
-}
-
-skip() { 
-    git update-index --skip-worktree "$@"
-}
-
-unskip() { 
-    git update-index --no-skip-worktree "$@"
 }
 
 sedi() {
@@ -127,7 +147,7 @@ ccb() {
 
         if [[ $count -gt 1 ]]; then
             echo -e "\nThere are multiple branches containing \033[91m$criteria\033[0m:"
-            echo -e "\033[34m" 
+            echo -e "\033[34m"
             git branch -r | grep $criteria
             echo -e "\033[0m"
             return 0
@@ -169,7 +189,7 @@ devteam() {
 }
 
 maven() {
-    heading "Publishing artifacts to local Maven"
+    heading "Publish artifacts to local Maven"
     pushd $(git rev-parse --show-toplevel)/servicesapi
     chmod +x gradlew
     ./gradlew publishToMavenLocalApi
@@ -195,7 +215,7 @@ android() {
 }
 
 android_patches() {
-    heading "Applying patches to Android code"
+    heading "Apply patches to Android code"
     pushd $(git rev-parse --show-toplevel)/client/core/src/main/java/com/systematic/cura/client/core/service/security
     sedi 's/assertTimeZone(tenantService/\/\/assertTimeZone(tenantService/' LoginService.java
     skip LoginService.java
@@ -208,20 +228,20 @@ endpoint() {
     else
         server_endpoint=$1
     fi
-    
+
     endpoint_ios $server_endpoint
     endpoint_android $server_endpoint
 }
 
 endpoint_ios() {
-    heading "Changing iOS endpoint server to: $server_endpoint"
-    
+    heading "Change iOS endpoint server to: $server_endpoint"
+
     if [ -z "$1" ]; then
         server_endpoint="pc-6384"
     else
         server_endpoint=$1
     fi
-    
+
     root_folder=$(git rev-parse --show-toplevel)
     pushd $root_folder
     echo "http://172.20.17.12/CURA/$server_endpoint" > ios/LocalConfiguration/config.default.txt
@@ -230,14 +250,14 @@ endpoint_ios() {
  }
 
 endpoint_android() {
-    heading "Changing Android endpoint server to: $server_endpoint"
-    
+    heading "Change Android endpoint server to: $server_endpoint"
+
     if [ -z "$1" ]; then
         server_endpoint="pc-6384"
     else
         server_endpoint=$1
     fi
-    
+
     root_folder=$(git rev-parse --show-toplevel)
     pushd $root_folder
     sedi "s/\(CURA\/\)\" \+ InetAddress.*/\1$server_endpoint\"/" client/androidmodules.gradle
@@ -257,6 +277,6 @@ features() {
     else
         author=$1
     fi
-    
+
     git log --all --author="$author" --oneline | grep -o -E "\[CURA-\d*\]" | sort | uniq
 }
