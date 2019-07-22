@@ -71,7 +71,6 @@ discard() {
     if [[ ${#files} -gt 0 ]]; then
         heading 'Discard local changes'
         echo "$files"
-        echo ""
         git checkout . --quiet
     fi
     popd
@@ -83,7 +82,6 @@ gclean() {
     if [[ ${#files} -gt 0 ]]; then
         heading 'Clean ignored files'
         git clean -xdf -e Carthage/
-        echo ""
     fi
     popd
 }
