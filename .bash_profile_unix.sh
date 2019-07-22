@@ -20,6 +20,20 @@ t() {
     bundler exec Fastlane ios tests
 }
 
+t1() {
+    cd $(git rev-parse --show-toplevel)/
+    xcodebuild clean build test \
+        -workspace iOS/Cura.xcworkspace \
+        -scheme "Cura" \
+        -sdk iphonesimulator \
+        -destination "platform=iOS Simulator,OS=12.1,name=iPad Pro (11-inch)" \
+        -derivedDataPath /tmp/DerivedData
+        CODE_SIGN_IDENTITY="" \
+        CODE_SIGNING_REQUIRED=NO \
+        ONLY_ACTIVE_ARCH=YES \
+        | xcpretty
+}
+
 change_to_ios_folder() {
     cd $(git rev-parse --show-toplevel)/ios
 }
