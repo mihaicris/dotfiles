@@ -27,7 +27,7 @@ t1() {
         -scheme "Cura" \
         -sdk iphonesimulator \
         -destination "platform=iOS Simulator,OS=12.1,name=iPad Pro (11-inch)" \
-        -derivedDataPath /tmp/DerivedData
+        -derivedDataPath /tmp/DerivedData \
         CODE_SIGN_IDENTITY="" \
         CODE_SIGNING_REQUIRED=NO \
         ONLY_ACTIVE_ARCH=YES \
