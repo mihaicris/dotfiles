@@ -64,7 +64,7 @@ locking_tool() {
 
 
 ss() {
-	heading "Welcome to Cura Build Script"
+	echo -e "\033[42\033[5\033[7mWelcome to Cura Build Script\033[0"
 	echo "Type letters to include each corresponding target:"
 	echo ""
 	echo "  s  =>  FHIR SERVER"
