@@ -59,7 +59,7 @@ unstage() {
     files=`git diff --name-only --cached`
     if [[ ${#files} -gt 0 ]]; then
         heading 'Unstage local changes'
-        echo $files
+        git diff --name-only --cached
         echo ""
         git reset HEAD --quiet
     fi
@@ -70,7 +70,7 @@ discard() {
     files=`git diff --name-only`
     if [[ ${#files} -gt 0 ]]; then
         heading 'Discard local changes'
-        echo "$files"
+        git diff --name-only
         git checkout . --quiet
     fi
     popd
@@ -98,7 +98,7 @@ unskipAll() {
     files=`git ls-files -v | grep '^S' | cut -d ' ' -f 2`
     if [[ ${#files} -gt 0 ]]; then
         heading 'Reactivate skipped files from git'
-        echo "$files"
+        git ls-files -v | grep '^S' | cut -d ' ' -f 2
         echo ""
         git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
     fi
