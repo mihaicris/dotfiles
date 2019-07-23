@@ -46,7 +46,7 @@ prune() {
 
 fetch() {
     heading 'Fetch remotes'
-    git fetch --prune --all
+    git fetch --prune --all --tags
 }
 
 status() {
@@ -59,7 +59,7 @@ unstage() {
     files=`git diff --name-only --cached`
     if [[ ${#files} -gt 0 ]]; then
         heading 'Unstage local changes'
-        git diff --name-only --cached
+        git diff --name-only --cached | cat
         echo ""
         git reset HEAD --quiet
     fi
@@ -70,7 +70,7 @@ discard() {
     files=`git diff --name-only`
     if [[ ${#files} -gt 0 ]]; then
         heading 'Discard local changes'
-        git diff --name-only
+        git diff --name-only | cat
         git checkout . --quiet
     fi
     popd

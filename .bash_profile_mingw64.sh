@@ -64,22 +64,22 @@ locking_tool() {
 
 
 ss() {
-	echo -e "\033[42\033[5\033[7mWelcome to Cura Build Script\033[0"
+	heading "Welcome to Cura Build Script"
 	echo "Type letters to include each corresponding target:"
 	echo ""
-	echo "  s  =>  FHIR SERVER"
-    echo "  w  =>  WEB CLIENT"
-    echo "  k  =>  KEYCLOAK"
-	echo "  l  =>  LOCKING TOOL"
-	echo "  i  =>  INTEGRATIONS"
+	echo "  S  =>  FHIR Server"
+    echo "  W  =>  Web Client"
+    echo "  K  =>  Keycloak"
+	echo "  L  =>  Locking Tool"
+	echo "  I  =>  Integrations"
 	echo ""
 	echo "Press x to exit"
 	echo ""
 		
 	read -p "Input selection: " sel
 	
-	if [ -z "$sel" ]; then
-		echo "No input. EXIT"
+	if [[ $sel == *"x"* ]]; then
+		echo "No valid input. Exiting..."
 	else 
 		echo ""
 		gen="kill_java_node ; echo ''"
