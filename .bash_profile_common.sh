@@ -26,11 +26,18 @@ rra() {
     unskipAll
     unstage
     discard
+    status
+}
+
+rrac() {
+    unskipAll
+    unstage
+    discard
     gclean
     status
 }
 
-rraa() {
+rrar() {
     unskipAll
     unstage
     discard
