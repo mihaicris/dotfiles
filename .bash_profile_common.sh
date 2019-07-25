@@ -40,12 +40,12 @@ rraa() {
 }
 
 prune() {
-    heading 'Prune branches'
+    heading 'Pruning branches'
     git remote prune origin
 }
 
 fetch() {
-    heading 'Fetch remotes'
+    heading 'Fetching remotes'
     git fetch --prune --all --tags
 }
 
@@ -56,38 +56,44 @@ status() {
 }
 
 unstage() {
+    heading 'Unstaging local changes'
     files=`git diff --name-only --cached`
     if [[ ${#files} -gt 0 ]]; then
-        heading 'Unstage local changes'
         git diff --name-only --cached | cat
         echo ""
         git reset HEAD --quiet
+    else
+        echo -e "* Nothing to unstage."
     fi
 }
 
 discard() {
+    heading 'Discarding local changes'
     pushd $(git rev-parse --show-toplevel)
     files=`git diff --name-only`
     if [[ ${#files} -gt 0 ]]; then
-        heading 'Discard local changes'
         git diff --name-only | cat
         git checkout . --quiet
+    else
+        echo -e "* Nothing to discard."
     fi
     popd
 }
 
 gclean() {
+    heading 'Cleaning ignored files'
     pushd $(git rev-parse --show-toplevel)
     files=`git clean -xdfn -e Carthage/`
     if [[ ${#files} -gt 0 ]]; then
-        heading 'Clean ignored files'
         git clean -xdf -e Carthage/
+    else
+        echo -e "* Nothing to clean."
     fi
     popd
 }
 
 recreate_files() {
-	heading 'Recreate all files'
+	heading 'Recreating all files'
 	pushd $(git rev-parse --show-toplevel)
 	git rm --cached -r .
 	git reset --hard
@@ -95,12 +101,14 @@ recreate_files() {
 }
 
 unskipAll() {
+    heading 'Reactivating skipped files from git'
     files=`git ls-files -v | grep '^S' | cut -d ' ' -f 2`
     if [[ ${#files} -gt 0 ]]; then
-        heading 'Reactivate skipped files from git'
         git ls-files -v | grep '^S' | cut -d ' ' -f 2
         echo ""
         git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
+    else 
+        echo -e "* Nothing to reactivate."
     fi
 }
 
@@ -113,7 +121,7 @@ unskip() {
 }
 
 hh() {
-    heading "Detach HEAD to previous commit"
+    heading "Detaching HEAD to previous commit"
     git checkout HEAD~1
     echo ""
 }
@@ -187,7 +195,7 @@ devteam() {
 }
 
 maven() {
-    heading "Publish artifacts to local Maven"
+    heading "Publishing artifacts to local Maven"
     pushd $(git rev-parse --show-toplevel)/servicesapi
     chmod +x gradlew
     ./gradlew publishToMavenLocalApi
@@ -208,32 +216,20 @@ gen_java() {
 
 android() {
     maven
-    endpoint_android
+    endpoint
     android_patches
 }
 
 android_patches() {
-    heading "Apply patches to Android code"
-    pushd $(git rev-parse --show-toplevel)/client/core/src/main/java/com/systematic/cura/client/core/service/security
-    sedi 's/assertTimeZone(tenantService/\/\/assertTimeZone(tenantService/' LoginService.java
-    skip LoginService.java
-    popd
+    heading "Applying patches to Android code"
+    file=$(git rev-parse --show-toplevel)/client/core/src/main/java/com/systematic/cura/client/core/service/security/LoginService.java
+    sedi 's/assertTimeZone(tenantService/\/\/assertTimeZone(tenantService/' $file
+    skip $file
+    echo -e "* Patched file: \033[92m$file\033[0m\n"
 }
 
 endpoint() {
-    if [ -z "$1" ]; then
-        server_endpoint="pc-6384"
-    else
-        server_endpoint=$1
-    fi
-
-    endpoint_ios $server_endpoint
-    endpoint_android $server_endpoint
-}
-
-endpoint_ios() {
-    heading "Change iOS endpoint server to: $server_endpoint"
-
+    heading "Changing endpoint server URL"
     if [ -z "$1" ]; then
         server_endpoint="pc-6384"
     else
@@ -241,26 +237,15 @@ endpoint_ios() {
     fi
 
     root_folder=$(git rev-parse --show-toplevel)
-    pushd $root_folder
-    echo "http://172.20.17.12/CURA/$server_endpoint" > ios/LocalConfiguration/config.default.txt
-    popd
-    skip $root_folder/ios/LocalConfiguration/config.default.txt
- }
-
-endpoint_android() {
-    heading "Change Android endpoint server to: $server_endpoint"
-
-    if [ -z "$1" ]; then
-        server_endpoint="pc-6384"
-    else
-        server_endpoint=$1
-    fi
-
-    root_folder=$(git rev-parse --show-toplevel)
-    pushd $root_folder
-    sedi "s/\(CURA\/\)\" \+ InetAddress.*/\1$server_endpoint\"/" client/androidmodules.gradle
-    popd
-    skip $root_folder/client/androidmodules.gradle
+    file=$root_folder/ios/LocalConfiguration/config.default.txt
+    echo "http://172.20.17.12/CURA/$server_endpoint" > $file
+    skip $file
+    echo -e "* Patched file: \033[92m$file\033[0m"
+    file=$root_folder/client/androidmodules.gradle
+    sedi "s/\(CURA\/\)\" \+ InetAddress.*/\1$server_endpoint\"/" $file
+    skip $file
+    echo -e "* Patched file: \033[92m$file\033[0m"
+    echo -e "* Changed endpoint server to: \033[92m$server_endpoint\033[0m"
 }
 
 transform_ts_to_mp4() {
