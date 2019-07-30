@@ -10,6 +10,16 @@ heading() {
     echo -e "\n\033[7m\033[034m$@\033[0m\n"
 }
 
+gr() {
+	if $(git rev-parse &>/dev/null ); then 
+		heading 'Changing to git root folder'
+		cd $(git rev-parse --show-toplevel)
+		echo "Done."
+	else
+		echo 'Not a git repository.'
+	fi
+}
+
 ggfa() {
     prune
     fetch
