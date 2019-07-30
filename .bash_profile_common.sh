@@ -42,7 +42,6 @@ rrrrr() {
     unstage
     discard
     gclean
-    recreate_files
     status
 }
 
