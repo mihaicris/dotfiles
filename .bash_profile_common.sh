@@ -22,22 +22,22 @@ rr() {
     status
 }
 
-rra() {
+rrr() {
     unskipAll
     unstage
     discard
     status
 }
 
-rrac() {
+rrrr() {
     unskipAll
     unstage
     discard
-    gclean
+    clean_untracked
     status
 }
 
-rrar() {
+rrrrr() {
     unskipAll
     unstage
     discard
@@ -85,6 +85,16 @@ discard() {
         echo -e "* Nothing to discard."
     fi
     popd
+}
+
+clean_untracked() {
+    heading 'Cleaning untracked files'
+    files=`git clean -fdn`
+    if [[ ${#files} -gt 0 ]]; then
+        git clean -fd
+    else
+        echo -e "* Nothing to clean."
+    fi
 }
 
 gclean() {
