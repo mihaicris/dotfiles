@@ -194,7 +194,7 @@ ccb() {
                 echo -e "\nLocal branch \033[92m$branch_name\033[0m successfuly checked out.\n"
                 return 0
             else
-                echo -e "\nCould not checkout branch\033[34m$branch_name\033[0m.\n"
+                echo -e "\nCould not checkout branch:\n\033[34m$branch_name\033[0m.\n"
                 return 1
             fi
         else
