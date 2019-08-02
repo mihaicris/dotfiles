@@ -289,3 +289,20 @@ features() {
 
     git log --all --author="$author" --oneline | grep -o -E "\[CURA-\d*\]" | sort | uniq
 }
+
+forward_all() {
+    heading "Fast forwarding all worktrees..."
+    paths=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
+    for path in $paths
+    do
+        echo -e "* \033[94m$(basename $path)\033[0m\n"
+        pushd $path
+        isDetached=$(git symbolic-ref -q HEAD)
+        if [[ -z $isDetached ]]; then
+            echo -e "  \033[91mNothing to do, is detached.\033[0m\n"
+            continue
+        fi
+        git pull >/dev/null
+        popd
+    done
+}
