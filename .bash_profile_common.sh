@@ -300,9 +300,9 @@ forward_all() {
         isDetached=$(git symbolic-ref -q HEAD)
         if [[ -z $isDetached ]]; then
             echo -e "  \033[91mNothing to do, is detached.\033[0m\n"
-            continue
+        else
+            git pull >/dev/null
         fi
-        git pull >/dev/null
         popd
     done
 }
