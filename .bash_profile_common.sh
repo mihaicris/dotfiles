@@ -296,11 +296,11 @@ ff() {
     paths=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
     for path in $paths
     do
-        echo -e "Fast forwarding \033[94m$path\033[0m\n"
+        echo -e "\033[92m* Fast forwarding \033[94m$path\033[0m\n"
         pushd $path
         isDetached=$(git symbolic-ref -q HEAD)
         if [[ -z $isDetached ]]; then
-            echo -e "\033[91mSkipping, no local branch checked out.\033[0m\n"
+            echo -e "\033[91mSkipping (detached state).\033[0m\n"
         else
             git pull
             echo ""
