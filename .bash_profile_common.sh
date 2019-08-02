@@ -302,6 +302,7 @@ forward_all() {
             echo -e "  \033[91mNothing to do, is detached.\033[0m\n"
         else
             git pull >/dev/null
+            if [ ! $? -ne 0 ]; then echo "" ; fi # if last command had an error, add a linebreak 
         fi
         popd
     done
