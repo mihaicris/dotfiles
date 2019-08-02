@@ -291,7 +291,7 @@ features() {
 }
 
 ff() {
-    heading "Fast forwarding all worktrees..."
+    heading "Fast forwarding all worktrees"
     paths=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
     for path in $paths
     do
