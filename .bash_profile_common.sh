@@ -295,11 +295,11 @@ ff() {
     paths=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
     for path in $paths
     do
-        echo -e "* \033[94m$(basename $path)\033[0m"
+        echo -e "* \033[94m$(basename $path)\033[0m\n"
         pushd $path
         isDetached=$(git symbolic-ref -q HEAD)
         if [[ -z $isDetached ]]; then
-            echo -e "\n  \033[91mNothing to do, is detached.\033[0m\n"
+            echo -e "\033[91mNothing to do, is detached.\033[0m\n"
         else
             git pull >/dev/null
             echo ""
