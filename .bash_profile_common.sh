@@ -268,6 +268,8 @@ endpoint() {
     skip $file
     echo -e "* Patched file: \033[92m$file\033[0m"
     file=$root_folder/client/androidmodules.gradle
+    unskip $file
+    git checkout $file
     sedi "s/\(CURA\/\)\" \+ InetAddress.*/\1$server_endpoint\"/" $file
     skip $file
     echo -e "* Patched file: \033[92m$file\033[0m"
