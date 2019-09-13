@@ -1,6 +1,6 @@
 [user]
-  name = Mihai Cristescu
-  email = mihai.cristescu@gmail.com
+	name = Mihai Cristescu
+	email = mihai.cristescu@systematic.com
 
 [pull]
   rebase = false
@@ -11,10 +11,10 @@
   editor = vim
 
 [merge]
-    tool = code
+	tool = code
 
 [mergetool "code"]
-    cmd = code --wait $MERGED
+	cmd = code --wait $MERGED
 
 [filter "lfs"]
   clean = git-lfs clean -- %f

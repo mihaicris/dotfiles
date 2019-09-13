@@ -240,7 +240,7 @@ gen_java() {
     popd
 }
 
-android() {
+prepare() {
     maven
     endpoint
     android_patches

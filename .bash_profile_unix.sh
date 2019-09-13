@@ -31,7 +31,7 @@ t1() {
         CODE_SIGN_IDENTITY="" \
         CODE_SIGNING_REQUIRED=NO \
         ONLY_ACTIVE_ARCH=YES \
-        | xcpretty
+        | xcpretty -r html
 }
 
 change_to_ios_folder() {
