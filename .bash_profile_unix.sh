@@ -64,6 +64,14 @@ addBashCompletion() {
     fi
 }
 
+xcode() {
+    sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
+}
+
+xcode10() {
+    sudo xcode-select -s "/Applications/Xcode10.1.app/Contents/Developer"
+}
+
 addBashCompletion $(brew --prefix)/etc/bash_completion
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/tmux
