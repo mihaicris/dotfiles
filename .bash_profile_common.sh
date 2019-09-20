@@ -241,9 +241,23 @@ gen_java() {
 }
 
 prepare() {
+    gradlePermissions
+    fixBrokenDependencies
     maven
     endpoint
     android_patches
+}
+
+gradlePermissions() {
+    pushd $(git rev-parse --show-toplevel)/client
+    find . -type f -name gradlew -exec chmod +x {} \;
+    popd
+}
+
+fixBrokenDependencies() {
+    pushd $(git rev-parse --show-toplevel)/client
+    ./gradlew fixBrokenDependencies
+    popd
 }
 
 android_patches() {
