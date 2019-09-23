@@ -310,3 +310,16 @@ ff() {
         popd
     done
 }
+
+jira() {
+    open https://support.systematic.com/secure/Dashboard.jspa
+}
+
+bit() {
+    open https://bitbucket/dashboard
+}
+
+team() {
+    open https://teamcity/project.html\?projectId=Cura
+}
+
