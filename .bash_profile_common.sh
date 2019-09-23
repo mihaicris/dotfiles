@@ -250,7 +250,8 @@ prepare() {
 
 gradlePermissions() {
     pushd $(git rev-parse --show-toplevel)/client
-    find . -type f -name gradlew -exec chmod +x {} \;
+    find . -type f -name gradlew -print0 | xargs -0 chmod +x
+    find . -type f -name gradlew -print0 | xargs -0 git update-index --skip-worktree
     popd
 }
 
@@ -288,6 +289,7 @@ endpoint() {
     skip $file
     echo -e "* Patched file: \033[92m$file\033[0m"
     echo -e "* Changed endpoint server to: \033[92m$server_endpoint\033[0m"
+    echo ""
 }
 
 transform_ts_to_mp4() {

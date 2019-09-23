@@ -46,6 +46,10 @@ oos() {
     xed .
 }
 
+ooa() {
+    studio $(git rev-parse --show-toplevel)/client
+}
+
 cart() {
     change_to_ios_folder
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
