@@ -347,6 +347,10 @@ jira() {
     open https://support.systematic.com/secure/Dashboard.jspa
 }
 
+wiki() {
+    open https://wiki/display/BOR
+}
+
 bit() {
     open https://bitbucket/dashboard
 }
