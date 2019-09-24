@@ -240,7 +240,7 @@ gen_java() {
     popd
 }
 
-prepare() {
+prepare_old() {
     gradlePermissions
     fixBrokenDependencies
     maven
@@ -248,8 +248,24 @@ prepare() {
     android_patches
 }
 
+prepare() {
+    gradlePermissions
+    publish_to_maven
+    endpoint
+    android_patches
+}
+
+publish_to_maven() {
+    pushd $(git rev-parse --show-toplevel)/servicesapi
+    ./gradlew publishToMavenLocalApi
+    popd
+    pushd $(git rev-parse --show-toplevel)/coreproject
+    ./gradlew publishToMavenLocal
+    popd
+}
+
 gradlePermissions() {
-    pushd $(git rev-parse --show-toplevel)/client
+    pushd $(git rev-parse --show-toplevel)
     find . -type f -name gradlew -print0 | xargs -0 chmod +x
     find . -type f -name gradlew -print0 | xargs -0 git update-index --skip-worktree
     popd
@@ -337,5 +353,9 @@ bit() {
 
 team() {
     open https://teamcity/project.html\?projectId=Cura
+}
+
+owa() {
+    open https://outlook.office.com/mail/inbox
 }
 
