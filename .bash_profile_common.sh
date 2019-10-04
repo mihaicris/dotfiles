@@ -297,13 +297,11 @@ endpoint() {
     file=$root_folder/ios/LocalConfiguration/config.default.txt
     echo "http://172.20.17.12/CURA/$server_endpoint" > $file
     skip $file
-    echo -e "* Patched file: \033[92m$file\033[0m"
     file=$root_folder/client/androidmodules.gradle
     unskip $file
     git checkout $file
     sedi "s/\(CURA\/\)\" \+ InetAddress.*/\1$server_endpoint\"/" $file
     skip $file
-    echo -e "* Patched file: \033[92m$file\033[0m"
     echo -e "* Changed endpoint server to: \033[92m$server_endpoint\033[0m"
     echo ""
 }
@@ -361,5 +359,8 @@ team() {
 
 owa() {
     open https://outlook.office.com/mail/inbox
+    open https://outlook.office.com/calendar/view/day
 }
+
+
 
