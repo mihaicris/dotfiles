@@ -299,7 +299,7 @@ endpoint() {
     skip $file
     file=$root_folder/client/androidmodules.gradle
     unskip $file
-    git checkout $file
+    git checkout $file &>/dev/null
     sedi "s/\(CURA\/\)\" \+ InetAddress.*/\1$server_endpoint\"/" $file
     skip $file
     echo -e "* Changed endpoint server to: \033[92m$server_endpoint\033[0m"
