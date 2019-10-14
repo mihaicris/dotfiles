@@ -1,6 +1,7 @@
 export ANDROID_HOME=C:\\SDK
 
 alias emulator='./emulator.exe'
+alias adb='./adb.exe'
 
 kill_java_node() {
     heading "Terminating Processes"

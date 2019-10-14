@@ -7,6 +7,7 @@ export PATH="/usr/local/sbin:$PATH"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 
 alias emulator='./emulator'
+alias adb='./adb'
 
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
