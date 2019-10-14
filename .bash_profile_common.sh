@@ -249,6 +249,7 @@ prepare_old() {
 }
 
 android() {
+    start_emulator
     gradlePermissions
     publish_to_maven
     endpoint
@@ -256,11 +257,15 @@ android() {
     install_android
 }
 
-install_android() {
-    heading 'Install Android project'
+start_emulator() {
+    heading 'Starting emulator'
     pushd $ANDROID_HOME/emulator
     emulator -avd 'Pixel_C_API_28'
     popd
+}
+
+install_android() {
+    heading 'Install Android project'
     pushd $(git rev-parse --show-toplevel)/client
     ./gradlew installDebug
     popd
