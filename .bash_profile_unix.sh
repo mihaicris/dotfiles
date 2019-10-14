@@ -6,6 +6,8 @@ export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 
+alias emulator='./emulator'
+
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
@@ -55,10 +57,21 @@ cart() {
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
 }
 
+cart_new() {
+    change_to_ios_folder
+    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.5120190930a
+}
+
 cart_update() {
     change_to_ios_folder
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries
 }
+
+cart_update_new() {
+    change_to_ios_folder
+    carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.5120190930a
+}
+
 
 addBashCompletion() {
     if [ -f $1 ]; then

@@ -1,5 +1,7 @@
 export ANDROID_HOME=C:\\SDK
 
+alias emulator='./emulator.exe'
+
 kill_java_node() {
     heading "Terminating Processes"
     taskkill //F //IM node.exe //IM java.exe
