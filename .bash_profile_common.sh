@@ -260,7 +260,7 @@ android() {
 start_emulator() {
     heading 'Starting emulator'
     pushd $ANDROID_HOME/emulator
-    emulator -avd 'Pixel_C_API_28'
+    emulator -avd 'Pixel_C_API_28' &
     popd
 }
 
