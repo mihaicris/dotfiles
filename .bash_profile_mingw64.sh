@@ -1,5 +1,8 @@
 export ANDROID_HOME=C:\\SDK
 
+alias emulator='./emulator.exe'
+alias adb='./adb.exe'
+
 kill_java_node() {
     heading "Terminating Processes"
     taskkill //F //IM node.exe //IM java.exe
@@ -33,11 +36,10 @@ client() {
 
 webclient() {
     heading "Starting Web Client"
-    cd $(git rev-parse --show-toplevel)/webclient
-    sedi 's/DC1-ORAC005/buc-proj001/' admin/gradle.properties
-    sedi 's/DC1-ORAC005/buc-proj001/' depot/gradle.properties
-    sedi 's/da_DK/en_US/' admin/src/main/assets/angular/app.js
-    ./gradlew bootRun 
+    pushd $(git rev-parse --show-toplevel)/webclient/cura_vanilla
+    sedi 's/DC1-ORAC005/buc-proj001/' gradle.properties
+    sedi 's/da_DK/en_US/' src/main/assets/angular/app.js
+    ./gradlew fullBootRun
 }
 
 integrations() {

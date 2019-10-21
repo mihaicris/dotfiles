@@ -248,11 +248,27 @@ prepare_old() {
     android_patches
 }
 
-prepare() {
+android() {
+    start_emulator
     gradlePermissions
     publish_to_maven
     endpoint
     android_patches
+    install_android
+}
+
+start_emulator() {
+    heading 'Starting emulator'
+    pushd $ANDROID_HOME/emulator
+    emulator -avd 'Pixel_C_API_28' &
+    popd
+}
+
+install_android() {
+    heading 'Install Android project'
+    pushd $(git rev-parse --show-toplevel)/client
+    ./gradlew installDebug
+    popd
 }
 
 publish_to_maven() {
