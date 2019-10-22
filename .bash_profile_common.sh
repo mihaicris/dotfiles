@@ -263,9 +263,9 @@ start_emulator() {
     count=`adb get-state | grep error`
     if [[ $count -lt 1 ]]
     then
-        emulator -avd 'Pixel_C_API_28' &
-    else
         echo -e "\n\033[92mEmulator already started.\033[0m\n"
+    else
+        emulator -avd 'Pixel_C_API_28' &
     fi
 }
 
