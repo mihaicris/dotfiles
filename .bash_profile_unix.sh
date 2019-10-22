@@ -1,13 +1,12 @@
+export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$HOME/.jenv/bin:$PATH"
 export PATH="$HOME/.fastlane/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-
-alias emulator='./emulator'
-alias adb='./adb'
+export PATH="$ANDROID_HOME/emulator:$PATH"
+export PATH="$ANDROID_HOME/platform-tools:$PATH"
 
 eval "$(jenv init -)"
 eval "$(rbenv init -)"

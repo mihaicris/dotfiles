@@ -255,20 +255,41 @@ android() {
     endpoint
     android_patches
     install_android
+    start_android_app
 }
 
 start_emulator() {
     heading 'Starting emulator'
-    pushd $ANDROID_HOME/emulator
-    emulator -avd 'Pixel_C_API_28' &
-    popd
+    count=`adb get-state | grep error`
+    if [[ $count -lt 1 ]]
+    then
+        emulator -avd 'Pixel_C_API_28' &
+    else
+        echo -e "\n\033[92mEmulator already started.\033[0m\n"
+    fi
 }
 
 install_android() {
-    heading 'Install Android project'
+    heading 'Compile and install Android project'
     pushd $(git rev-parse --show-toplevel)/client
     ./gradlew installDebug
     popd
+}
+
+uninstall_android() {
+    count=`adb shell pm list packages | grep com.systematic.cura.client | wc -l`
+    if [[ $count -lt 1 ]]
+    then
+        echo -e "\n\033[92mNote: App is not installed.\033[0m\n"
+    else
+        adb shell pm uninstall 'com.systematic.cura.client'
+        echo -e "\n\033[92mNote: App has been uninstalled.\033[0m\n"
+    fi
+}
+
+start_android_app() {
+    heading 'Start Android project'
+    adb shell monkey -p 'com.systematic.cura.client' -v 1
 }
 
 publish_to_maven() {
