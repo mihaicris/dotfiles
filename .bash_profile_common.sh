@@ -292,10 +292,10 @@ start_android_app() {
 publish_to_maven() {
     heading 'Publish dependencies to local Maven'
     pushd $(git rev-parse --show-toplevel)/servicesapi
-    ./gradlew publishToMavenLocalApi
+    ./gradlew build publishToMavenLocalApi
     popd
     pushd $(git rev-parse --show-toplevel)/coreproject
-    ./gradlew publishToMavenLocal
+    ./gradlew build publishToMavenLocal
     popd
 }
 
