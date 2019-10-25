@@ -249,30 +249,27 @@ prepare_old() {
 }
 
 android() {
-    start_emulator
     gradlePermissions
     publish_to_maven
     endpoint
     android_patches
-    install_android
-    start_android_app
 }
 
 start_emulator() {
     heading 'Starting emulator'
-    count=`adb get-state | grep error`
+    count=`adb get-state | grep device | wc -l`
     if [[ $count -lt 1 ]]
     then
-        echo -e "\n\033[92mEmulator already started.\033[0m\n"
-    else
         emulator -avd 'Pixel_C_API_28' &
+    else
+        echo -e "\n\033[92mEmulator already started.\033[0m\n"
     fi
 }
 
 install_android() {
     heading 'Compile and install Android project'
     pushd $(git rev-parse --show-toplevel)/client
-    ./gradlew installDebug
+    ./gradlew :app:installDebug
     popd
 }
 
@@ -293,6 +290,7 @@ start_android_app() {
 }
 
 publish_to_maven() {
+    heading 'Publish dependencies to local Maven'
     pushd $(git rev-parse --show-toplevel)/servicesapi
     ./gradlew publishToMavenLocalApi
     popd
