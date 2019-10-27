@@ -27,7 +27,7 @@ syntax on
 
 let g:syntastic_swift_checkers = ['swiftlint', 'swiftpm']
 let g:syntastic_swift_swiftlint_use_defaults = 1 
-
+let NERDTreeShowHidden=1
 set autoindent
 set expandtab
 set tabstop=4
