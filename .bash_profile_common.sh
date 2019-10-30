@@ -369,7 +369,7 @@ ff() {
             echo -e "\033[91mSkipping (detached state).\033[0m\n"
         else
             current_branch=$(git rev-parse --abbrev-ref HEAD)
-            echo -e "\033[92m* Fast forwarding \033[94m$path\033[0m ($current_branch)\n"
+            echo -e "\033[92m* Fast forwarding \033[94m$path\033[0m [$current_branch]\n"
             git pull
             echo ""
         fi
