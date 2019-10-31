@@ -363,13 +363,14 @@ ff() {
     paths=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
     for path in $paths
     do
+        printf "\033[92m* Fast forwarding \033[94m$path"
         pushd $path
         isDetached=$(git symbolic-ref -q HEAD)
         if [[ -z $isDetached ]]; then
-            echo -e "\033[91mSkipping (detached state).\033[0m\n"
+            printf "\n\033[91mSkipping (detached state).\033[0m\n\n"
         else
             current_branch=$(git rev-parse --abbrev-ref HEAD)
-            echo -e "\033[92m* Fast forwarding \033[94m$path\033[0m [$current_branch]\n"
+            printf " \033[93m[$current_branch]\033[0m\n"
             git pull
             echo ""
         fi
