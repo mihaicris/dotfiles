@@ -83,10 +83,12 @@ addBashCompletion() {
 
 xcode() {
     sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
+    cp /Users/cris/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
 
 xcode10() {
     sudo xcode-select -s "/Applications/Xcode10.1.app/Contents/Developer"
+    cp /Users/cris/.dotfiles/xcode/keybindings/Custom10.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
 
 addBashCompletion $(brew --prefix)/etc/bash_completion
