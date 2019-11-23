@@ -91,6 +91,11 @@ xcode10() {
     cp ~/.dotfiles/xcode/keybindings/Custom10.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
 
+xcodebeta() {
+    sudo xcode-select -s "/Applications/Xcode-beta.app/Contents/Developer"
+    cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
+}
+
 addBashCompletion $(brew --prefix)/etc/bash_completion
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/tmux
