@@ -379,7 +379,11 @@ ff() {
 }
 
 jira() {
-    open https://support.systematic.com/secure/Dashboard.jspa
+    if [ -z "$1" ]; then
+        open https://support.systematic.com/secure/Dashboard.jspa
+    else
+        open https://support.systematic.com/browse/CURA-$1
+    fi
 }
 
 wiki() {
