@@ -41,3 +41,5 @@ colorscheme spacegray
 " Mappings
 nmap <F6> :NERDTreeToggle<CR>
 
+" Tab, spaces
+set tabstop=4 shiftwidth=4 expandtab
