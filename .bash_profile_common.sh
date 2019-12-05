@@ -11,13 +11,13 @@ heading() {
 }
 
 gr() {
-	if $(git rev-parse &>/dev/null ); then 
-		heading 'Changing to git root folder'
-		cd $(git rev-parse --show-toplevel)
-		echo "Done."
-	else
-		echo 'Not a git repository.'
-	fi
+    if $(git rev-parse &>/dev/null ); then 
+        heading 'Changing to git root folder'
+        cd $(git rev-parse --show-toplevel)
+        echo "Done."
+    else
+        echo 'Not a git repository.'
+    fi
 }
 
 ggfa() {
@@ -119,11 +119,11 @@ gclean() {
 }
 
 recreate_files() {
-	heading 'Recreating all files'
-	pushd $(git rev-parse --show-toplevel)
-	git rm --cached -r .
-	git reset --hard
-	popd
+    heading 'Recreating all files'
+    pushd $(git rev-parse --show-toplevel)
+    git rm --cached -r .
+    git reset --hard
+    popd
 }
 
 unskipAll() {

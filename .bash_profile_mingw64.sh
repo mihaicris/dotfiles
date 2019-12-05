@@ -66,47 +66,47 @@ locking_tool() {
 
 
 ss() {
-	heading "Welcome to Cura Build Script"
-	echo "Type letters to include each corresponding target:"
-	echo ""
-	echo "  S  =>  FHIR Server"
+    heading "Welcome to Cura Build Script"
+    echo "Type letters to include each corresponding target:"
+    echo ""
+    echo "  S  =>  FHIR Server"
     echo "  W  =>  Web Client"
     echo "  K  =>  Keycloak"
-	echo "  L  =>  Locking Tool"
-	echo "  I  =>  Integrations"
-	echo ""
-	echo "Press x to exit"
-	echo ""
-		
-	read -p "Input selection: " sel
-	
-	if [[ $sel == *"x"* ]]; then
-		echo "No valid input. Exiting..."
-	else 
-		echo ""
-		gen="kill_java_node ; echo ''"
-		if [[ $sel == *"k"* ]]; then
-			gen="${gen} && keycloak"
-		fi
-		
-		if [[ $sel == *"s"* ]]; then
-			gen="${gen} && fhirserver"
-		fi
-		
-		if [[ $sel == *"l"* ]]; then
-			gen="${gen} && locking_tool"
-		fi
-		
-		if [[ $sel == *"i"* ]]; then
-			gen="${gen} && integrations"
-		fi
-		
-		if [[ $sel == *"w"* ]]; then
-			gen="${gen} && webclient"
-		fi
-		echo "Start building"
-		eval $gen
-	fi
+    echo "  L  =>  Locking Tool"
+    echo "  I  =>  Integrations"
+    echo ""
+    echo "Press x to exit"
+    echo ""
+        
+    read -p "Input selection: " sel
+    
+    if [[ $sel == *"x"* ]]; then
+        echo "No valid input. Exiting..."
+    else 
+        echo ""
+        gen="kill_java_node ; echo ''"
+        if [[ $sel == *"k"* ]]; then
+            gen="${gen} && keycloak"
+        fi
+        
+        if [[ $sel == *"s"* ]]; then
+            gen="${gen} && fhirserver"
+        fi
+        
+        if [[ $sel == *"l"* ]]; then
+            gen="${gen} && locking_tool"
+        fi
+        
+        if [[ $sel == *"i"* ]]; then
+            gen="${gen} && integrations"
+        fi
+        
+        if [[ $sel == *"w"* ]]; then
+            gen="${gen} && webclient"
+        fi
+        echo "Start building"
+        eval $gen
+    fi
 }
 
 load_catalog_data() {
