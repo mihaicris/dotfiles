@@ -36,10 +36,23 @@ client() {
 
 webclient() {
     heading "Starting Web Client"
-    pushd $(git rev-parse --show-toplevel)/webclient/cura_vanilla
-    sedi 's/DC1-ORAC005/buc-proj001/' gradle.properties
-    sedi 's/da_DK/en_US/' src/main/assets/angular/app.js
-    ./gradlew fullBootRun
+
+    UP_TO_30=$(git rev-parse --show-toplevel)/webclient
+    FROM_31=$(git rev-parse --show-toplevel)/webclient/cura_vanilla
+    
+    if [ -d "$FROM_31" ]; then
+        pushd $FROM_31
+        sedi 's/DC1-ORAC005/buc-proj001/' gradle.properties
+        sedi 's/da_DK/en_US/' src/main/assets/angular/app.js
+        ./gradlew fullBootRun
+        popd
+    else
+        pushd $UP_TO_30
+        sedi 's/DC1-ORAC005/buc-proj001/' admin/gradle.properties
+        sedi 's/da_DK/en_US/' admin/src/main/assets/angular/app.js
+        ./gradlew bootRun 
+        popd
+    fi
 }
 
 integrations() {
