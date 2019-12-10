@@ -54,25 +54,28 @@ ooa() {
 
 cart() {
     change_to_ios_folder
-    ios_patches
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
+}
+
+cartp() {
+    change_to_ios_folder
+    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
+    ios_patches
+    carthage build --platform iOS --configuration Debug swift-smart
 }
 
 cart_new() {
     change_to_ios_folder
-    ios_patches
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.5120190930a
 }
 
 cart_update() {
     change_to_ios_folder
-    ios_patches
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries
 }
 
 cart_update_new() {
     change_to_ios_folder
-    ios_patches
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.5120190930a
 }
 
@@ -105,6 +108,9 @@ ios_patches() {
     perl -i -p0e 's/private init().*public func setup/private init() { console = ConsoleDestination() }\n\n    public func setup/s' $file
     skip $file
     echo -e "* Patched \033[92m$file\033[0m (silenced logger).\n"
+    file=$(git rev-parse --show-toplevel)/ios/Carthage/Checkouts/swift-smart/Swift-FHIR/Sources/Models/FHIRAbstractBase.swift
+    perl -i -pe 's/^.*fhir_warn\(error\.description\).*$//s' $file
+    echo -e "* Patched \033[92m$file\033[0m (silenced swiftfhir warnings).\n"
 }
 
 addBashCompletion $(brew --prefix)/etc/bash_completion
