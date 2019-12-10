@@ -30,9 +30,6 @@ depot() {
     popd
 }
 
-client() {
-    android
-}
 
 webclient() {
     heading "Starting Web Client"

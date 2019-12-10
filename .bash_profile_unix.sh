@@ -54,24 +54,27 @@ ooa() {
 
 cart() {
     change_to_ios_folder
+    ios_patches
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
 }
 
 cart_new() {
     change_to_ios_folder
+    ios_patches
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.5120190930a
 }
 
 cart_update() {
     change_to_ios_folder
+    ios_patches
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries
 }
 
 cart_update_new() {
     change_to_ios_folder
+    ios_patches
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.5120190930a
 }
-
 
 addBashCompletion() {
     if [ -f $1 ]; then
@@ -94,6 +97,14 @@ xcode10() {
 xcodebeta() {
     sudo xcode-select -s "/Applications/Xcode-beta.app/Contents/Developer"
     cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
+}
+
+ios_patches() {
+    heading "Applying patches to iOS Code"
+    file=$(git rev-parse --show-toplevel)/ios/CuraCore/CuraCore/logging/CuraLogger.swift
+    perl -i -p0e 's/private init().*public func setup/private init() { console = ConsoleDestination() }\n\n    public func setup/s' $file
+    skip $file
+    echo -e "* Patched \033[92m$file\033[0m (silenced logger).\n"
 }
 
 addBashCompletion $(brew --prefix)/etc/bash_completion
