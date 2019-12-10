@@ -66,7 +66,7 @@ cartp() {
 
 cart_new() {
     change_to_ios_folder
-    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.5120190930a
+    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.50201912021a
 }
 
 cart_update() {
