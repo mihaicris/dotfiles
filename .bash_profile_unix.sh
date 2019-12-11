@@ -12,7 +12,6 @@ eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
 b() {
-    change_to_ios_folder
     cart
     xcodebuild build -workspace Cura.xcworkspace -scheme Cura -sdk iphonesimulator12.1 -configuration Debug | xcpretty
 }
