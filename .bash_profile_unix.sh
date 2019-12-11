@@ -54,6 +54,7 @@ ooa() {
 
 cart() {
     change_to_ios_folder
+    endpoint
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
 }
 
@@ -61,6 +62,7 @@ cartp() {
     change_to_ios_folder
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
     ios_patches
+    endpoint
     carthage build --platform iOS --configuration Debug swift-smart
 }
 
