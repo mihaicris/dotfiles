@@ -11,6 +11,24 @@ export PATH="$ANDROID_HOME/platform-tools:$PATH"
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
+addBashCompletion() {
+    if [ -f $1 ]; then
+        . $1
+    else
+        echo "Warning, bash completion file not found: $1"
+    fi
+}
+
+addBashCompletion $(brew --prefix)/etc/bash_completion
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/tmux
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/carthage
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/git-completion.bash
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
+addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
+
 b() {
     cart
     xcodebuild build -workspace Cura.xcworkspace -scheme Cura -sdk iphonesimulator12.1 -configuration Debug | xcpretty
@@ -53,39 +71,34 @@ ooa() {
 
 cart() {
     change_to_ios_folder
-    endpoint
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
+    endpoint
 }
 
 cartp() {
     change_to_ios_folder
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
     ios_patches
-    endpoint
     carthage build --platform iOS --configuration Debug swift-smart
+    endpoint
 }
 
 cart_new() {
     change_to_ios_folder
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.50201912021a
+    endpoint
 }
 
 cart_update() {
     change_to_ios_folder
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries
+    endpoint
 }
 
 cart_update_new() {
     change_to_ios_folder
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.5120190930a
-}
-
-addBashCompletion() {
-    if [ -f $1 ]; then
-        . $1
-    else
-        echo "Warning, bash completion file not found: $1"
-    fi
+    endpoint
 }
 
 xcode() {
@@ -114,12 +127,3 @@ ios_patches() {
     echo -e "* Patched \033[92m$file\033[0m (silenced swiftfhir warnings).\n"
 }
 
-addBashCompletion $(brew --prefix)/etc/bash_completion
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/tmux
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/carthage
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/git-completion.bash
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
-addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
