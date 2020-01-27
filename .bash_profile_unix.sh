@@ -127,7 +127,7 @@ ios_patches() {
     #perl -i -pe 's/^.*fhir_warn\(error\.description\).*$//s' $file
     #echo -e "* Patched \033[92m$file\033[0m (silenced swiftfhir warnings).\n"
     file=$(git rev-parse --show-toplevel)/ios/CuraCore/CuraCore/service/security/LoginService.swift
-    perl -i -p0e 's/isTimeZoneOk.*func assertTimeZone/isTimeZoneOk(isoOffsetDateTime: String) -> Bool {\n        return true\n    }\n\n    func assertTimeZone/s' $file
+    perl -i -p0e 's/public func isTimeZoneOk.*func assertTimeZone/public func isTimeZoneOk(isoOffsetDateTime: String) -> Bool {\n        return true\n    }\n\n    func assertTimeZone/s' $file
     echo -e "* Patched \033[92m$file\033[0m (silenced timezone error).\n"
 }
 
