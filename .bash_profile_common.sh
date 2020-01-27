@@ -316,7 +316,7 @@ fixBrokenDependencies() {
 android_patches() {
     heading "Applying patches to Android code"
     file=$(git rev-parse --show-toplevel)/client/core/src/main/java/com/systematic/cura/client/core/service/security/LoginService.java
-    sedi 's/assertTimeZone(tenantService/\/\/assertTimeZone(tenantService/' $file
+    sedi 's/assertTimeZone(isOffsetDateTime/\/\/assertTimeZone(isOffsetDateTime/' $file
     skip $file
     echo -e "* Patched file: \033[92m$file\033[0m"
 }

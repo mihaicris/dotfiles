@@ -72,6 +72,7 @@ ooa() {
 cart() {
     change_to_ios_folder
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
+    ios_patches
     endpoint
 }
 
@@ -85,7 +86,7 @@ cartp() {
 
 cart_new() {
     change_to_ios_folder
-    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.50201912021a
+    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain $1 
     endpoint
 }
 
@@ -97,7 +98,7 @@ cart_update() {
 
 cart_update_new() {
     change_to_ios_folder
-    carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain org.swift.5120190930a
+    carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain $1
     endpoint
 }
 
@@ -122,8 +123,11 @@ ios_patches() {
     perl -i -p0e 's/private init().*public func setup/private init() { console = ConsoleDestination() }\n\n    public func setup/s' $file
     skip $file
     echo -e "* Patched \033[92m$file\033[0m (silenced logger).\n"
-    file=$(git rev-parse --show-toplevel)/ios/Carthage/Checkouts/swift-smart/Swift-FHIR/Sources/Models/FHIRAbstractBase.swift
-    perl -i -pe 's/^.*fhir_warn\(error\.description\).*$//s' $file
-    echo -e "* Patched \033[92m$file\033[0m (silenced swiftfhir warnings).\n"
+    #file=$(git rev-parse --show-toplevel)/ios/Carthage/Checkouts/swift-smart/Swift-FHIR/Sources/Models/FHIRAbstractBase.swift
+    #perl -i -pe 's/^.*fhir_warn\(error\.description\).*$//s' $file
+    #echo -e "* Patched \033[92m$file\033[0m (silenced swiftfhir warnings).\n"
+    file=$(git rev-parse --show-toplevel)/ios/CuraCore/CuraCore/service/security/LoginService.swift
+    perl -i -p0e 's/isTimeZoneOk.*func assertTimeZone/isTimeZoneOk(isoOffsetDateTime: String) -> Bool {\n        return true\n    }\n\n    func assertTimeZone/s' $file
+    echo -e "* Patched \033[92m$file\033[0m (silenced timezone error).\n"
 }
 
