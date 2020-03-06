@@ -29,58 +29,14 @@ addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
 addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
 
-b() {
-    cart
-    xcodebuild build -workspace Cura.xcworkspace -scheme Cura -sdk iphonesimulator12.1 -configuration Debug | xcpretty
-}
-
-t() {
-    cd $(git rev-parse --show-toplevel)/
-    bundler exec Fastlane ios tests
-}
-
-t1() {
-    cd $(git rev-parse --show-toplevel)/
-    xcodebuild clean build test \
-        -workspace iOS/Cura.xcworkspace \
-        -scheme "Cura" \
-        -sdk iphonesimulator \
-        -destination "platform=iOS Simulator,OS=12.1,name=iPad Pro (11-inch)" \
-        -derivedDataPath /tmp/DerivedData \
-        CODE_SIGN_IDENTITY="" \
-        CODE_SIGNING_REQUIRED=NO \
-        ONLY_ACTIVE_ARCH=YES \
-        | xcpretty -r html
-}
-
-change_to_ios_folder() {
-    cd $(git rev-parse --show-toplevel)/ios
-}
-
 oo() {
-    xed $(git rev-parse --show-toplevel)/ios
-}
-
-oos() {
     xed .
-}
-
-ooa() {
-    studio $(git rev-parse --show-toplevel)/client
 }
 
 cart() {
     change_to_ios_folder
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
     ios_patches
-    endpoint
-}
-
-cartp() {
-    change_to_ios_folder
-    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
-    ios_patches
-    carthage build --platform iOS --configuration Debug swift-smart
     endpoint
 }
 
@@ -108,27 +64,12 @@ xcode() {
 }
 
 xcode10() {
-    sudo xcode-select -s "/Applications/Xcode10.1.app/Contents/Developer"
+    sudo xcode-select -s "/Applications/Xcode10.3.app/Contents/Developer"
     cp ~/.dotfiles/xcode/keybindings/Custom10.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
 
 xcodebeta() {
     sudo xcode-select -s "/Applications/Xcode-beta.app/Contents/Developer"
     cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
-}
-
-ios_patches() {
-    heading "Applying patches to iOS Code"
-    file=$(git rev-parse --show-toplevel)/ios/CuraCore/CuraCore/logging/CuraLogger.swift
-    perl -i -p0e 's/private init().*public func setup/private init() { console = ConsoleDestination() }\n\n    public func setup/s' $file
-    skip $file
-    echo -e "* Patched \033[92m$file\033[0m (silenced logger).\n"
-    #file=$(git rev-parse --show-toplevel)/ios/Carthage/Checkouts/swift-smart/Swift-FHIR/Sources/Models/FHIRAbstractBase.swift
-    #perl -i -pe 's/^.*fhir_warn\(error\.description\).*$//s' $file
-    #echo -e "* Patched \033[92m$file\033[0m (silenced swiftfhir warnings).\n"
-    file=$(git rev-parse --show-toplevel)/ios/CuraCore/CuraCore/service/security/LoginService.swift
-    perl -i -p0e 's/public func isTimeZoneOk.*func assertTimeZone/public func isTimeZoneOk(isoOffsetDateTime: String) -> Bool {\n        return true\n    }\n\n    func assertTimeZone/s' $file
-    skip $file
-    echo -e "* Patched \033[92m$file\033[0m (silenced timezone error).\n"
 }
 
