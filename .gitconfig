@@ -1,6 +1,6 @@
 [user]
 	name = Mihai Cristescu
-	email = mihai.cristescu@systematic.com
+	email = mihai.cristescu1@ibm.com
 
 [pull]
   rebase = false
@@ -90,11 +90,3 @@
   addx = update-index --chmod=+x
   
   editor = interactive-rebase-tool
-
-[difftool "sourcetree"]
-  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-  path = 
-
-[mergetool "sourcetree"]
-  cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-  trustExitCode = true
