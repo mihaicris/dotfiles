@@ -315,7 +315,7 @@ cart() {
     ios_patches
 }
 
-cart_new() {
+cart_toolchain() {
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain $1 
 }
 
