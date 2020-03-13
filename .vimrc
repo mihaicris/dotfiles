@@ -17,8 +17,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'udalov/kotlin-vim'
-Plug 'guns/vim-clojure-static'
+"Plug 'udalov/kotlin-vim'
+"Plug 'guns/vim-clojure-static'
 
 call plug#end()"
 
