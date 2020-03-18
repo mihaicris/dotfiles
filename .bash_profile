@@ -47,11 +47,11 @@ addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
 addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
 
-pushd () {
+pushd() {
     command pushd "$@" > /dev/null
 }
 
-popd () {
+popd() {
     command popd "$@" > /dev/null
 }
 
