@@ -63,9 +63,6 @@ gr() {
     if $(git rev-parse &>/dev/null ); then 
         heading 'Changing to git root folder'
         cd $(git rev-parse --show-toplevel)
-        echo "Done."
-    else
-        echo 'Not a git repository.'
     fi
 }
 
@@ -341,3 +338,4 @@ xcodebeta() {
     sudo xcode-select -s "/Applications/Xcode-beta.app/Contents/Developer"
     cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
+
