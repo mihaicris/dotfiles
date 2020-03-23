@@ -339,3 +339,19 @@ xcodebeta() {
     cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
 
+owa() {
+    open https://outlook.office.com/mail/inbox
+}
+
+p() {
+    open https://bp-vsts.visualstudio.com/BPme/_apps/hub/ryanstedman.tfs-pullrequest-dashboard.tfs-pullrequest-dashboard
+}
+
+vts() {
+    if [ -z "$1" ]; then
+        open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items
+    else
+        open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items/?workitem=$1
+    fi
+}
+
