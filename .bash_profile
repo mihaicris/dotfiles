@@ -303,6 +303,22 @@ ff() {
     done
 }
 
+gg() {
+   heading "Pull Submodule" 
+   submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+   for submodule in $submodules
+   do
+      printf "\n\033[92m* Updating submodule: \033[94m$submodule\n"
+      pushd $submodule
+      rrrr
+      git switch apimaindevelopment
+      git pull
+      popd
+   done
+}
+
+
+
 oo() {
     xed .
 }
@@ -358,3 +374,20 @@ vst() {
 def() {
     open https://bp-vsts.visualstudio.com/BPme/_queries/query/6661bd32-ba84-4689-84ba-6850653f115e/
 }
+
+work() {
+    open https://bp-vsts.visualstudio.com/BPme/_workitems/assignedtome/
+}
+
+gpx() {
+    output=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
+    cat <<-'EOF' >$output
+        <?xml version="1.0"?>
+        <gpx version="1.1" creator="Xcode">
+            <wpt lat="44.4356676" lon="26.0544182">
+            </wpt>
+        </gpx>
+    EOF
+    popd
+}
+
