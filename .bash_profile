@@ -15,7 +15,7 @@ eval "$(rbenv init -)"
 
 alias ..="cd .. && ll"
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
-alias edot="pdot && vim ~/.dotfiles"
+alias edot="pdot && vim ~/.dotfiles/.bash_profile"
 alias gb="git branch"
 alias gba="git branch --all"
 alias gbf="git branch --contains" # argument a commit hash
@@ -347,7 +347,7 @@ p() {
     open https://bp-vsts.visualstudio.com/BPme/_apps/hub/ryanstedman.tfs-pullrequest-dashboard.tfs-pullrequest-dashboard
 }
 
-vts() {
+vst() {
     if [ -z "$1" ]; then
         open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items
     else
@@ -355,3 +355,6 @@ vts() {
     fi
 }
 
+def() {
+    open https://bp-vsts.visualstudio.com/BPme/_queries/query/6661bd32-ba84-4689-84ba-6850653f115e/
+}
