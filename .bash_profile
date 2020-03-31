@@ -317,7 +317,34 @@ gg() {
    done
 }
 
+git-dd() {
+    if [ -z "$1" ]; then
+        author="Cristescu"
+    else
+        author=$1
+    fi
+    git log --all \
+            --since='1 day ago' \
+            --no-merges \
+            --author=$author \
+            --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' \
+            --abbrev-commit
+}
 
+daily() {
+   heading "Daily standup" 
+   # printf "\n\033[92m* Main:\n"
+   git-dd $1
+   submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+   for submodule in $submodules
+   do
+      # printf "\n\033[92m* Submodule: \033[94m$submodule\n"
+      pushd $submodule
+      git-dd $1
+      popd
+   done
+   echo ""
+}
 
 oo() {
     xed .
@@ -381,9 +408,9 @@ work() {
 
 gpx() {
     file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-cat <<EOF > $file_location 
-<?xml version="1.0"?>
-<gpx version="1.1" creator="Xcode"><wpt lat="44.4356676" lon="26.0544182"></wpt></gpx>
+    cat <<EOF > $file_location 
+    <?xml version="1.0"?>
+    <gpx version="1.1" creator="Xcode"><wpt lat="44.4356676" lon="26.0544182"></wpt></gpx>
 EOF
     skip $file_location
 }
