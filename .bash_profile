@@ -318,52 +318,56 @@ gg() {
 }
 
 # show commits from all branches for current git user.
-function my-commits-since() {
-    if [ -z "$2" ]; then
-        author=$(git config user.email)
+function list-commits() {
+    if [ -z "$1" ]; then
+        author=$(git config user.email);
     else
-        author=$2
+        if [[ "$1" == "0" ]]; then
+            author="";
+        else
+            author=$1;
+        fi
     fi
 
-    git log --all \
-            --since=$1 \
-            --reverse \
-            --author=$author \
-            --pretty=format:'%C(bold blue)<%an>%Creset %<(9)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(14)%cr%Creset %<(75,trunc)%s' \
-            --date=format:'%a, %d %b' \
-            --abbrev-commit
-}
-
-function my-commits() {
     daytoday=$(date|cut -d ' ' -f 1)
     if [ "${datetoday}" == "Mon" ]
     then
-        my-commits-since last.friday $@;
+        since="last.friday";
     else
-        my-commits-since yesterday $@;
+        since="yesterday";
     fi
+
+    git log --all \
+            --reverse \
+            --no-merges \
+            --abbrev-commit \
+            --since=$since \
+            --author=$author \
+            --date=format:'%a, %d %b' \
+            --pretty=format:'%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(13)%cr%Creset %<(60,trunc)%s'
 }
 
 daily() {
     heading "Daily standup" 
-    if [ -z "$(my-commits $@)" ]
-    then
-        :
-    else
-        printf "\033[37m\033[4mMain:\033[0m\n"
-        my-commits $@
-    fi
 
     submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+    if [[ ! -z $submodules ]]; then
+        printf "\033[37m\033[4mMain:\033[0m\n"
+    fi
+
+    if [[ ! -z "$(list-commits $@)" ]]
+    then
+        list-commits $@
+    fi
+
+    
     for submodule in $submodules
     do
         pushd $submodule
-        if [ -z "$(my-commits $@)" ]
+        if [[ ! -z "$(list-commits $@)" ]]
         then
-            :
-        else
             printf "\n\033[37m\033[4m$submodule\033[0m\n"
-            my-commits $@
+            list-commits $@
         fi
         popd
     done
