@@ -310,40 +310,64 @@ gg() {
    do
       printf "\n\033[92m* Updating submodule: \033[94m$submodule\n"
       pushd $submodule
-      rrrr
+      ggfa
       git switch apimaindevelopment
       git pull
       popd
    done
 }
 
-git-dd() {
-    if [ -z "$1" ]; then
-        author="Cristescu"
+# show commits from all branches for current git user.
+function my-commits-since() {
+    if [ -z "$2" ]; then
+        author=$(git config user.email)
     else
-        author=$1
+        author=$2
     fi
+
     git log --all \
-            --since='1 day ago' \
-            --no-merges \
+            --since=$1 \
+            --reverse \
             --author=$author \
-            --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' \
+            --pretty=format:'%C(bold blue)<%an>%Creset %<(9)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(14)%cr%Creset %<(75,trunc)%s' \
+            --date=format:'%a, %d %b' \
             --abbrev-commit
 }
 
+function my-commits() {
+    daytoday=$(date|cut -d ' ' -f 1)
+    if [ "${datetoday}" == "Mon" ]
+    then
+        my-commits-since last.friday $@;
+    else
+        my-commits-since yesterday $@;
+    fi
+}
+
 daily() {
-   heading "Daily standup" 
-   # printf "\n\033[92m* Main:\n"
-   git-dd $1
-   submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-   for submodule in $submodules
-   do
-      # printf "\n\033[92m* Submodule: \033[94m$submodule\n"
-      pushd $submodule
-      git-dd $1
-      popd
-   done
-   echo ""
+    heading "Daily standup" 
+    if [ -z "$(my-commits $@)" ]
+    then
+        :
+    else
+        printf "\033[37m\033[4mMain:\033[0m\n"
+        my-commits $@
+    fi
+
+    submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+    for submodule in $submodules
+    do
+        pushd $submodule
+        if [ -z "$(my-commits $@)" ]
+        then
+            :
+        else
+            printf "\n\033[37m\033[4m$submodule\033[0m\n"
+            my-commits $@
+        fi
+        popd
+    done
+    echo ""
 }
 
 oo() {
