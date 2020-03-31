@@ -344,7 +344,7 @@ function list-commits() {
             --since=$since \
             --author=$author \
             --date=format:'%a, %d %b' \
-            --pretty=format:'%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(13)%cr%Creset %<(60,trunc)%s'
+            --pretty=format:'%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
 }
 
 daily() {
