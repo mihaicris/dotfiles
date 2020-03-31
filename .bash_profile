@@ -387,19 +387,3 @@ gpx() {
 EOF
     skip $file_location
 }
-
-
-#!/bin/bash
-
-#gpx() {
-#    output=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-#    cat <<-'EOF' >$output
-#        <?xml version="1.0"?>
-#        <gpx version="1.1" creator="Xcode">
-#            <wpt lat="44.4356676" lon="26.0544182">
-#            </wpt>
-#        </gpx>
-#    EOF
-#    popd
-#}
-
