@@ -381,9 +381,9 @@ work() {
 
 gpx() {
     file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-    cat <<EOF > $file_location 
-    <?xml version="1.0"?>
-    <gpx version="1.1" creator="Xcode"><wpt lat="44.4356676" lon="26.0544182"></wpt></gpx>
+cat <<EOF > $file_location 
+<?xml version="1.0"?>
+<gpx version="1.1" creator="Xcode"><wpt lat="44.4356676" lon="26.0544182"></wpt></gpx>
 EOF
     skip $file_location
 }
