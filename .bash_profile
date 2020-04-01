@@ -304,17 +304,13 @@ ff() {
 }
 
 gg() {
-   heading "Pull Submodule" 
-   submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-   for submodule in $submodules
-   do
-      printf "\n\033[92m* Updating submodule: \033[94m$submodule\n"
-      pushd $submodule
-      ggfa
-      git switch apimaindevelopment
-      git pull
-      popd
-   done
+    heading "Pull Submodule" 
+    if [ -z "$1" ]; then
+        branch="apimaindevelopment"
+    else
+        branch=$1;
+    fi
+    git submodule foreach bash -c "git fetch --all -p && git switch $branch && git pull" 
 }
 
 # show commits from all branches for current git user.
@@ -332,9 +328,9 @@ function list-commits() {
     daytoday=$(date|cut -d ' ' -f 1)
     if [ "${datetoday}" == "Mon" ]
     then
-        since="last.friday";
+        since="last.friday.midnight";
     else
-        since="yesterday";
+        since="yesterday.midnight";
     fi
 
     git log --all \
@@ -351,16 +347,15 @@ daily() {
     heading "Daily standup" 
 
     submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-    if [[ ! -z $submodules ]]; then
-        printf "\033[37m\033[4mMain:\033[0m\n"
-    fi
 
     if [[ ! -z "$(list-commits $@)" ]]
     then
+        if [[ ! -z $submodules ]]; then
+            printf "\033[37m\033[4mMain\033[0m\n"
+        fi
         list-commits $@
     fi
 
-    
     for submodule in $submodules
     do
         pushd $submodule
