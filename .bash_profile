@@ -384,7 +384,12 @@ function tickets() {
         fi
     fi
     printf "\n\033[92mTickets for: \033[94m$name\033[0m\n\n"
-    daily $author | grep --color -oE "/[0-9]{5,}" | grep -oE "[0-9]+" | sort | uniq
+    daily $author | \
+        grep -oE "/[0-9]{5,}" | \
+        grep -oE "[0-9]+" | \
+        sort | \
+        uniq | \
+        xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=\033[92m{}\033[0m\n"
     echo ""
 }
 
