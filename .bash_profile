@@ -369,6 +369,12 @@ daily() {
     echo ""
 }
 
+function tickets() {
+    heading "Tichets"
+    daily | grep --color -oE "/[0-9]{5,}" | grep -oE "[0-9]+" | sort | uniq
+    echo ""
+}
+
 oo() {
     xed .
 }
