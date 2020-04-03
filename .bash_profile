@@ -370,8 +370,20 @@ daily() {
 }
 
 function tickets() {
-    heading "Tichets"
-    daily | grep --color -oE "/[0-9]{5,}" | grep -oE "[0-9]+" | sort | uniq
+    if [ -z "$1" ]; then
+        author=$(git config user.email);
+        name=$(git config user.name);
+    else
+        if [[ "$1" == "0" ]]; then
+            author=$1
+            name="All users"
+        else
+            author=$1
+            name=$author
+        fi
+    fi
+    printf "\n\033[92mTickets for: \033[94m$name\033[0m\n\n"
+    daily $author | grep --color -oE "/[0-9]{5,}" | grep -oE "[0-9]+" | sort | uniq
     echo ""
 }
 
