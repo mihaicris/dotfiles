@@ -310,6 +310,7 @@ gg() {
     else
         branch=$1;
     fi
+    git pull
     git submodule foreach bash -c "git fetch --all -p && git switch $branch && git pull" 
 }
 
