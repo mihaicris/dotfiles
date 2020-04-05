@@ -325,23 +325,25 @@ function list-commits() {
             author=$1;
         fi
     fi
-
     daytoday=$(date|cut -d ' ' -f 1)
-    if [ "${datetoday}" == "Mon" ]
-    then
-        since="last.friday.midnight";
-    else
-        since="yesterday.midnight";
-    fi
-
-    git log --all \
-            --reverse \
-            --abbrev-commit \
-            --no-merges \
-            --since=$since \
-            --author=$author \
-            --date=format:'%a, %d %b' \
-            --pretty=format:'%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
+    case $daytoday in
+    "Sat"|"Sun"|"Mon" )
+        since="last.friday"
+        ;;
+    * )
+        since="yesterday"
+        ;;
+    esac
+    git --no-pager log \
+        --all \
+        --reverse \
+        --abbrev-commit \
+        --no-merges \
+        --oneline \
+        --since=$since \
+        --author=$author \
+        --date=format:'%a, %d %b' \
+        --pretty=format:'%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
 }
 
 daily() {
