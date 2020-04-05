@@ -338,6 +338,7 @@ function daily() {
             printf "\033[37m\033[4mMain\033[0m\n"
         fi
         list-commits $@
+        echo -e "\n"
     fi
 
     for submodule in $submodules
