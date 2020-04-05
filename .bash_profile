@@ -335,17 +335,14 @@ function list-commits() {
     GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
     
     if [[ ! -z "$GIT_OUTPUT" ]]; then
-        if [[ $HAS_OUTPUT == "true" ]]; then
-            echo ""
-        fi
         printf "\033[37m\033[4m$(basename $(pwd))\033[0m\n"
-        printf "$GIT_OUTPUT\n"
-        HAS_OUTPUT="true"
+        printf "$GIT_OUTPUT\n\n"
     fi
 }
 
 function daily() {
-    HAS_OUTPUT="false"
+    heading "Daily Standup"
+    
     list-commits $@
     submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
     for submodule in $submodules
