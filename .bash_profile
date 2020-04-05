@@ -20,8 +20,8 @@ alias ls="ls -G"
 
 alias rb="source ~/.bash_profile"
 alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
-alias edot="pdot && subl ~/.dotfiles/.bash_profile"
-
+alias vdot="pdot && vim ~/.dotfiles/.bash_profile"
+alias sdot="pdot && subl ~/.dotfiles/.bash_profile"
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
@@ -32,13 +32,13 @@ alias gtf="git tag --contains" # argument a commit hash
 alias gcm="git add -A && git commit"
 alias ss="git status"
 
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-YELLOW=$(tput setaf 3)
-BLUE=$(tput setaf 4)
-BOLD=$(tput bold)
-UNDERLINE=$(tput smul)
-NORMAL=$(tput sgr0)
+export RED=$(tput setaf 1)
+export GREEN=$(tput setaf 2)
+export YELLOW=$(tput setaf 3)
+export BLUE=$(tput setaf 4)
+export BOLD=$(tput bold)
+export UNDERLINE=$(tput smul)
+export NORMAL=$(tput sgr0)
 
 function pushd() {
     command pushd "$@" >/dev/null
@@ -286,15 +286,33 @@ function ff() {
     done
 }
 
+function refresh() {
+	printf "${NORMAL}"
+	git fetch --quiet --all -p
+	CURRENT_BRANCH=$(git branch --show-current)
+	HAS_BRANCH=$(git branch | grep $1)
+	
+	if [[ ! -z $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != $1 ]]; then
+		git switch --quiet $1
+		echo -e "Changed branch to: ${RED}$1${NORMAL}"
+	else
+		echo -e "On branch: ${YELLOW}${CURRENT_BRANCH}${NORMAL}"
+	fi
+	git pull
+	printf "${UNDERLINE}${GREEN}\n"
+}
+
+export -f refresh
+
 function gg() {
-    heading "Pull Submodule" 
     if [ -z "$1" ]; then
         branch="apimaindevelopment"
     else
         branch=$1;
-    fi
-    git pull
-    git submodule foreach bash -c "git fetch --quiet --all -p && git switch --quiet $branch && git pull" 
+    fi    
+    printf "${UNDERLINE}${GREEN}Entering '$(basename $(git rev-parse --show-toplevel))'\n"
+    refresh $branch
+    git submodule foreach bash -c "refresh $branch"
 }
 
 function list-commits() {
@@ -342,7 +360,6 @@ function list-commits() {
 
 function daily() {
     heading "Daily Standup"
-    
     list-commits $@
     submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
     for submodule in $submodules
