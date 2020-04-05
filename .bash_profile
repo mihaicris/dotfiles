@@ -367,7 +367,7 @@ function tickets() {
         fi
     fi
     printf "\n\033[92mTickets for: \033[94m$name\033[0m\n\n"
-    daily $author | \
+    daily $name | \
         grep -oE "/[0-9]{5,}" | \
         grep -oE "[0-9]+" | \
         sort | \
