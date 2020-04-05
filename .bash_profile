@@ -31,6 +31,14 @@ alias gcount="git rev-list --count" # argument a branch name
 alias gtf="git tag --contains" # argument a commit hash
 alias gcm="git add -A && git commit"
 
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+BLUE=$(tput setaf 4)
+BOLD=$(tput bold)
+UNDERLINE=$(tput smul)
+NORMAL=$(tput sgr0)
+
 function pushd() {
     command pushd "$@" > /dev/null
 }
@@ -335,12 +343,12 @@ function daily() {
     do
         pushd $submodule
         if [[ ! -z "$(list-commits $@)" ]]; then
-            printf "\n\n\033[37m\033[4m$submodule\033[0m\n"
+            printf "\033[37m\033[4m$submodule\033[0m\n"
             list-commits $@
+            echo -e "\n"
         fi
         popd
     done
-    echo ""
 }
 
 function tickets() {
