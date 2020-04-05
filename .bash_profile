@@ -437,6 +437,10 @@ EOF
     skip $file_location
 }
 
+function search() {
+   git log -S$1 
+}
+
 function addBashCompletion() {
     if [ -f $1 ]; then
         . $1
