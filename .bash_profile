@@ -320,7 +320,7 @@ function list-commits() {
 
     GIT_DATE_FORMAT='%a, %d %b %H:%M'
     GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
-    GIT_LOG_COMMAND="git --no-pager log \
+    GIT_LOG_COMMAND="git --no-pager log
         --color=always
         --all
         --reverse
@@ -335,12 +335,17 @@ function list-commits() {
     GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
     
     if [[ ! -z "$GIT_OUTPUT" ]]; then
-        printf "\033[37m\033[4m\n$(basename $(pwd))\033[0m\n"
-        printf "$GIT_OUTPUT\n" 
+        if [[ $HAS_OUTPUT == "true" ]]; then
+            echo ""
+        fi
+        printf "\033[37m\033[4m$(basename $(pwd))\033[0m\n"
+        printf "$GIT_OUTPUT\n"
+        HAS_OUTPUT="true"
     fi
 }
 
 function daily() {
+    HAS_OUTPUT="false"
     list-commits $@
     submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
     for submodule in $submodules
@@ -349,7 +354,6 @@ function daily() {
         list-commits $@
         popd
     done
-    echo ""
 }
 
 function tickets() {
