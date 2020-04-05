@@ -14,38 +14,22 @@ eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
 alias ..="cd .. && ll"
-alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
+alias ll="ls -Flh"
+alias lla="ll -A"
+alias ls="ls -G"
+
+alias rb="source ~/.bash_profile"
+alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
 alias edot="pdot && vim ~/.dotfiles/.bash_profile"
-alias gb="git branch"
-alias gba="git branch --all"
+
+alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
+
+alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
 alias gcount="git rev-list --count" # argument a branch name
 alias gtf="git tag --contains" # argument a commit hash
-alias ll="ls -Flh"
-alias lla="ll -A"
-alias ls="ls -G"
-alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
-alias rb="source ~/.bash_profile"
-alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
-
-function addBashCompletion() {
-    if [ -f $1 ]; then
-        . $1
-    else
-        echo "Warning, bash completion file not found: $1"
-    fi
-}
-
-addBashCompletion $(brew --prefix)/etc/bash_completion
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/tmux
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/carthage
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/git-completion.bash
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
-addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
+alias gcm="git add -A && git commit"
 
 function pushd() {
     command pushd "$@" > /dev/null
@@ -304,7 +288,6 @@ function gg() {
     git submodule foreach bash -c "git fetch --all -p && git switch $branch && git pull" 
 }
 
-# show commits from all branches for current git user.
 function list-commits() {
     if [ -z "$1" ]; then
         author=$(git config user.email);
@@ -453,3 +436,21 @@ function gpx() {
 EOF
     skip $file_location
 }
+
+function addBashCompletion() {
+    if [ -f $1 ]; then
+        . $1
+    else
+        echo "Warning, bash completion file not found: $1"
+    fi
+}
+
+addBashCompletion $(brew --prefix)/etc/bash_completion
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/tmux
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/carthage
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/git-completion.bash
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
+addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
+addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
