@@ -20,7 +20,7 @@ alias ls="ls -G"
 
 alias rb="source ~/.bash_profile"
 alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
-alias edot="pdot && vim ~/.dotfiles/.bash_profile"
+alias edot="pdot && subl ~/.dotfiles/.bash_profile"
 
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
@@ -41,11 +41,11 @@ UNDERLINE=$(tput smul)
 NORMAL=$(tput sgr0)
 
 function pushd() {
-    command pushd "$@" > /dev/null
+    command pushd "$@" >/dev/null
 }
 
 function popd() {
-    command popd "$@" > /dev/null
+    command popd "$@" >/dev/null
 }
 
 function heading() {
@@ -294,7 +294,7 @@ function gg() {
         branch=$1;
     fi
     git pull
-    git submodule foreach bash -c "git fetch --all -p && git switch $branch && git pull" 
+    git submodule foreach bash -c "git fetch --quiet --all -p && git switch --quiet $branch && git pull" 
 }
 
 function list-commits() {
@@ -302,11 +302,12 @@ function list-commits() {
         author=$(git config user.name);
     else
         if [[ "$1" == "0" ]]; then
-            author="";
+            author=".*";
         else
             author=$1;
         fi
     fi
+    
     daytoday=$(date|cut -d ' ' -f 1)
     case $daytoday in
     "Sat"|"Sun"|"Mon" )
@@ -316,41 +317,39 @@ function list-commits() {
         since="yesterday.midnight"
         ;;
     esac
-    git --no-pager log \
-        --all \
-        --reverse \
-        --abbrev-commit \
-        --no-merges \
-        --oneline \
-        --since=$since \
-        --author="$author" \
-        --date=format:'%a, %d %b' \
-        --pretty=format:'%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
+
+    GIT_DATE_FORMAT='%a, %d %b %H:%M'
+    GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
+    GIT_LOG_COMMAND="git --no-pager log \
+        --color=always
+        --all
+        --reverse
+        --abbrev-commit
+        --no-merges
+        --oneline
+        --since='$since'
+        --author='$author'
+        --date=format:'$GIT_DATE_FORMAT'
+        --pretty=format:'$GIT_PRETTY_FORMAT'"
+    
+    GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
+    
+    if [[ ! -z "$GIT_OUTPUT" ]]; then
+        printf "\033[37m\033[4m\n$(basename $(pwd))\033[0m\n"
+        printf "$GIT_OUTPUT\n" 
+    fi
 }
 
 function daily() {
-    heading "Daily standup" 
-
+    list-commits $@
     submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-
-    if [[ ! -z "$(list-commits $@)" ]]; then
-        if [[ ! -z $submodules ]]; then
-            printf "\033[37m\033[4mMain\033[0m\n"
-        fi
-        list-commits $@
-        echo -e "\n"
-    fi
-
     for submodule in $submodules
     do
         pushd $submodule
-        if [[ ! -z "$(list-commits $@)" ]]; then
-            printf "\033[37m\033[4m$submodule\033[0m\n"
-            list-commits $@
-            echo -e "\n"
-        fi
+        list-commits $@
         popd
     done
+    echo ""
 }
 
 function tickets() {
