@@ -29,7 +29,7 @@ alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
 alias rb="source ~/.bash_profile"
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
-addBashCompletion() {
+function addBashCompletion() {
     if [ -f $1 ]; then
         . $1
     else
@@ -47,45 +47,45 @@ addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
 addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
 addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
 
-pushd() {
+function pushd() {
     command pushd "$@" > /dev/null
 }
 
-popd() {
+function popd() {
     command popd "$@" > /dev/null
 }
 
-heading() {
+function heading() {
     echo -e "\n\033[7m\033[034m$@\033[0m\n"
 }
 
-gr() {
+function gr() {
     if $(git rev-parse &>/dev/null ); then 
         heading 'Changing to git root folder'
         cd $(git rev-parse --show-toplevel)
     fi
 }
 
-ggfa() {
+function ggfa() {
     prune
     fetch
     status
 }
 
-rr() {
+function rr() {
     unstage
     discard
     status
 }
 
-rrr() {
+function rrr() {
     unskipAll
     unstage
     discard
     status
 }
 
-rrrr() {
+function rrrr() {
     unskipAll
     unstage
     discard
@@ -93,7 +93,7 @@ rrrr() {
     status
 }
 
-rrrrr() {
+function rrrrr() {
     unskipAll
     unstage
     discard
@@ -101,23 +101,23 @@ rrrrr() {
     status
 }
 
-prune() {
+function prune() {
     heading 'Pruning branches'
     git remote prune origin
 }
 
-fetch() {
+function fetch() {
     heading 'Fetching remotes'
     git fetch --prune --all --tags
 }
 
-status() {
+function status() {
     heading 'Status'
     git status
     echo ""
 }
 
-unstage() {
+function unstage() {
     heading 'Unstaging local changes'
     files=`git diff --name-only --cached`
     if [[ ${#files} -gt 0 ]]; then
@@ -129,7 +129,7 @@ unstage() {
     fi
 }
 
-discard() {
+function discard() {
     heading 'Discarding local changes'
     pushd $(git rev-parse --show-toplevel)
     files=`git diff --name-only`
@@ -142,7 +142,7 @@ discard() {
     popd
 }
 
-clean_untracked() {
+function clean_untracked() {
     heading 'Cleaning untracked files'
     files=`git clean -fdn`
     if [[ ${#files} -gt 0 ]]; then
@@ -152,7 +152,7 @@ clean_untracked() {
     fi
 }
 
-gclean() {
+function gclean() {
     heading 'Cleaning ignored files'
     pushd $(git rev-parse --show-toplevel)
     files=`git clean -xdfn -e Carthage/`
@@ -164,7 +164,7 @@ gclean() {
     popd
 }
 
-recreate_files() {
+function recreate_files() {
     heading 'Recreating all files'
     pushd $(git rev-parse --show-toplevel)
     git rm --cached -r .
@@ -172,7 +172,7 @@ recreate_files() {
     popd
 }
 
-unskipAll() {
+function unskipAll() {
     heading 'Reactivating skipped files from git'
     files=`git ls-files -v | grep '^S' | cut -d ' ' -f 2`
     if [[ ${#files} -gt 0 ]]; then
@@ -184,31 +184,31 @@ unskipAll() {
     fi
 }
 
-skip() {
+function skip() {
     git update-index --skip-worktree "$@"
 }
 
-unskip() {
+function unskip() {
     git update-index --no-skip-worktree "$@"
 }
 
-hh() {
+function hh() {
     heading "Detaching HEAD to previous commit"
     git checkout HEAD~1
     echo ""
 }
 
-check() {
+function check() {
     heading 'Skipped files'
     git ls-files -v | grep '^S' | cut -d ' ' -f 2
     echo ""
 }
 
-sedi() {
+function sedi() {
     sed --version >/dev/null 2>&1 && sed -b -i -- "$@" || sed -i "" "$@"
 }
 
-ccb() {
+function ccb() {
     criteria="$@"
     prefix="origin/"
 
@@ -254,7 +254,7 @@ ccb() {
     fi
 }
 
-devteam() {
+function devteam() {
     if [ -z "$1" ]; then
         team="S8V3V9GFN2"
     else
@@ -266,23 +266,13 @@ devteam() {
     popd
 }
 
-transform_ts_to_mp4() {
+function transform_ts_to_mp4() {
     for a in *.ts; do
         ffmpeg -i "$a" -c copy "${a%.*}.mp4"
     done
 }
 
-features() {
-    if [ -z "$1" ]; then
-        author="Mihai Cristescu"
-    else
-        author=$1
-    fi
-
-    git log --all --author="$author" --oneline | grep -o -E "\[CURA-\d*\]" | sort | uniq
-}
-
-ff() {
+function ff() {
     ggfa
     heading "Fast forwarding all worktrees"
     paths=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
@@ -303,7 +293,7 @@ ff() {
     done
 }
 
-gg() {
+function gg() {
     heading "Pull Submodule" 
     if [ -z "$1" ]; then
         branch="apimaindevelopment"
@@ -328,10 +318,10 @@ function list-commits() {
     daytoday=$(date|cut -d ' ' -f 1)
     case $daytoday in
     "Sat"|"Sun"|"Mon" )
-        since="last.friday"
+        since="last.friday.midnight"
         ;;
     * )
-        since="yesterday"
+        since="yesterday.midnight"
         ;;
     esac
     git --no-pager log \
@@ -346,13 +336,12 @@ function list-commits() {
         --pretty=format:'%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
 }
 
-daily() {
+function daily() {
     heading "Daily standup" 
 
     submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
 
-    if [[ ! -z "$(list-commits $@)" ]]
-    then
+    if [[ ! -z "$(list-commits $@)" ]]; then
         if [[ ! -z $submodules ]]; then
             printf "\033[37m\033[4mMain\033[0m\n"
         fi
@@ -362,9 +351,8 @@ daily() {
     for submodule in $submodules
     do
         pushd $submodule
-        if [[ ! -z "$(list-commits $@)" ]]
-        then
-            printf "\n\033[37m\033[4m$submodule\033[0m\n"
+        if [[ ! -z "$(list-commits $@)" ]]; then
+            printf "\n\n\033[37m\033[4m$submodule\033[0m\n"
             list-commits $@
         fi
         popd
@@ -395,51 +383,51 @@ function tickets() {
     echo ""
 }
 
-oo() {
+function oo() {
     xed .
 }
 
-cart() {
+function cart() {
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
     ios_patches
 }
 
-cart_toolchain() {
+function cart_toolchain() {
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain $1 
 }
 
-cart_update() {
+function cart_update() {
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries
 }
 
-cart_update_toolchain() {
+function cart_update_toolchain() {
     carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain $1
 }
 
-xcode() {
+function xcode() {
     sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
     cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
 
-xcode10() {
+function xcode10() {
     sudo xcode-select -s "/Applications/Xcode10.3.app/Contents/Developer"
     cp ~/.dotfiles/xcode/keybindings/Custom10.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
 
-xcodebeta() {
+function xcodebeta() {
     sudo xcode-select -s "/Applications/Xcode-beta.app/Contents/Developer"
     cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
 
-owa() {
+function owa() {
     open https://outlook.office.com/mail/inbox
 }
 
-p() {
+function p() {
     open https://bp-vsts.visualstudio.com/BPme/_apps/hub/ryanstedman.tfs-pullrequest-dashboard.tfs-pullrequest-dashboard
 }
 
-vst() {
+function vst() {
     if [ -z "$1" ]; then
         open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items
     else
@@ -447,15 +435,15 @@ vst() {
     fi
 }
 
-def() {
+function def() {
     open https://bp-vsts.visualstudio.com/BPme/_queries/query/6661bd32-ba84-4689-84ba-6850653f115e/
 }
 
-work() {
+function work() {
     open https://bp-vsts.visualstudio.com/BPme/_workitems/assignedtome/
 }
 
-gpx() {
+function gpx() {
     file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
     cat <<EOF > $file_location 
 <?xml version="1.0"?>
