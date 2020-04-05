@@ -30,6 +30,7 @@ alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
 alias gcount="git rev-list --count" # argument a branch name
 alias gtf="git tag --contains" # argument a commit hash
 alias gcm="git add -A && git commit"
+alias ss="git status"
 
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
