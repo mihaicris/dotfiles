@@ -299,7 +299,7 @@ function gg() {
 
 function list-commits() {
     if [ -z "$1" ]; then
-        author=$(git config user.email);
+        author=$(git config user.name);
     else
         if [[ "$1" == "0" ]]; then
             author="";
@@ -323,7 +323,7 @@ function list-commits() {
         --no-merges \
         --oneline \
         --since=$since \
-        --author=$author \
+        --author="$author" \
         --date=format:'%a, %d %b' \
         --pretty=format:'%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
 }
