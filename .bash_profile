@@ -20,7 +20,7 @@ alias ls="ls -G"
 
 alias rb="source ~/.bash_profile"
 alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
-alias edot="pdot && subl ~/.dotfiles/.bash_profile && vim ~/.dotfiles/.bash_profile"
+alias edot="pdot && vim ~/.dotfiles/.bash_profile"
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
@@ -30,6 +30,7 @@ alias gcount="git rev-list --count" # argument a branch name
 alias gtf="git tag --contains" # argument a commit hash
 alias gcm="git add -A && git commit"
 alias ss="git status"
+alias gti="git"
 
 export RED=$(tput setaf 1)
 export GREEN=$(tput setaf 2)
@@ -432,7 +433,7 @@ function owa() {
 }
 
 function p() {
-    open https://bp-vsts.visualstudio.com/BPme/_git/ios-bpbaseworkspace-targets/pullrequests?_a=mine
+    open https://bp-vsts.visualstudio.com/BPme/_apps/hub/ryanstedman.tfs-pullrequest-dashboard.tfs-pullrequest-dashboard
 }
 
 function vst() {
