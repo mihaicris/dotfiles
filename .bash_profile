@@ -20,7 +20,7 @@ alias ls="ls -G"
 
 alias rb="source ~/.bash_profile"
 alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
-alias edot="pdot && vim ~/.dotfiles/.bash_profile subl ~/.dotfiles/.bash_profile"
+alias edot="pdot && subl ~/.dotfiles/.bash_profile && vim ~/.dotfiles/.bash_profile"
 alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
@@ -286,19 +286,19 @@ function ff() {
 }
 
 function refresh() {
-	printf "${NORMAL}"
-	git fetch --quiet --all -p
-	CURRENT_BRANCH=$(git branch --show-current)
-	HAS_BRANCH=$(git branch | grep $1)
-	
-	if [[ ! -z $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != $1 ]]; then
-		git switch --quiet $1
-		echo -e "Changed branch to: ${RED}$1${NORMAL}"
-	else
-		echo -e "On branch: ${YELLOW}${CURRENT_BRANCH}${NORMAL}"
-	fi
-	git pull
-	printf "${UNDERLINE}${GREEN}\n"
+    printf "${NORMAL}"
+    git fetch --quiet --all -p
+    CURRENT_BRANCH=$(git branch --show-current)
+    HAS_BRANCH=$(git branch | grep $1)
+    
+    if [[ ! -z $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != $1 ]]; then
+        git switch --quiet $1
+        echo -e "Changed branch to: ${RED}$1${NORMAL}"
+    else
+        echo -e "On branch: ${YELLOW}${CURRENT_BRANCH}${NORMAL}"
+    fi
+    git pull
+    printf "${UNDERLINE}${GREEN}\n"
 }
 
 export -f refresh
