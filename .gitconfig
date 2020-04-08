@@ -55,7 +55,7 @@
   mb = checkout -B
   # Check out particular file ($2) form branch ($1) 
   cof = "!cb() { git checkout $1 -- $2; }; cb"
-  brr = "!brr() { git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes | grep $1; }; brr"
+  rb = "!rb() { git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes | grep $1; }; rb"
 
   # Reset
   re = reset

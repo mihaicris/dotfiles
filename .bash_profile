@@ -392,6 +392,19 @@ function tickets() {
     echo ""
 }
 
+function allIssues() {
+    if [ -z "$1" ]; then
+        author=$(git config user.name);
+    else
+        author=$1;
+    fi
+    (git log --author="$author" --format="%s" --no-merges \
+     && git submodule foreach git log --author="$author" --format="%s" --no-merges) \
+      | grep -oE "[A-Za-z]+\/\d+" \
+      | sort \
+      | uniq
+}
+
 function oo() {
     xed .
 }
