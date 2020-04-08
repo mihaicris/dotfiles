@@ -449,7 +449,7 @@ function def() {
 }
 
 function work() {
-    open https://bp-vsts.visualstudio.com/BPme/_workitems/assignedtome/
+    open https://bp-vsts.visualstudio.com/BPme/_queries/query/a23efe58-988c-49ce-a397-9ef240b1c696/ 
 }
 
 function gpx() {
