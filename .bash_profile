@@ -377,6 +377,10 @@ function list-commits() {
     fi
 }
 
+function ios() {
+    cd ~/bpme/main
+}
+
 function daily() {
     heading "Daily Standup"
     list-commits $@
