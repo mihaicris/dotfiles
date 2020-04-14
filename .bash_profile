@@ -21,7 +21,7 @@ alias ls="ls -G"
 alias rb="source ~/.bash_profile"
 alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
 alias edot="pdot && vim ~/.dotfiles/.bash_profile"
-alias ytp="youtube-dl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
+alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
 alias gbf="git branch --contains" # argument a commit hash
@@ -265,6 +265,25 @@ function transform_ts_to_mp4() {
     done
 }
 
+function transform_mkv_to_mp4() {
+    for a in *.mkv; do
+        ffmpeg -i "$a" -c copy "${a%.*}.mp4"
+    done
+
+    # ffmpeg -y -i "$1" -map 0:0 -acodec alac "${1%.*}.m4a"
+    # ffmpeg -i "$1" -map 0:0 -acodec alac "${1%.*}.m4a"
+}
+
+function transform_m4a_to_mp3() {
+    ffmpeg -i "$1" -acodec libmp3lame -q:a 2 "${1%.*}.mp3"
+}
+
+function transform_flac_to_m4a() {
+    for a in *.flac; do
+        ffmpeg -i "$a" -map 0:0 -acodec alac "${a%.*}.m4a"
+    done
+}
+
 function ff() {
     ggfa
     heading "Fast forwarding all worktrees"
@@ -489,6 +508,24 @@ EOF
 
 function search() {
    git log -S$1 
+}
+
+function system_tasks() {
+    heading 'Updating gem...'
+    sudo gem update
+
+    heading 'Updating LaTex...'
+    sudo tlmgr update --self
+    sudo tlmgr update --all
+
+    heading 'Upgrading brew...'
+    brew upgrade && brew cask upgrade
+
+    heading 'Updating brew cask...'
+    brew cask upgrade
+
+    heading 'Updating cocoapods...'
+    pod repo update
 }
 
 function addBashCompletion() {
