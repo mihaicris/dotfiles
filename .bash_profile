@@ -516,7 +516,7 @@ function search() {
 
 function system_tasks() {
     heading 'Updating gem...'
-    sudo gem update
+    sudo gem update --no-document
 
     heading 'Updating LaTex...'
     sudo tlmgr update --self
