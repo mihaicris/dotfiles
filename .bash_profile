@@ -307,7 +307,7 @@ function ff() {
 
 function refresh() {
     printf "${NORMAL}"
-    git fetch --quiet --all -p
+    git fetch --all -p
     CURRENT_BRANCH=$(git branch --show-current)
     HAS_BRANCH=$(git branch | grep $1)
     
