@@ -29,6 +29,7 @@ alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
 alias gcount="git rev-list --count" # argument a branch name
 alias gtf="git tag --contains" # argument a commit hash
 alias gcm="git add -A && git commit"
+alias gsf="git submodule foreach"
 alias s="git status"
 alias gti="git"
 
