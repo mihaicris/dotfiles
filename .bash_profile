@@ -53,7 +53,7 @@ function popdir() {
 }
 
 function heading() {
-    echo -e "\n\033[7m\033[034m" "$@" "\033[0m\n"
+    echo -e "\033[7m\033[034m" "$@" "\033[0m\n"
 }
 
 function gr() {
@@ -121,13 +121,13 @@ function status() {
 
 function unstage() {
     heading 'Unstaging local changes'
-    files=`git diff --name-only --cached`
-    if [[ ${#files} -gt 0 ]]; then
-        git diff --name-only --cached | cat
-        echo ""
+    FILES=$(git diff --name-only --cached | wc -l )
+    if (( FILES>0 )); then
+        git diff --name-only --cached 
+        printf "\n"
         git reset HEAD --quiet
     else
-        echo -e "* Nothing to unstage."
+        printf "* Nothing to unstage.\n\n"
     fi
 }
 
