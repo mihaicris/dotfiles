@@ -220,7 +220,7 @@ function ccb() {
 
     if (( $# != 1 )); then
         printf "\033[92mPlease specifiy one argument as branch to checkout locally from remote.\033[0m\n\n"
-        return
+        return 1
     fi
     
     REMOTE_NAME_COUNT=$(git remote | wc -l)
@@ -231,7 +231,6 @@ function ccb() {
     fi
 
     REMOTE_NAME=$(git remote)
-
     SEARCH_RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/$REMOTE_NAME\///" )
     COUNT=$(git branch -r | grep "$CRITERIA" | grep -c -v "HEAD ->")
 
@@ -241,10 +240,8 @@ function ccb() {
     fi
 
     if (( COUNT > 1 )); then
-        echo -e "\nThere are multiple branches containing \033[91m$CRITERIA\033[0m:"
-        echo -e "\033[34m"
+        printf "\nThere are multiple branches containing \033[91m%s\033[0m:\n\033[34m" "$CRITERIA"
 
-        # Get all the branches containg the search string without the remote name (e.g. origin) and the HEAD
         PROMPT=$PS3
         PS3="Select a number? "
         select BRANCH in $SEARCH_RESULTS; do
@@ -256,7 +253,7 @@ function ccb() {
             fi
         done
         
-        echo -e "\033[0m"
+        printf "\033[0m"
         PS3=$PROMPT
     else
         LOCAL_BRANCH=$SEARCH_RESULTS
@@ -275,7 +272,7 @@ function ccb() {
         fi
     else
         if git checkout -q -b "$LOCAL_BRANCH" --track "$REMOTE_BRANCH" ; then
-            printf "\nRemote branch \033[92m %s \033[0m successfuly checked out locally.\n\n" "$LOCAL_BRANCH"
+            printf "\nSuccessfuly checked out locally the remote branch \033[92m%s\033[0m.\n\n" "$LOCAL_BRANCH"
             return 0
         fi
     fi
