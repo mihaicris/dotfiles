@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export BASH_SILENCE_DEPRECATION_WARNING=1
@@ -25,7 +27,7 @@ alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-ag
 
 alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
 alias gbf="git branch --contains" # argument a commit hash
-alias gcfl="git diff --name-only --diff-filter=U | uniq | xargs $EDITOR"
+alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
 alias gcount="git rev-list --count" # argument a branch name
 alias gtf="git tag --contains" # argument a commit hash
 alias gcm="git add -A && git commit"
@@ -33,30 +35,36 @@ alias gsf="git submodule foreach"
 alias s="git status"
 alias gti="git"
 
-export RED=$(tput setaf 1)
-export GREEN=$(tput setaf 2)
-export YELLOW=$(tput setaf 3)
-export BLUE=$(tput setaf 4)
-export BOLD=$(tput bold)
-export UNDERLINE=$(tput smul)
-export NORMAL=$(tput sgr0)
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+#BLUE=$(tput setaf 4)
+#BOLD=$(tput bold)
+UNDERLINE=$(tput smul)
+NORMAL=$(tput sgr0)
 
-function pushd() {
-    command pushd "$@" >/dev/null
+function pushdir() {
+    command pushd "$@" > /dev/null || printf "%b" "Error, could not popd to previous folder\n" >&2
 }
 
-function popd() {
-    command popd "$@" >/dev/null
+# shellcheck disable=SC2120
+function popdir() {
+    command popd "$@" > /dev/null || printf "%b" "Error, could not popd to previous folder\n" >&2
 }
 
 function heading() {
-    echo -e "\n\033[7m\033[034m$@\033[0m\n"
+    echo -e "\n\033[7m\033[034m" "$@" "\033[0m\n"
 }
 
 function gr() {
-    if $(git rev-parse &>/dev/null ); then 
-        heading 'Changing to git root folder'
-        cd $(git rev-parse --show-toplevel)
+    heading 'Changing to git root folder'
+    if git rev-parse --is-inside-git-dir &>/dev/null ; then
+        cd "$(git rev-parse --git-dir)" || return
+        cd .. || return
+        return
+    fi
+    if git rev-parse &>/dev/null ; then 
+        cd "$(git rev-parse --show-toplevel)" || return
     fi
 }
 
@@ -125,7 +133,7 @@ function unstage() {
 
 function discard() {
     heading 'Discarding local changes'
-    pushd $(git rev-parse --show-toplevel)
+    pushdir $(git rev-parse --show-toplevel)
     files=`git diff --name-only`
     if [[ ${#files} -gt 0 ]]; then
         git diff --name-only | cat
@@ -133,7 +141,7 @@ function discard() {
     else
         echo -e "* Nothing to discard."
     fi
-    popd
+    popdir
 }
 
 function clean_untracked() {
@@ -148,22 +156,22 @@ function clean_untracked() {
 
 function gclean() {
     heading 'Cleaning ignored files'
-    pushd $(git rev-parse --show-toplevel)
+    pushdir $(git rev-parse --show-toplevel)
     files=`git clean -xdfn -e Carthage/`
     if [[ ${#files} -gt 0 ]]; then
         git clean -xdf -e Carthage/
     else
         echo -e "* Nothing to clean."
     fi
-    popd
+    popdir
 }
 
 function recreate_files() {
     heading 'Recreating all files'
-    pushd $(git rev-parse --show-toplevel)
+    pushdir $(git rev-parse --show-toplevel)
     git rm --cached -r .
     git reset --hard
-    popd
+    popdir
 }
 
 function unskipAll() {
@@ -254,10 +262,10 @@ function devteam() {
     else
         team=$1
     fi
-    pushd $(git rev-parse --show-toplevel)
+    pushdir $(git rev-parse --show-toplevel)
     files=$(find . -name "project.pbxproj" | xargs)
     sedi "s/\(DEVELOPMENT_TEAM = \).*\;/\1$team\;/g" $files
-    popd
+    popdir
 }
 
 function transform_ts_to_mp4() {
@@ -292,7 +300,7 @@ function ff() {
     for path in $paths
     do
         printf "\033[92m* Fast forwarding \033[94m$path"
-        pushd $path
+        pushdir $path
         isDetached=$(git symbolic-ref -q HEAD)
         if [[ -z $isDetached ]]; then
             printf "\n\033[91mSkipping (detached state).\033[0m\n\n"
@@ -302,7 +310,7 @@ function ff() {
             git pull
             echo ""
         fi
-        popd
+        popdir
     done
 }
 
@@ -326,13 +334,15 @@ export -f refresh
 
 function gg() {
     if [ -z "$1" ]; then
-        branch="apimaindevelopment"
+        BRANCH="apimaindevelopment"
     else
-        branch=$1;
-    fi    
-    printf "${UNDERLINE}${GREEN}Entering '$(basename $(git rev-parse --show-toplevel))'\n"
-    refresh $branch
-    git submodule foreach bash -c "refresh $branch"
+        BRANCH=$1;
+    fi
+    GIT_DIR=$(basename "$(git rev-parse --show-toplevel)")
+    printf "${UNDERLINE}${GREEN}Entering %s'\n" "$GIT_DIR"
+
+    refresh "$BRANCH"
+    git submodule foreach bash -c "refresh $BRANCH"
 }
 
 function list-commits() {
@@ -370,27 +380,27 @@ function list-commits() {
         --date=format:'$GIT_DATE_FORMAT'
         --pretty=format:'$GIT_PRETTY_FORMAT'"
     
-    GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
+    GIT_OUTPUT=$(eval "${GIT_LOG_COMMAND}" 2>/dev/null)
     
-    if [[ ! -z "$GIT_OUTPUT" ]]; then
-        printf "\033[37m\033[4m$(basename $(pwd))\033[0m\n"
-        printf "$GIT_OUTPUT\n\n"
+    if [[ -n "$GIT_OUTPUT" ]]; then
+        printf "\033[37m\033[4m%s\033[0m\n" "$(basename "$(pwd)")"
+        printf "%s\n\n" "$GIT_OUTPUT"
     fi
 }
 
 function ios() {
-    cd ~/bpme/main
+    cd ~/bpme/main || return
 }
 
 function daily() {
     heading "Daily Standup"
-    list-commits $@
+    list-commits "$@"
     submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
     for submodule in $submodules
     do
-        pushd $submodule
-        list-commits $@
-        popd
+        pushdir "$submodule"
+        list-commits "$@"
+        popdir 
     done
 }
 
@@ -399,7 +409,7 @@ function tickets() {
         author=$(git config user.name);
         name=$author
     else
-        if [ $1 == "0" ]; then
+        if [ "$1" == "0" ]; then
             name="All authors"
         else
             name=$1
@@ -491,7 +501,7 @@ function work() {
 
 function gpx() {
     file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-    cat <<EOF > $file_location 
+    cat <<\EOF > $file_location 
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">
     <wpt lat="44.4356676" lon="26.0544182"></wpt>
@@ -502,7 +512,7 @@ EOF
  
 function gpxAUS() {
     file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-    cat <<EOF > $file_location 
+    cat <<\EOF > $file_location 
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">
     <wpt lat="-37.821067" lon="144.966071"></wpt>
@@ -534,19 +544,16 @@ function system_tasks() {
 }
 
 function addBashCompletion() {
-    if [ -f $1 ]; then
-        . $1
-    else
-        echo "Warning, bash completion file not found: $1"
-    fi
+    # shellcheck disable=SC1090
+    source "$1" || printf "Error: Completion file not found: %si\n" "$1" >&2
 }
 
-addBashCompletion $(brew --prefix)/etc/bash_completion
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/brew
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/tmux
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/carthage
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/git-completion.bash
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/launchctl
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/tig-completion.bash
-addBashCompletion $(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion
-addBashCompletion $(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh
+addBashCompletion "$(brew --prefix)/etc/bash_completion"
+addBashCompletion "$(brew --prefix)/etc/bash_completion.d/brew"
+addBashCompletion "$(brew --prefix)/etc/bash_completion.d/tmux"
+addBashCompletion "$(brew --prefix)/etc/bash_completion.d/carthage"
+addBashCompletion "$(brew --prefix)/etc/bash_completion.d/git-completion.bash"
+addBashCompletion "$(brew --prefix)/etc/bash_completion.d/launchctl"
+addBashCompletion "$(brew --prefix)/etc/bash_completion.d/tig-completion.bash"
+addBashCompletion "$(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion"
+addBashCompletion "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
