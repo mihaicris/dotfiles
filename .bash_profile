@@ -198,61 +198,64 @@ function unskip() {
 function hh() {
     heading "Detaching HEAD to previous commit"
     git checkout HEAD~1
-    echo ""
+    printf "\n"
 }
 
 function check() {
-    heading 'Skipped files'
+    heading "Skipped files"
     git ls-files -v | grep '^S' | cut -d ' ' -f 2
-    echo ""
+    printf "\n"
 }
 
 function sedi() {
-    sed --version >/dev/null 2>&1 && sed -b -i -- "$@" || sed -i "" "$@"
+    if sed --version >/dev/null 2>&1 ; then 
+        sed -b -i -- "$@"
+    else
+        sed -i "" "$@"
+    fi
 }
 
 function ccb() {
-    criteria="$@"
-    prefix="origin/"
+    local CRITERIA="$@"
+    local PREFIX="origin/"
 
-    if [ -z "$criteria" ]
+    if [ -z "$CRITERIA" ]; then
+        printf "\n\033[92mPlease specifiy a string contained in the branch.\033[0m\n"
+        return
+    fi
+    branch_name_remote=$(git branch -r | grep $criteria)
+    count=`git branch -r | grep $criteria | wc -l`
+    if [[ $count -lt 1 ]]; then
+        echo -e "\nThere are no remote branches containing \033[91m$criteria\033[0m.\n"
+        return 0
+    fi
+
+    if [[ $count -gt 1 ]]; then
+        echo -e "\nThere are multiple branches containing \033[91m$criteria\033[0m:"
+        echo -e "\033[34m"
+        git branch -r | grep $criteria
+        echo -e "\033[0m"
+        return 0
+    fi
+    branch_name=`echo $branch_name_remote | sed 's/^origin\///'`
+    isLocalBranch=`git branch | grep $branch_name`
+    if [ ! -z "$isLocalBranch" ]
     then
-          echo -e "\n\033[92mPlease specifiy a string contained in the branch.\033[0m\n"
-    else
-        branch_name_remote=$(git branch -r | grep $criteria)
-        count=`git branch -r | grep $criteria | wc -l`
-        if [[ $count -lt 1 ]]; then
-            echo -e "\nThere are no remote branches containing \033[91m$criteria\033[0m.\n"
+        status=`git checkout -q $branch_name`
+        status=$?
+        if [ $status -eq 0 ] ; then
+            echo -e "\nLocal branch \033[92m$branch_name\033[0m successfuly checked out.\n"
             return 0
-        fi
-
-        if [[ $count -gt 1 ]]; then
-            echo -e "\nThere are multiple branches containing \033[91m$criteria\033[0m:"
-            echo -e "\033[34m"
-            git branch -r | grep $criteria
-            echo -e "\033[0m"
-            return 0
-        fi
-        branch_name=`echo $branch_name_remote | sed 's/^origin\///'`
-        isLocalBranch=`git branch | grep $branch_name`
-        if [ ! -z "$isLocalBranch" ]
-        then
-            status=`git checkout -q $branch_name`
-            status=$?
-            if [ $status -eq 0 ] ; then
-                echo -e "\nLocal branch \033[92m$branch_name\033[0m successfuly checked out.\n"
-                return 0
-            else
-                echo -e "\nCould not checkout branch:\n\033[34m$branch_name\033[0m.\n"
-                return 1
-            fi
         else
-            status=`git checkout -q -b $branch_name --track $branch_name_remote`
-            status=$?
-            if [ $status -eq 0 ] ; then
-                echo -e "\nRemote branch \033[92m$branch_name\033[0m successfuly checked out locally.\n"
-                return 0
-            fi
+            echo -e "\nCould not checkout branch:\n\033[34m$branch_name\033[0m.\n"
+            return 1
+        fi
+    else
+        status=`git checkout -q -b $branch_name --track $branch_name_remote`
+        status=$?
+        if [ $status -eq 0 ] ; then
+            echo -e "\nRemote branch \033[92m$branch_name\033[0m successfuly checked out locally.\n"
+            return 0
         fi
     fi
 }
@@ -320,7 +323,7 @@ function refresh() {
     git fetch --all -p
     CURRENT_BRANCH=$(git branch --show-current)
     HAS_BRANCH=$(git branch | grep $1)
-    
+
     if [[ ! -z $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != $1 ]]; then
         git switch --quiet $1
         echo -e "Changed branch to: ${RED}$1${NORMAL}"
@@ -347,46 +350,46 @@ function gg() {
 }
 
 function list-commits() {
-    if [ -z "$1" ]; then
-        author=$(git config user.name);
+if [ -z "$1" ]; then
+    author=$(git config user.name);
+else
+    if [[ "$1" == "0" ]]; then
+        author=".*";
     else
-        if [[ "$1" == "0" ]]; then
-            author=".*";
-        else
-            author=$1;
-        fi
+        author=$1;
     fi
-    
-    daytoday=$(date|cut -d ' ' -f 1)
-    case $daytoday in
+fi
+
+daytoday=$(date|cut -d ' ' -f 1)
+case $daytoday in
     "Sat"|"Sun"|"Mon" )
         since="last.friday.midnight"
         ;;
     * )
         since="yesterday.midnight"
         ;;
-    esac
+esac
 
-    GIT_DATE_FORMAT='%a, %d %b %H:%M'
-    GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
-    GIT_LOG_COMMAND="git --no-pager log
-        --color=always
-        --all
-        --reverse
-        --abbrev-commit
-        --no-merges
-        --oneline
-        --since='$since'
-        --author='$author'
-        --date=format:'$GIT_DATE_FORMAT'
-        --pretty=format:'$GIT_PRETTY_FORMAT'"
-    
-    GIT_OUTPUT=$(eval "${GIT_LOG_COMMAND}" 2>/dev/null)
-    
-    if [[ -n "$GIT_OUTPUT" ]]; then
-        printf "\033[37m\033[4m%s\033[0m\n" "$(basename "$(pwd)")"
-        printf "%s\n\n" "$GIT_OUTPUT"
-    fi
+GIT_DATE_FORMAT='%a, %d %b %H:%M'
+GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
+GIT_LOG_COMMAND="git --no-pager log
+--color=always
+--all
+--reverse
+--abbrev-commit
+--no-merges
+--oneline
+--since='$since'
+--author='$author'
+--date=format:'$GIT_DATE_FORMAT'
+--pretty=format:'$GIT_PRETTY_FORMAT'"
+
+GIT_OUTPUT=$(eval "${GIT_LOG_COMMAND}" 2>/dev/null)
+
+if [[ -n "$GIT_OUTPUT" ]]; then
+    printf "\033[37m\033[4m%s\033[0m\n" "$(basename "$(pwd)")"
+    printf "%s\n\n" "$GIT_OUTPUT"
+fi
 }
 
 function ios() {
@@ -424,25 +427,25 @@ function tickets() {
         sort | \
         uniq | \
         xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=\033[92m{}\033[0m\n"
-    echo ""
-}
+            echo ""
+        }
 
-function allIssues() {
-    if [ -z "$1" ]; then
-        author=$(git config user.name);
-    else
-        author=$1;
-    fi
-    (git log --author="$author" --format="%s" --no-merges \
-     && git submodule foreach git log --author="$author" --format="%s" --no-merges) \
-      | grep -oE "[A-Za-z]+\/\d+" \
-      | sort \
-      | uniq
-}
+    function allIssues() {
+        if [ -z "$1" ]; then
+            author=$(git config user.name);
+        else
+            author=$1;
+        fi
+        (git log --author="$author" --format="%s" --no-merges \
+            && git submodule foreach git log --author="$author" --format="%s" --no-merges) \
+            | grep -oE "[A-Za-z]+\/\d+" \
+            | sort \
+            | uniq
+        }
 
-function oo() {
-    xed .
-}
+    function oo() {
+        xed .
+    }
 
 function cart() {
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
@@ -508,9 +511,9 @@ function gpx() {
     <wpt lat="44.4356676" lon="26.0544182"></wpt>
 </gpx>
 EOF
-    skip $file_location
+skip $file_location
 }
- 
+
 function gpxAUS() {
     file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
     cat <<\EOF > $file_location 
@@ -519,11 +522,11 @@ function gpxAUS() {
     <wpt lat="-37.821067" lon="144.966071"></wpt>
 </gpx>
 EOF
-    skip $file_location
+skip $file_location
 }
 
 function search() {
-   git log -S$1 
+    git log -S$1 
 }
 
 function system_tasks() {
