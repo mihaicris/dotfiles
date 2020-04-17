@@ -216,45 +216,66 @@ function sedi() {
 }
 
 function ccb() {
-    local CRITERIA="$@"
-    local PREFIX="origin/"
+    local CRITERIA=$1
 
-    if [ -z "$CRITERIA" ]; then
-        printf "\n\033[92mPlease specifiy a string contained in the branch.\033[0m\n"
+    if (( $# != 1 )); then
+        printf "\033[92mPlease specifiy one argument as branch to checkout locally from remote.\033[0m\n\n"
         return
     fi
-    branch_name_remote=$(git branch -r | grep $criteria)
-    count=`git branch -r | grep $criteria | wc -l`
-    if [[ $count -lt 1 ]]; then
-        echo -e "\nThere are no remote branches containing \033[91m$criteria\033[0m.\n"
-        return 0
+    
+    REMOTE_NAME_COUNT=$(git remote | wc -l)
+
+    if (( REMOTE_NAME_COUNT != 1 )); then
+        printf "Only one remote is supported.\n\n"
+        return 1
     fi
 
-    if [[ $count -gt 1 ]]; then
-        echo -e "\nThere are multiple branches containing \033[91m$criteria\033[0m:"
-        echo -e "\033[34m"
-        git branch -r | grep $criteria
-        echo -e "\033[0m"
-        return 0
+    REMOTE_NAME=$(git remote)
+
+    SEARCH_RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/$REMOTE_NAME\///" )
+    COUNT=$(git branch -r | grep "$CRITERIA" | grep -c -v "HEAD ->")
+
+    if (( COUNT == 0 )); then
+        printf "\nThere are no remote branches containing \033[91m%s\033[0m.\n\n" "$CRITERIA"
+        return 1
     fi
-    branch_name=`echo $branch_name_remote | sed 's/^origin\///'`
-    isLocalBranch=`git branch | grep $branch_name`
-    if [ ! -z "$isLocalBranch" ]
-    then
-        status=`git checkout -q $branch_name`
-        status=$?
-        if [ $status -eq 0 ] ; then
-            echo -e "\nLocal branch \033[92m$branch_name\033[0m successfuly checked out.\n"
+
+    if (( COUNT > 1 )); then
+        echo -e "\nThere are multiple branches containing \033[91m$CRITERIA\033[0m:"
+        echo -e "\033[34m"
+
+        # Get all the branches containg the search string without the remote name (e.g. origin) and the HEAD
+        PROMPT=$PS3
+        PS3="Select a number? "
+        select BRANCH in $SEARCH_RESULTS; do
+            if [[ $SEARCH_RESULTS =~ $BRANCH ]]; then
+                LOCAL_BRANCH="$BRANCH"
+                break
+            else
+                printf "Wrong selection.\n"
+            fi
+        done
+        
+        echo -e "\033[0m"
+        PS3=$PROMPT
+    else
+        LOCAL_BRANCH=$SEARCH_RESULTS
+    fi
+
+    REMOTE_BRANCH="$REMOTE_NAME"/"$LOCAL_BRANCH"
+    
+    IS_ALREADY_LOCAL_BRANCH=$(git branch | grep "$LOCAL_BRANCH")
+    if [ -n "$IS_ALREADY_LOCAL_BRANCH" ]; then
+        if git checkout -q "$LOCAL_BRANCH" ; then
+            printf "\nSuccessfuly switched to the local branch \033[92m%s\033[0m.\n\n" "$LOCAL_BRANCH"
             return 0
         else
-            echo -e "\nCould not checkout branch:\n\033[34m$branch_name\033[0m.\n"
+            prinf "\nCould not switch to the local branch:\n\033[34m%s\033[0m.\n\n" "$LOCAL_BRANCH"
             return 1
         fi
     else
-        status=`git checkout -q -b $branch_name --track $branch_name_remote`
-        status=$?
-        if [ $status -eq 0 ] ; then
-            echo -e "\nRemote branch \033[92m$branch_name\033[0m successfuly checked out locally.\n"
+        if git checkout -q -b "$LOCAL_BRANCH" --track "$REMOTE_BRANCH" ; then
+            printf "\nRemote branch \033[92m %s \033[0m successfuly checked out locally.\n\n" "$LOCAL_BRANCH"
             return 0
         fi
     fi
