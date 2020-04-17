@@ -169,8 +169,9 @@ function gclean() {
 function recreate_files() {
     heading "Recreating all files"
     pushdir "$(git rev-parse --show-toplevel)"
-    git rm --quiet --cached -r .
+    git rm --cached -r .
     git reset --hard
+    printf "\n"
     popdir
 }
 
