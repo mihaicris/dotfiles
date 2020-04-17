@@ -367,46 +367,46 @@ function gg() {
 }
 
 function list-commits() {
-if [ -z "$1" ]; then
-    author=$(git config user.name);
-else
-    if [[ "$1" == "0" ]]; then
-        author=".*";
+    if [ -z "$1" ]; then
+        author=$(git config user.name);
     else
-        author=$1;
+        if [[ "$1" == "0" ]]; then
+            author=".*";
+        else
+            author=$1;
+        fi
     fi
-fi
-
-daytoday=$(date|cut -d ' ' -f 1)
-case $daytoday in
+    
+    daytoday=$(date|cut -d ' ' -f 1)
+    case $daytoday in
     "Sat"|"Sun"|"Mon" )
         since="last.friday.midnight"
         ;;
     * )
         since="yesterday.midnight"
         ;;
-esac
+    esac
 
-GIT_DATE_FORMAT='%a, %d %b %H:%M'
-GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
-GIT_LOG_COMMAND="git --no-pager log
---color=always
---all
---reverse
---abbrev-commit
---no-merges
---oneline
---since='$since'
---author='$author'
---date=format:'$GIT_DATE_FORMAT'
---pretty=format:'$GIT_PRETTY_FORMAT'"
-
-GIT_OUTPUT=$(eval "${GIT_LOG_COMMAND}" 2>/dev/null)
-
-if [[ -n "$GIT_OUTPUT" ]]; then
-    printf "\033[37m\033[4m%s\033[0m\n" "$(basename "$(pwd)")"
-    printf "%s\n\n" "$GIT_OUTPUT"
-fi
+    GIT_DATE_FORMAT='%a, %d %b %H:%M'
+    GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
+    GIT_LOG_COMMAND="git --no-pager log
+        --color=always
+        --all
+        --reverse
+        --abbrev-commit
+        --no-merges
+        --oneline
+        --since='$since'
+        --author='$author'
+        --date=format:'$GIT_DATE_FORMAT'
+        --pretty=format:'$GIT_PRETTY_FORMAT'"
+    
+    GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
+    
+    if [[ -n "$GIT_OUTPUT" ]]; then
+        printf "\033[37m\033[4m%s\033[0m\n" "$(basename "$(pwd)")"
+        printf "%s\n\n" "$GIT_OUTPUT"
+    fi
 }
 
 function ios() {
