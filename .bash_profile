@@ -12,6 +12,8 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 
+export -f refresh
+
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
@@ -341,7 +343,7 @@ function refresh() {
     CURRENT_BRANCH=$(git branch --show-current)
     HAS_BRANCH=$(git branch | grep $1)
 
-    if [[ ! -z $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != $1 ]]; then
+    if [[ -n $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != "$1" ]]; then
         git switch --quiet $1
         echo -e "Changed branch to: ${RED}$1${NORMAL}"
     else
@@ -350,8 +352,6 @@ function refresh() {
     git pull
     printf "${UNDERLINE}${GREEN}\n"
 }
-
-export -f refresh
 
 function gg() {
     if [ -z "$1" ]; then
@@ -427,42 +427,41 @@ function daily() {
 
 function tickets() {
     if [ -z "$1" ]; then
-        author=$(git config user.name);
-        name=$author
+        AUTHOR=$(git config user.name);
+        NAME=$AUTHOR
     else
         if [ "$1" == "0" ]; then
-            name="All authors"
+            NAME="All authors"
         else
-            name=$1
+            NAME=$1
         fi
-        author=$1
+        AUTHOR=$1
     fi
-    printf "\n\033[92mTickets for: \033[94m$name\033[0m\n\n"
-    daily $author | \
+    printf "\n\033[92mTickets for: \033[94m%s\033[0m\n\n" "$NAME"
+    daily $AUTHOR | \
         grep -oE "/[0-9]{5,}" | \
         grep -oE "[0-9]+" | \
         sort | \
         uniq | \
         xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=\033[92m{}\033[0m\n"
-            echo ""
-        }
+    printf "\n"
+}
 
-    function allIssues() {
-        if [ -z "$1" ]; then
-            author=$(git config user.name);
-        else
-            author=$1;
-        fi
-        (git log --author="$author" --format="%s" --no-merges \
-            && git submodule foreach git log --author="$author" --format="%s" --no-merges) \
-            | grep -oE "[A-Za-z]+\/\d+" \
-            | sort \
-            | uniq
-        }
+function allIssues() {
+    if [ -z "$1" ]; then
+        AUTHOR=$(git config user.name);
+    else
+        AUTHOR=$1;
+    fi
+    (git log --author="$AUTHOR" --format="%s" --no-merges && git submodule foreach git log --author="$AUTHOR" --format="%s" --no-merges) \
+        | grep -oE "[A-Za-z]+\/\d+" \
+        | sort \
+        | uniq
+}
 
-    function oo() {
-        xed .
-    }
+function oo() {
+    xed .
+}
 
 function cart() {
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
@@ -539,7 +538,7 @@ function gpxAUS() {
     <wpt lat="-37.821067" lon="144.966071"></wpt>
 </gpx>
 EOF
-skip $file_location
+    skip $file_location
 }
 
 function search() {
