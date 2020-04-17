@@ -104,25 +104,25 @@ function rrrrr() {
 }
 
 function prune() {
-    heading 'Pruning branches'
+    heading "Pruning branches"
     git remote prune origin
 }
 
 function fetch() {
-    heading 'Fetching remotes'
+    heading "Fetching remotes"
     git fetch --prune --all --tags
 }
 
 function status() {
-    heading 'Status'
+    heading "Status"
     git status
     echo ""
 }
 
 function unstage() {
-    heading 'Unstaging local changes'
+    heading "Unstaging local changes"
     FILES=$(git diff --name-only --cached | wc -l )
-    if (( FILES>0 )); then
+    if (( FILES > 0 )); then
         git diff --name-only --cached 
         printf "\n"
         git reset HEAD --quiet
@@ -132,57 +132,57 @@ function unstage() {
 }
 
 function discard() {
-    heading 'Discarding local changes'
-    pushdir $(git rev-parse --show-toplevel)
-    files=`git diff --name-only`
-    if [[ ${#files} -gt 0 ]]; then
-        git diff --name-only | cat
+    heading "Discarding local changes"
+    pushdir "$(git rev-parse --show-toplevel)"
+    FILES=$(git diff --name-only | wc -l)
+    if (( FILES > 0 )); then
+        git diff --name-only
         git checkout . --quiet
     else
-        echo -e "* Nothing to discard."
+        printf "* Nothing to discard.\n"
     fi
     popdir
 }
 
 function clean_untracked() {
-    heading 'Cleaning untracked files'
-    files=`git clean -fdn`
-    if [[ ${#files} -gt 0 ]]; then
+    heading "Cleaning untracked files"
+    FILES=$(git clean -fdn | wc -l )
+    if (( FILES > 0 )); then
         git clean -fd
     else
-        echo -e "* Nothing to clean."
+        printf "* Nothing to clean.\n"
     fi
 }
 
 function gclean() {
-    heading 'Cleaning ignored files'
-    pushdir $(git rev-parse --show-toplevel)
-    files=`git clean -xdfn -e Carthage/`
-    if [[ ${#files} -gt 0 ]]; then
+    heading "Cleaning ignored files"
+    pushdir "$(git rev-parse --show-toplevel)"
+    FILES=$(git clean -xdfn -e Carthage/ | wc -l )
+    if (( FILES > 0 )); then
         git clean -xdf -e Carthage/
     else
-        echo -e "* Nothing to clean."
+        printf "* Nothing to clean.\n"
     fi
     popdir
 }
 
 function recreate_files() {
-    heading 'Recreating all files'
-    pushdir $(git rev-parse --show-toplevel)
+    heading "Recreating all files"
+    pushdir "(git rev-parse --show-toplevel)"
     git rm --cached -r .
     git reset --hard
     popdir
 }
 
 function unskipAll() {
-    heading 'Reactivating skipped files from git'
-    files=`git ls-files -v | grep '^S' | cut -d ' ' -f 2`
-    if [[ ${#files} -gt 0 ]]; then
+    heading "Reactivating skipped files from git"
+    FILES=$(git ls-files -v | grep '^S' | cut -d ' ' -f 2 | wc -l)
+    if ((  FILES > 0 )); then
         git ls-files -v | grep '^S' | cut -d ' ' -f 2
         echo ""
         git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
     else 
-        echo -e "* Nothing to reactivate."
+        printf "* Nothing to reactivate.\n"
     fi
 }
 
