@@ -12,8 +12,6 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 
-export -f refresh
-
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
@@ -23,7 +21,7 @@ alias lla="ll -A"
 alias ls="ls -G"
 
 alias rb="source ~/.bash_profile"
-alias pdot="pushd ~/.dotfiles && git pull && popd && rb"
+alias pdot="pushdir ~/.dotfiles && git pull --quiet && popdir && rb"
 alias edot="pdot && vim ~/.dotfiles/.bash_profile"
 alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
@@ -37,13 +35,13 @@ alias gsf="git submodule foreach"
 alias s="git status"
 alias gti="git"
 
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-YELLOW=$(tput setaf 3)
-#BLUE=$(tput setaf 4)
-#BOLD=$(tput bold)
-UNDERLINE=$(tput smul)
-NORMAL=$(tput sgr0)
+RED=$(tput setaf 1); export RED
+GREEN=$(tput setaf 2); export GREEN
+YELLOW=$(tput setaf 3); export YELLOW
+#BLUE=$(tput setaf 4); export BLUE
+#BOLD=$(tput bold); export BOLD
+UNDERLINE=$(tput smul); export UNDERLINE
+NORMAL=$(tput sgr0); export NORMAL
 
 function pushdir() {
     command pushd "$@" > /dev/null || printf "%b" "Error, could not popd to previous folder\n" >&2
@@ -338,31 +336,33 @@ function ff() {
 }
 
 function refresh() {
-    printf "${NORMAL}"
+    printf "%s\n" "${NORMAL}"
     git fetch --all -p
     CURRENT_BRANCH=$(git branch --show-current)
-    HAS_BRANCH=$(git branch | grep $1)
+    HAS_BRANCH=$(git branch | grep "$1")
 
     if [[ -n $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != "$1" ]]; then
-        git switch --quiet $1
-        echo -e "Changed branch to: ${RED}$1${NORMAL}"
+        git switch --quiet "$1"
+        printf "Changed branch to: ${RED}%s${NORMAL}\n" "$1"
     else
-        echo -e "On branch: ${YELLOW}${CURRENT_BRANCH}${NORMAL}"
+        printf "On branch: ${YELLOW}%s${NORMAL}\n" "$CURRENT_BRANCH"
     fi
     git pull
-    printf "${UNDERLINE}${GREEN}\n"
+    printf "%s\n" "${GREEN}"
 }
 
+export -f refresh
+
 function gg() {
-    if [ -z "$1" ]; then
-        BRANCH="apimaindevelopment"
-    else
-        BRANCH=$1;
-    fi
-    GIT_DIR=$(basename "$(git rev-parse --show-toplevel)")
-    printf "${UNDERLINE}${GREEN}Entering %s'\n" "$GIT_DIR"
+    BRANCH=${1:-apimaindevelopment}
+    TOP_LEVEL_DIR=$(basename "$(git rev-parse --show-toplevel)")
+    
+    printf "%s\n" "${GREEN}"
+    printf "Entering ${BLUE}%s${NORMAL}\n" "$TOP_LEVEL_DIR"
 
     refresh "$BRANCH"
+
+    printf "%s" "${GREEN}"
     git submodule foreach bash -c "refresh $BRANCH"
 }
 
@@ -577,3 +577,4 @@ addBashCompletion "$(brew --prefix)/etc/bash_completion.d/launchctl"
 addBashCompletion "$(brew --prefix)/etc/bash_completion.d/tig-completion.bash"
 addBashCompletion "$(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion"
 addBashCompletion "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
+
