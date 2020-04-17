@@ -53,7 +53,7 @@ function popdir() {
 }
 
 function heading() {
-    echo -e "\033[7m\033[034m" "$@" "\033[0m\n"
+    echo -e "\n\033[7m\033[034m" "$@" "\033[0m\n"
 }
 
 function gr() {
@@ -127,7 +127,7 @@ function unstage() {
         printf "\n"
         git reset HEAD --quiet
     else
-        printf "* Nothing to unstage.\n\n"
+        printf "* Nothing to unstage.\n"
     fi
 }
 
