@@ -222,7 +222,7 @@ function ccb() {
         printf "\033[92mPlease specifiy one argument as branch to checkout locally from remote.\033[0m\n\n"
         return 1
     fi
-    
+
     REMOTE_NAME_COUNT=$(git remote | wc -l)
 
     if (( REMOTE_NAME_COUNT != 1 )); then
@@ -252,7 +252,7 @@ function ccb() {
                 printf "Wrong selection.\n"
             fi
         done
-        
+
         printf "\033[0m"
         PS3=$PROMPT
     else
@@ -260,7 +260,7 @@ function ccb() {
     fi
 
     REMOTE_BRANCH="$REMOTE_NAME"/"$LOCAL_BRANCH"
-    
+
     IS_ALREADY_LOCAL_BRANCH=$(git branch | grep "$LOCAL_BRANCH")
     if [ -n "$IS_ALREADY_LOCAL_BRANCH" ]; then
         if git checkout -q "$LOCAL_BRANCH" ; then
