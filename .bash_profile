@@ -287,9 +287,11 @@ function devteam() {
     else
         team=$1
     fi
-    pushdir $(git rev-parse --show-toplevel)
-    files=$(find . -name "project.pbxproj" | xargs)
-    sedi "s/\(DEVELOPMENT_TEAM = \).*\;/\1$team\;/g" $files
+    pushdir "$(git rev-parse --show-toplevel)"
+    FILES=$(find . -name "project.pbxproj")
+    for FILE in $FILES; do
+        sedi "s/\(DEVELOPMENT_TEAM = \).*\;/\1$team\;/g" "$FILE"
+    done
     popdir
 }
 
@@ -303,9 +305,6 @@ function transform_mkv_to_mp4() {
     for a in *.mkv; do
         ffmpeg -i "$a" -c copy "${a%.*}.mp4"
     done
-
-    # ffmpeg -y -i "$1" -map 0:0 -acodec alac "${1%.*}.m4a"
-    # ffmpeg -i "$1" -map 0:0 -acodec alac "${1%.*}.m4a"
 }
 
 function transform_m4a_to_mp3() {
