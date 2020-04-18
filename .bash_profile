@@ -231,7 +231,7 @@ function ccb() {
     fi
 
     REMOTE_NAME=$(git remote)
-    SEARCH_RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/$REMOTE_NAME\///" )
+    SEARCH_RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
     COUNT=$(git branch -r | grep "$CRITERIA" | grep -c -v "HEAD ->")
 
     if (( COUNT == 0 )); then
@@ -240,7 +240,7 @@ function ccb() {
     fi
 
     if (( COUNT > 1 )); then
-        printf "\nThere are multiple branches containing \033[91m%s\033[0m:\n\033[34m" "$CRITERIA"
+        printf "\nThere are multiple branches containing \033[91m%s\033[0m:\n\n\033[34m" "$CRITERIA"
 
         PROMPT=$PS3
         PS3="Select a number? "
@@ -259,7 +259,7 @@ function ccb() {
         LOCAL_BRANCH=$SEARCH_RESULTS
     fi
 
-    REMOTE_BRANCH="$REMOTE_NAME"/"$LOCAL_BRANCH"
+    REMOTE_BRANCH="$REMOTE_NAME/$LOCAL_BRANCH"
 
     IS_ALREADY_LOCAL_BRANCH=$(git branch | grep "$LOCAL_BRANCH")
     if [ -n "$IS_ALREADY_LOCAL_BRANCH" ]; then
@@ -267,7 +267,7 @@ function ccb() {
             printf "\nSuccessfuly switched to the local branch \033[92m%s\033[0m.\n\n" "$LOCAL_BRANCH"
             return 0
         else
-            prinf "\nCould not switch to the local branch:\n\033[34m%s\033[0m.\n\n" "$LOCAL_BRANCH"
+            prinf "\nCould not switch to the local branch: \033[34m%s\033[0m.\n\n" "$LOCAL_BRANCH"
             return 1
         fi
     else
@@ -279,15 +279,11 @@ function ccb() {
 }
 
 function devteam() {
-    if [ -z "$1" ]; then
-        team="S8V3V9GFN2"
-    else
-        team=$1
-    fi
+    TEAM=${1:-"S8V3V9GFN2"}
     pushdir "$(git rev-parse --show-toplevel)"
     FILES=$(find . -name "project.pbxproj")
     for FILE in $FILES; do
-        sedi "s/\(DEVELOPMENT_TEAM = \).*\;/\1$team\;/g" "$FILE"
+        sedi "s/\(DEVELOPMENT_TEAM = \).*\;/\1$TEAM\;/g" "$FILE"
     done
     popdir
 }
@@ -317,17 +313,17 @@ function transform_flac_to_m4a() {
 function ff() {
     ggfa
     heading "Fast forwarding all worktrees"
-    paths=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
-    for path in $paths
+    PATHS=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
+    for PATH in $PATHS
     do
-        printf "\033[92m* Fast forwarding \033[94m$path"
-        pushdir $path
-        isDetached=$(git symbolic-ref -q HEAD)
-        if [[ -z $isDetached ]]; then
+        printf "\033[92m* Fast forwarding \033[94m%s" "$PATH"
+        pushdir "$PATH"
+        IS_DETACHED=$(git symbolic-ref -q HEAD)
+        if [[ -z $IS_DETACHED ]]; then
             printf "\n\033[91mSkipping (detached state).\033[0m\n\n"
         else
-            current_branch=$(git rev-parse --abbrev-ref HEAD)
-            printf " \033[93m[$current_branch]\033[0m\n"
+            CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+            printf "\033[93m[%s]\033[0m\n" "$CURRENT_BRANCH"
             git pull
             echo ""
         fi
