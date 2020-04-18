@@ -313,11 +313,11 @@ function transform_flac_to_m4a() {
 function ff() {
     ggfa
     heading "Fast forwarding all worktrees"
-    PATHS=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
-    for PATH in $PATHS
+    WORKDIRS=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
+    for WORKDIR in $WORKDIRS
     do
-        printf "\033[92m* Fast forwarding \033[94m%s" "$PATH"
-        pushdir "$PATH"
+        printf "\033[92m* Fast forwarding \033[94m%s " "$WORKDIR"
+        pushdir "$WORKDIR"
         IS_DETACHED=$(git symbolic-ref -q HEAD)
         if [[ -z $IS_DETACHED ]]; then
             printf "\n\033[91mSkipping (detached state).\033[0m\n\n"
