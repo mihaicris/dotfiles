@@ -573,18 +573,22 @@ function system_tasks() {
     pod repo update
 }
 
-function addBashCompletion() {
-    # shellcheck disable=SC1090
-    source "$1" || printf "Error: Completion file not found: %si\n" "$1" >&2
+function completions() {
+    PREFIX=$(brew --prefix)
+    FILES=(
+        "etc/bash_completion"
+        "etc/bash_completion.d/brew"
+        "etc/bash_completion.d/tmux"
+        "etc/bash_completion.d/carthage"
+        "etc/bash_completion.d/git-completion.bash"
+        "etc/bash_completion.d/tig-completion.bash"
+        "etc/bash_completion.d/youtube-dl.bash-completion"
+        "opt/bash-git-prompt/share/gitprompt.sh"
+    )
+    for FILE in "${FILES[@]}"; do
+        # shellcheck disable=SC1090
+        source "$PREFIX/$FILE" || printf "Error: Completion file not found: %si\n" "$FILE" >&2
+    done
 }
 
-addBashCompletion "$(brew --prefix)/etc/bash_completion"
-addBashCompletion "$(brew --prefix)/etc/bash_completion.d/brew"
-addBashCompletion "$(brew --prefix)/etc/bash_completion.d/tmux"
-addBashCompletion "$(brew --prefix)/etc/bash_completion.d/carthage"
-addBashCompletion "$(brew --prefix)/etc/bash_completion.d/git-completion.bash"
-addBashCompletion "$(brew --prefix)/etc/bash_completion.d/launchctl"
-addBashCompletion "$(brew --prefix)/etc/bash_completion.d/tig-completion.bash"
-addBashCompletion "$(brew --prefix)/etc/bash_completion.d/youtube-dl.bash-completion"
-addBashCompletion "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
-
+completions
