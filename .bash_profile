@@ -35,13 +35,13 @@ alias gsf="git submodule foreach"
 alias s="git status"
 alias gti="git"
 
-RED=$(tput setaf 1); export RED
-GREEN=$(tput setaf 2); export GREEN
-YELLOW=$(tput setaf 3); export YELLOW
-#BLUE=$(tput setaf 4); export BLUE
-#BOLD=$(tput bold); export BOLD
-UNDERLINE=$(tput smul); export UNDERLINE
-NORMAL=$(tput sgr0); export NORMAL
+RED_COLOR=$(tput setaf 1); export RED_COLOR
+GREEN_COLOR=$(tput setaf 2); export GREEN_COLOR
+YELLOW_COLOR=$(tput setaf 3); export YELLOW_COLOR
+#BLUE_COLOR=$(tput setaf 4); export BLUE_COLOR
+#BOLD_FONT=$(tput bold); export BOLD_FONT
+UNDERLINE_FONT=$(tput smul); export UNDERLINE_FONT
+NORMAL_FONT=$(tput sgr0); export NORMAL_FONT
 
 function pushdir() {
     command pushd "$@" > /dev/null || printf "%b" "Error, could not popd to previous folder\n" >&2
@@ -363,6 +363,19 @@ function gg() {
     git submodule foreach bash -c "refresh $BRANCH"
 }
 
+function forEachSubmodule() {
+    pushdir "$(git rev-parse --show-toplevel)"
+
+    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+    for SUBMODULE in $SUBMODULES
+    do
+        pushdir "$SUBMODULE"
+        echo "$SUBMODULE"
+        popdir 
+    done
+    popdir
+}
+
 function list-commits() {
     if [ -z "$1" ]; then
         author=$(git config user.name);
@@ -423,32 +436,23 @@ function daily() {
 }
 
 function tickets() {
-    if [ -z "$1" ]; then
-        AUTHOR=$(git config user.name);
-        NAME=$AUTHOR
-    else
-        AUTHOR=$1
-        if [ "$1" == "0" ]; then
-            NAME="All authors"
-        else
-            NAME=$1
-        fi
-    fi
-    printf "\n\033[92mTickets for: \033[94m%s\033[0m\n\n" "$NAME"
-    daily "$AUTHOR" | \
-        grep -oE "/[0-9]{5,}" | \
-        grep -oE "[0-9]+" | \
-        sort | \
-        uniq | \
-        xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=\033[92m{}\033[0m\n"
-    printf "\n"
-}
-
-function allIssues() {
     AUTHOR=${1:-$(git config user.name)}
-    (git log --author="$AUTHOR" --format="%s" --no-merges && \
-     git submodule foreach git log --author="$AUTHOR" --format="%s" --no-merges) \
-   | grep -oE "[A-Za-z]+\/\d+" | sort -u
+    printf "\n\033[92mTickets for: \033[94m%s\033[0m\n\n" "$AUTHOR"
+    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+    # shellcheck disable=SC2016
+    COMMAND='git log --all --author="$AUTHOR" --format="%s" --no-merges'
+    {
+        eval "$COMMAND" #n
+        for SUBMODULE in $SUBMODULES; do
+            pushdir "$SUBMODULE"
+            eval "$COMMAND"
+            popdir
+        done
+    } | grep -oE "[A-Za-z]+\/\d+" \
+      | grep -oE "[0-9]+" \
+      | sort -n -u \
+      | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=\033[92m{}\033[0m\n"
+    printf "\n"
 }
 
 function oo() {
@@ -483,6 +487,7 @@ function xcode10() {
 }
 
 function xcodebeta() {
+
     sudo xcode-select -s "/Applications/Xcode-beta.app/Contents/Developer"
     cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 }
@@ -587,7 +592,7 @@ function completions() {
     )
     for FILE in "${FILES[@]}"; do
         # shellcheck disable=SC1090
-        source "$PREFIX/$FILE" || printf "Error: Completion file not found: %s\n" "$FILE" >&2
+        source "$PREFIX/$FILE" || printf "Error: Completion file not found: ${RED}%s${NORMAL}\n" "$FILE" >&2
     done
 }
 
