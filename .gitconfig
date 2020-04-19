@@ -1,26 +1,27 @@
 [user]
-	name = Mihai Cristescu
-	email = mihai.cristescu@gmail.com
+    name = Mihai Cristescu
+    email = mihai.cristescu@gmail.com
 
 [pull]
-  rebase = false
+    rebase = false
 
 [core]
-  longpaths = true
-  pager = diff-so-fancy | less --tabs=4 -RFX
-  editor = vim
+    longpaths = true
+    pager = diff-so-fancy | less --tabs=4 -RFX
+    editor = vim
+    excludesfile = /Users/mihaicris/.gitignore_global
 
 [merge]
-	tool = code
+    tool = code
 
 [mergetool "code"]
-	cmd = code --wait $MERGED
+    cmd = code --wait $MERGED
 
 [filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
 
 [diff]
     tool = code
@@ -34,59 +35,43 @@
 
 [alias]
   # List alias commands
-  la = "!git config -l | grep alias | cut -c 7-"
-  list-alias = "!git la"
+    la = "!git config -l | grep alias | cut -c 7-"
+    list-alias = "!git la"
+  
   # List commits in increasing detail
-  l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
-  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-  lll = log -u
+    l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    lll = log -u
+  
   # Most common diffs
-  diffc = diff --cached HEAD^
-  diffw = diff --color --word-diff
-  
-  # Committing 
-  c = commit
-  # Commit with message
-  cm = "!cim() { git commit -m \"$1\"; }; cim" 
-  # Ammend last commit
-  ca = commit --amend --no-edit
-  
-  # Make new branch (or set branch to current commit)
-  mb = checkout -B
-  # Check out particular file ($2) form branch ($1) 
-  cof = "!cb() { git checkout $1 -- $2; }; cb"
-  rb = "!rb() { git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes | grep $1; }; rb"
+    diffc = diff --cached HEAD^
+    diffw = diff --color --word-diff
 
-  # Reset
-  re = reset
-  # Soft reset one commit
-  re1 = reset HEAD^
-  # Hard reset
-  reh = reset --hard
-  # Hard reset and clean
-  rec = !git reh && git clean -fd
+  # Committing 
+    c = commit
   
-  # Gerrit
-  review = "!review() { git push origin HEAD:refs/for/$1; }; review"
-  draft = "!draft() { git push origin HEAD:refs/drafts/$1; }; draft"
+  # Commit with message
+    cm = "!cim() { git commit -m \"$1\"; }; cim" 
   
-  # Rebase
-  r = rebase
-  # Rebase interactively from $1 number of commits back
-  ri = "!ri() { git rebase -i HEAD~$1; }; ri"
-  ra = rebase --abort
-  rc = rebase --continue
-  
+  # Ammend last commit
+    ca = commit --amend --no-edit
+
+  # Make new branch (or set branch to current commit)
+    mb = checkout -B
+  # Check out particular file ($2) form branch ($1) 
+    cof = "!cb() { git checkout $1 -- $2; }; cb"
+    rb = "!rb() { git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes | grep $1; }; rb"
+
   # Search 
-  grep = grep -Ii
-  
+    grep = grep -Ii
+
   # Search for files
-  f = "!git ls-files | grep --color -i"
+    f = "!git ls-files | grep --color -i"
 
   # How many commits per author
-  who = shortlog -n -s --no-merges
-  
+    who = shortlog -n -s --no-merges
+
   # Add executable to file
-  addx = update-index --chmod=+x
-  
-  editor = interactive-rebase-tool
+    addx = update-index --chmod=+x
+
+    editor = interactive-rebase-tool
