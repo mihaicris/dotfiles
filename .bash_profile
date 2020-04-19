@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -219,7 +219,7 @@ function ccb() {
     local CRITERIA=$1
 
     if (( $# != 1 )); then
-        printf "\033[92mPlease specifiy one argument as branch to checkout locally from remote.\033[0m\n\n"
+        printf "\033[92m\nPlease specifiy one argument as branch to checkout locally from remote.\033[0m\n\n"
         return 1
     fi
 
@@ -397,7 +397,7 @@ function list-commits() {
         --author='$author'
         --date=format:'$GIT_DATE_FORMAT'
         --pretty=format:'$GIT_PRETTY_FORMAT'"
-    
+    # shellcheck disable=SC2086
     GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
     
     if [[ -n "$GIT_OUTPUT" ]]; then
@@ -461,7 +461,7 @@ function cart() {
 }
 
 function cart_toolchain() {
-    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain $1 
+    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain "$1"
 }
 
 function cart_update() {
@@ -469,7 +469,7 @@ function cart_update() {
 }
 
 function cart_update_toolchain() {
-    carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain $1
+    carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain "$1"
 }
 
 function xcode() {
@@ -499,7 +499,7 @@ function vst() {
     if [ -z "$1" ]; then
         open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items
     else
-        open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items/?workitem=$1
+        open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items/?workitem="$1"
     fi
 }
 
@@ -513,28 +513,28 @@ function work() {
 
 function gpx() {
     file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-    cat <<\EOF > $file_location 
+    cat <<\EOF > "$file_location"
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">
     <wpt lat="44.4356676" lon="26.0544182"></wpt>
 </gpx>
 EOF
-skip $file_location
+skip "$file_location"
 }
 
 function gpxAUS() {
     file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-    cat <<\EOF > $file_location 
+    cat <<\EOF > "$file_location"
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">
     <wpt lat="-37.821067" lon="144.966071"></wpt>
 </gpx>
 EOF
-    skip $file_location
+    skip "$file_location"
 }
 
 function search() {
-    git log -S$1 
+    git log -S"$1"
 }
 
 function system_tasks() {
