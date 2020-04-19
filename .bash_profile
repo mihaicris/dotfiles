@@ -35,13 +35,13 @@ alias gsf="git submodule foreach"
 alias s="git status"
 alias gti="git"
 
-RED_COLOR=$(tput setaf 1); export RED_COLOR
-GREEN_COLOR=$(tput setaf 2); export GREEN_COLOR
-YELLOW_COLOR=$(tput setaf 3); export YELLOW_COLOR
-#BLUE_COLOR=$(tput setaf 4); export BLUE_COLOR
-#BOLD_FONT=$(tput bold); export BOLD_FONT
-UNDERLINE_FONT=$(tput smul); export UNDERLINE_FONT
-NORMAL_FONT=$(tput sgr0); export NORMAL_FONT
+RED_COLOR=$(tput setaf 1)
+GREEN_COLOR=$(tput setaf 2)
+YELLOW_COLOR=$(tput setaf 3)
+BLUE_COLOR=$(tput setaf 4)
+BOLD_FONT=$(tput bold)
+UNDERLINE_FONT=$(tput smul)
+NORMAL_FONT=$(tput sgr0)
 
 function pushdir() {
     command pushd "$@" > /dev/null || printf "%b" "Error, could not popd to previous folder\n" >&2
@@ -333,44 +333,35 @@ function ff() {
 }
 
 function refresh() {
-    printf "%s\n" "${NORMAL}"
     git fetch --all -p
     CURRENT_BRANCH=$(git branch --show-current)
     HAS_BRANCH=$(git branch | grep "$1")
 
     if [[ -n $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != "$1" ]]; then
         git switch --quiet "$1"
-        printf "Changed branch to: ${RED}%s${NORMAL}\n" "$1"
+        printf "Changed branch to: ${RED_COLOR}%s${NORMAL_FONT}\n" "$1"
+        git pull
     else
-        printf "On branch: ${YELLOW}%s${NORMAL}\n" "$CURRENT_BRANCH"
+        printf "On branch: ${YELLOW_COLOR}%s${NORMAL}\n" "$CURRENT_BRANCH"
     fi
-    git pull
-    printf "%s\n" "${GREEN}"
+    printf "\n"
 }
 
 export -f refresh
 
 function gg() {
     BRANCH=${1:-apimaindevelopment}
-    TOP_LEVEL_DIR=$(basename "$(git rev-parse --show-toplevel)")
-    
-    printf "%s\n" "${GREEN}"
-    printf "Entering ${BLUE}%s\n" "$TOP_LEVEL_DIR"
-
-    refresh "$BRANCH"
-
-    printf "%s" "${GREEN}"
-    git submodule foreach bash -c "refresh $BRANCH"
-}
-
-function forEachSubmodule() {
-    pushdir "$(git rev-parse --show-toplevel)"
-
+    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
     SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-    for SUBMODULE in $SUBMODULES
-    do
+
+    printf "\n${UNDERLINE_FONT}${GREEN_COLOR}Entering ${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$(basename "$TOP_LEVEL_DIR")"
+    pushdir "$TOP_LEVEL_DIR" 
+    refresh "$BRANCH"
+    
+    for SUBMODULE in $SUBMODULES; do
+        printf "${UNDERLINE_FONT}${GREEN_COLOR}Entering ${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$SUBMODULE"
         pushdir "$SUBMODULE"
-        echo "$SUBMODULE"
+        refresh "$BRANCH"
         popdir 
     done
     popdir
@@ -426,10 +417,10 @@ function ios() {
 function daily() {
     heading "Daily Standup"
     list-commits "$@"
-    submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-    for submodule in $submodules
+    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+    for SUBMODULE in $SUBMODULES
     do
-        pushdir "$submodule"
+        pushdir "$SUBMODULE"
         list-commits "$@"
         popdir 
     done
