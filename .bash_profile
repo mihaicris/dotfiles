@@ -53,7 +53,7 @@ function popdir() {
 }
 
 function heading() {
-    echo -e "\n\033[7m\033[034m" "$@" "\033[0m\n"
+    printf "\n\033[7m\033[034m%s\033[0m\n\n" "$@"
 }
 
 function gr() {
@@ -216,24 +216,23 @@ function sedi() {
 }
 
 function ccb() {
-    local CRITERIA=$1
+    CRITERIA=$1
+    REMOTE_NAME_COUNT=$(git remote | wc -l)
+    REMOTE_NAME=$(git remote)
 
     if (( $# != 1 )); then
         printf "\033[92m\nPlease specifiy one argument as branch to checkout locally from remote.\033[0m\n\n"
         return 1
     fi
 
-    REMOTE_NAME_COUNT=$(git remote | wc -l)
-
     if (( REMOTE_NAME_COUNT != 1 )); then
         printf "Only one remote is supported.\n\n"
         return 1
     fi
 
-    REMOTE_NAME=$(git remote)
     RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
-    COUNT=${#RESULTS}
-
+    COUNT=$(echo "${RESULTS}" | wc -l)
+    
     if (( COUNT == 0 )); then
         printf "\nThere are no remote branches containing \033[91m%s\033[0m.\n\n" "$CRITERIA"
         return 1
@@ -311,25 +310,54 @@ function transform_flac_to_m4a() {
     done
 }
 
-function ff() {
-    ggfa
-    heading "Fast forwarding all worktrees"
-    WORKDIRS=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
-    for WORKDIR in $WORKDIRS
-    do
-        printf "\033[92m* Fast forwarding \033[94m%s " "$WORKDIR"
-        pushdir "$WORKDIR"
-        IS_DETACHED=$(git symbolic-ref -q HEAD)
-        if [[ -z $IS_DETACHED ]]; then
-            printf "\n\033[91mSkipping (detached state).\033[0m\n\n"
-        else
-            CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-            printf "\033[93m[%s]\033[0m\n" "$CURRENT_BRANCH"
-            git pull
-            echo ""
-        fi
-        popdir
+function pull_branch() {
+    IS_DETACHED=$(git symbolic-ref -q HEAD)
+
+    if [[ -z $IS_DETACHED ]]; then
+        printf "\n\033[91mSkipping (detached state).\033[0m\n\n"
+    else
+        CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+        printf "\033[93m[%s]\033[0m\n\n" "$CURRENT_BRANCH"
+        git pull
+    fi
+}
+
+function ff_submodules() {
+    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+    [[ -z $SUBMODULES ]] && return 0
+    
+    heading "Fast forwarding all submodules"
+    
+    for SUBMODULE in $SUBMODULES; do
+        printf "${GREEN_COLOR}* %s${NORMAL_FONT} " "$SUBMODULE"
+        pushdir "$SUBMODULE"
+        pull_branch        
+        popdir 
+        printf "\n"
     done
+}
+
+function ff_worktrees() {
+    WORKDIRS=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
+    
+    heading "Fast forwarding all worktrees"
+    
+    git fetch --all --quiet
+    for WORKDIR in $WORKDIRS; do
+        printf "${GREEN_COLOR}* %s${NORMAL_FONT} " "$WORKDIR"
+        pushdir "$WORKDIR"
+        pull_branch
+        popdir
+        printf "\n"
+    done
+}
+
+function ff() {
+    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+    pushdir "$TOP_LEVEL_DIR"
+    ff_submodules
+    ff_worktrees
+    popdir
 }
 
 function refresh() {
@@ -354,12 +382,12 @@ function gg() {
     TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
     SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
 
-    printf "\n${UNDERLINE_FONT}${GREEN_COLOR}Entering ${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$(basename "$TOP_LEVEL_DIR")"
-    pushdir "$TOP_LEVEL_DIR" 
+    printf "\n${UNDERLINE_FONT}${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$(basename "$TOP_LEVEL_DIR")"
+    pushdir "$TOP_LEVEL_DIR"
     refresh "$BRANCH"
     
     for SUBMODULE in $SUBMODULES; do
-        printf "${UNDERLINE_FONT}${GREEN_COLOR}Entering ${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$SUBMODULE"
+        printf "${UNDERLINE_FONT}${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$SUBMODULE"
         pushdir "$SUBMODULE"
         refresh "$BRANCH"
         popdir 
@@ -418,8 +446,7 @@ function daily() {
     heading "Daily Standup"
     list-commits "$@"
     SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-    for SUBMODULE in $SUBMODULES
-    do
+    for SUBMODULE in $SUBMODULES; do
         pushdir "$SUBMODULE"
         list-commits "$@"
         popdir 
