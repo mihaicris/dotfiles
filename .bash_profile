@@ -331,6 +331,7 @@ function ff_submodules() {
     for SUBMODULE in $SUBMODULES; do
         printf "${GREEN_COLOR}* %s${NORMAL_FONT} " "$SUBMODULE"
         pushdir "$SUBMODULE"
+        git fetch --all --quiet
         pull_branch        
         popdir 
         printf "\n"
@@ -343,8 +344,9 @@ function ff_worktrees() {
     heading "Fast forwarding all worktrees"
     
     git fetch --all --quiet
+
     for WORKDIR in $WORKDIRS; do
-        printf "${GREEN_COLOR}* %s${NORMAL_FONT} " "$WORKDIR"
+        printf "${GREEN_COLOR}* %s${NORMAL_FONT} " "$(basename "$WORKDIR")"
         pushdir "$WORKDIR"
         pull_branch
         popdir
