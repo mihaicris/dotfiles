@@ -245,7 +245,8 @@ function ccb() {
         PROMPT=$PS3
         PS3="Select a number? "
         select BRANCH in $SEARCH_RESULTS; do
-            if [[ $SEARCH_RESULTS =~ $BRANCH ]]; then
+            IS_SELECTION_VALID=$([[ -n $BRANCH ]] && echo -e "$SEARCH_RESULTS" | grep "$BRANCH")
+            if [[ $IS_SELECTION_VALID ]]; then
                 LOCAL_BRANCH="$BRANCH"
                 break
             else
@@ -354,7 +355,7 @@ function gg() {
     TOP_LEVEL_DIR=$(basename "$(git rev-parse --show-toplevel)")
     
     printf "%s\n" "${GREEN}"
-    printf "Entering ${BLUE}%s${NORMAL}\n" "$TOP_LEVEL_DIR"
+    printf "Entering ${BLUE}%s\n" "$TOP_LEVEL_DIR"
 
     refresh "$BRANCH"
 
@@ -426,15 +427,15 @@ function tickets() {
         AUTHOR=$(git config user.name);
         NAME=$AUTHOR
     else
+        AUTHOR=$1
         if [ "$1" == "0" ]; then
             NAME="All authors"
         else
             NAME=$1
         fi
-        AUTHOR=$1
     fi
     printf "\n\033[92mTickets for: \033[94m%s\033[0m\n\n" "$NAME"
-    daily $AUTHOR | \
+    daily "$AUTHOR" | \
         grep -oE "/[0-9]{5,}" | \
         grep -oE "[0-9]+" | \
         sort | \
@@ -444,15 +445,10 @@ function tickets() {
 }
 
 function allIssues() {
-    if [ -z "$1" ]; then
-        AUTHOR=$(git config user.name);
-    else
-        AUTHOR=$1;
-    fi
-    (git log --author="$AUTHOR" --format="%s" --no-merges && git submodule foreach git log --author="$AUTHOR" --format="%s" --no-merges) \
-        | grep -oE "[A-Za-z]+\/\d+" \
-        | sort \
-        | uniq
+    AUTHOR=${1:-$(git config user.name)}
+    (git log --author="$AUTHOR" --format="%s" --no-merges && \
+     git submodule foreach git log --author="$AUTHOR" --format="%s" --no-merges) \
+   | grep -oE "[A-Za-z]+\/\d+" | sort -u
 }
 
 function oo() {
