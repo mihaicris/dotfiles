@@ -587,7 +587,7 @@ function completions() {
     )
     for FILE in "${FILES[@]}"; do
         # shellcheck disable=SC1090
-        source "$PREFIX/$FILE" || printf "Error: Completion file not found: %si\n" "$FILE" >&2
+        source "$PREFIX/$FILE" || printf "Error: Completion file not found: %s\n" "$FILE" >&2
     done
 }
 
