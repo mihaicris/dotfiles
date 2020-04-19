@@ -512,25 +512,43 @@ function work() {
 }
 
 function gpx() {
-    file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-    cat <<\EOF > "$file_location"
-<?xml version="1.0"?>
-<gpx version="1.1" creator="Xcode">
-    <wpt lat="44.4356676" lon="26.0544182"></wpt>
-</gpx>
-EOF
-skip "$file_location"
-}
+    declare -a LOCATIONS
 
-function gpxAUS() {
-    file_location=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-    cat <<\EOF > "$file_location"
+    LOCATIONS[0]='Romania;44.4356676;26.0544182'
+    LOCATIONS[1]='Australia;-37.821067;144.966071'
+
+    COUNTRIES=()
+    LATITUDINES=()
+    LONGITUDINES=()
+
+    for LOCATION in "${LOCATIONS[@]}"
+    do
+        IFS=";" read -r -a arr <<< "${LOCATION}"
+        COUNTRIES=("${COUNTRIES[@]}" "${arr[0]}")
+        LATITUDINES=("${LATITUDINES[@]}" "${arr[1]}")
+        LONGITUDINES=("${LONGITUDINES[@]}" "${arr[2]}")
+    done
+    select COUNTRY in "${COUNTRIES[@]}"; do
+        if [[ -n $COUNTRY ]]; then
+            (( INDEX = REPLY-1 ))
+            break
+        else
+            printf "Wrong selection.\n"
+        fi
+    done
+    LAT=${LATITUDINES[$INDEX]}
+    LONG=${LONGITUDINES[$INDEX]}
+
+    FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
+
+cat <<EOF > "$FILE"
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">
-    <wpt lat="-37.821067" lon="144.966071"></wpt>
+    <wpt lat="$LAT" lon="$LONG"></wpt>
 </gpx>
 EOF
-    skip "$file_location"
+
+skip "$FILE"
 }
 
 function search() {
