@@ -314,10 +314,11 @@ function pull_branch() {
     IS_DETACHED=$(git symbolic-ref -q HEAD)
 
     if [[ -z $IS_DETACHED ]]; then
-        printf "\n\033[91mSkipping (detached state).\033[0m\n\n"
+        printf "\033[91mSkipping (detached state).\033[0m\n"
     else
         CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-        printf "\033[93m[%s]\033[0m\n\n" "$CURRENT_BRANCH"
+        printf "\033[93m[%s]\033[0m\n" "$CURRENT_BRANCH"
+        git fetch --all --quiet
         git pull
     fi
 }
@@ -325,32 +326,25 @@ function pull_branch() {
 function ff_submodules() {
     SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
     [[ -z $SUBMODULES ]] && return 0
-    
     heading "Fast forwarding all submodules"
-    
     for SUBMODULE in $SUBMODULES; do
-        printf "${GREEN_COLOR}* %s${NORMAL_FONT} " "$SUBMODULE"
+        printf "${UNDERLINE_FONT}${GREEN_COLOR}%b${NORMAL_FONT} " "$SUBMODULE"
         pushdir "$SUBMODULE"
-        git fetch --all --quiet
         pull_branch        
-        popdir 
-        printf "\n"
+        popdir
+        printf "%b" "\n"
     done
 }
 
 function ff_worktrees() {
     WORKDIRS=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
-    
     heading "Fast forwarding all worktrees"
-    
-    git fetch --all --quiet
-
     for WORKDIR in $WORKDIRS; do
-        printf "${GREEN_COLOR}* %s${NORMAL_FONT} " "$(basename "$WORKDIR")"
+        printf "${UNDERLINE_FONT}${GREEN_COLOR}%b${NORMAL_FONT} " "$(basename "$WORKDIR")"
         pushdir "$WORKDIR"
         pull_branch
         popdir
-        printf "\n"
+        printf "%b" "\n"
     done
 }
 
