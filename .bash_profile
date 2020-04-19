@@ -231,8 +231,8 @@ function ccb() {
     fi
 
     REMOTE_NAME=$(git remote)
-    SEARCH_RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
-    COUNT=$(git branch -r | grep "$CRITERIA" | grep -c -v "HEAD ->")
+    RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
+    COUNT=${#RESULTS}
 
     if (( COUNT == 0 )); then
         printf "\nThere are no remote branches containing \033[91m%s\033[0m.\n\n" "$CRITERIA"
@@ -244,8 +244,8 @@ function ccb() {
 
         PROMPT=$PS3
         PS3="Select a number? "
-        select BRANCH in $SEARCH_RESULTS; do
-            IS_SELECTION_VALID=$([[ -n $BRANCH ]] && echo -e "$SEARCH_RESULTS" | grep "$BRANCH")
+        select BRANCH in $RESULTS; do
+            IS_SELECTION_VALID=$([[ -n $BRANCH ]] && echo -e "$RESULTS" | grep "$BRANCH")
             if [[ $IS_SELECTION_VALID ]]; then
                 LOCAL_BRANCH="$BRANCH"
                 break
@@ -257,7 +257,7 @@ function ccb() {
         printf "\033[0m"
         PS3=$PROMPT
     else
-        LOCAL_BRANCH=$SEARCH_RESULTS
+        LOCAL_BRANCH=$RESULTS
     fi
 
     REMOTE_BRANCH="$REMOTE_NAME/$LOCAL_BRANCH"
@@ -542,10 +542,7 @@ function gpx() {
     FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
 
 cat <<EOF > "$FILE"
-<?xml version="1.0"?>
-<gpx version="1.1" creator="Xcode">
-    <wpt lat="$LAT" lon="$LONG"></wpt>
-</gpx>
+<?xml version="1.0"?><gpx version="1.1" creator="Xcode"><wpt lat="$LAT" lon="$LONG"></wpt></gpx>
 EOF
 
 skip "$FILE"
