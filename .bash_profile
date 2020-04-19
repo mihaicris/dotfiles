@@ -508,40 +508,48 @@ function work() {
 }
 
 function gpx() {
-    declare -a LOCATIONS
+    FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
+    skip "$FILE"
 
-    LOCATIONS[0]='Romania;44.4356676;26.0544182'
-    LOCATIONS[1]='Australia;-37.821067;144.966071'
-
-    COUNTRIES=()
+    LOCATIONS=()
+    NAMES=()
     LATITUDINES=()
     LONGITUDINES=()
+    
+    LOCATIONS=(
+        'IBM Bucharest;44.4356676;26.0544182'
+        'IBM Brasov;45.6687406;25.6194894'
+        'NL Site;51.9386;4.1083'
+        'Aus Site;-37.821067;144.966071'
+        'US one car wash;41.264578;-96.161076'
+    )
 
-    for LOCATION in "${LOCATIONS[@]}"
-    do
+    for LOCATION in "${LOCATIONS[@]}"; do
         IFS=";" read -r -a arr <<< "${LOCATION}"
-        COUNTRIES=("${COUNTRIES[@]}" "${arr[0]}")
+        NAMES=("${NAMES[@]}" "${arr[0]}")
         LATITUDINES=("${LATITUDINES[@]}" "${arr[1]}")
         LONGITUDINES=("${LONGITUDINES[@]}" "${arr[2]}")
     done
-    select COUNTRY in "${COUNTRIES[@]}"; do
-        if [[ -n $COUNTRY ]]; then
+
+    select NAME in "${NAMES[@]}"; do
+        if [[ -n $NAME ]]; then
             (( INDEX = REPLY-1 ))
             break
         else
             printf "Wrong selection.\n"
         fi
     done
+    NAME=${NAMES[$INDEX]}
     LAT=${LATITUDINES[$INDEX]}
     LONG=${LONGITUDINES[$INDEX]}
 
-    FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-
-cat <<EOF > "$FILE"
-<?xml version="1.0"?><gpx version="1.1" creator="Xcode"><wpt lat="$LAT" lon="$LONG"></wpt></gpx>
+    cat <<EOF > "$FILE"
+<!--Custom location: $NAME-->
+<?xml version="1.0"?>
+<gpx version="1.1" creator="Xcode">
+    <wpt lat="$LAT" lon="$LONG"></wpt>
+</gpx>
 EOF
-
-skip "$FILE"
 }
 
 function search() {
