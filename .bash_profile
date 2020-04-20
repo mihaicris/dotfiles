@@ -232,7 +232,7 @@ function ccb() {
 
     RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
     COUNT=$(echo "${RESULTS}" | wc -l)
-    
+
     if (( COUNT == 0 )); then
         printf "\nThere are no remote branches containing \033[91m%s\033[0m.\n\n" "$CRITERIA"
         return 1
@@ -371,8 +371,6 @@ function refresh() {
     printf "\n"
 }
 
-export -f refresh
-
 function gg() {
     BRANCH=${1:-apimaindevelopment}
     TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
@@ -381,7 +379,7 @@ function gg() {
     printf "\n${UNDERLINE_FONT}${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$(basename "$TOP_LEVEL_DIR")"
     pushdir "$TOP_LEVEL_DIR"
     refresh "$BRANCH"
-    
+
     for SUBMODULE in $SUBMODULES; do
         printf "${UNDERLINE_FONT}${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$SUBMODULE"
         pushdir "$SUBMODULE"
@@ -391,43 +389,44 @@ function gg() {
     popdir
 }
 
-function list-commits() {
-    if [ -z "$1" ]; then
-        author=$(git config user.name);
+function list_commits() {
+    if [[ -z "$1" ]]; then
+        AUTHOR=$(git config user.name);
     else
         if [[ "$1" == "0" ]]; then
-            author=".*";
+            AUTHOR=".*";
         else
-            author=$1;
+            AUTHOR=$1;
         fi
     fi
-    
-    daytoday=$(date|cut -d ' ' -f 1)
-    case $daytoday in
-    "Sat"|"Sun"|"Mon" )
-        since="last.friday.midnight"
-        ;;
-    * )
-        since="yesterday.midnight"
-        ;;
+
+    DAYTODAY=$(date|cut -d ' ' -f 1)
+
+    case $DAYTODAY in
+        "Sat"|"Sun"|"Mon" )
+            SINCE="last.friday.midnight"
+            ;;
+        * )
+            SINCE="yesterday.midnight"
+            ;;
     esac
 
     GIT_DATE_FORMAT='%a, %d %b %H:%M'
     GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
     GIT_LOG_COMMAND="git --no-pager log
-        --color=always
-        --all
-        --reverse
-        --abbrev-commit
-        --no-merges
-        --oneline
-        --since='$since'
-        --author='$author'
-        --date=format:'$GIT_DATE_FORMAT'
-        --pretty=format:'$GIT_PRETTY_FORMAT'"
+    --color=always
+    --all
+    --reverse
+    --abbrev-commit
+    --no-merges
+    --oneline
+    --since='$SINCE'
+    --author='$AUTHOR'
+    --date=format:'$GIT_DATE_FORMAT'
+    --pretty=format:'$GIT_PRETTY_FORMAT'"
     # shellcheck disable=SC2086
     GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
-    
+
     if [[ -n "$GIT_OUTPUT" ]]; then
         printf "\033[37m\033[4m%s\033[0m\n" "$(basename "$(pwd)")"
         printf "%s\n\n" "$GIT_OUTPUT"
@@ -444,7 +443,7 @@ function daily() {
     SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
     for SUBMODULE in $SUBMODULES; do
         pushdir "$SUBMODULE"
-        list-commits "$@"
+        list_commits "$@"
         popdir 
     done
 }
@@ -538,7 +537,7 @@ function gpx() {
     NAMES=()
     LATITUDINES=()
     LONGITUDINES=()
-    
+
     LOCATIONS=(
         'IBM Bucharest;44.4356676;26.0544182'
         'IBM Brasov;45.6687406;25.6194894'
