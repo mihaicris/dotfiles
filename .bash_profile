@@ -412,7 +412,7 @@ function list_commits() {
     esac
 
     GIT_DATE_FORMAT='%a, %d %b %H:%M'
-    GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(60,trunc)%s'
+    GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<(80,trunc)%s'
     GIT_LOG_COMMAND="git --no-pager log
     --color=always
     --all
@@ -439,7 +439,7 @@ function ios() {
 
 function daily() {
     heading "Daily Standup"
-    list-commits "$@"
+    list_commits "$@"
     SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
     for SUBMODULE in $SUBMODULES; do
         pushdir "$SUBMODULE"
