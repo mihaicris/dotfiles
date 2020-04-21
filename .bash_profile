@@ -417,9 +417,7 @@ function list_commits() {
         WIDTH="80"
     fi
     GIT_DATE_FORMAT='%a, %d %b %H:%M'
-    GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<('
-    GIT_PRETTY_FORMAT="${GIT_PRETTY_FORMAT}${WIDTH}"
-    GIT_PRETTY_FORMAT="${GIT_PRETTY_FORMAT}"'i,trunc)%s'
+    GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<('"${WIDTH}"'i,trunc)%s'
     GIT_LOG_COMMAND="git --no-pager log
     --color=always
     --all
