@@ -566,10 +566,9 @@ function gpx() {
     LONG=${LONGITUDINES[$INDEX]}
 
     cat <<EOF > "$FILE"
-<!--Custom location: $NAME-->
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">
-    <wpt lat="$LAT" lon="$LONG"></wpt>
+    <wpt lat="$LAT" lon="$LONG"></wpt>b<!--Custom location: $NAME-->
 </gpx>
 EOF
 }
