@@ -318,7 +318,7 @@ function pull_branch() {
     else
         CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
         printf "\033[93m[%s]\033[0m\n" "$CURRENT_BRANCH"
-        git fetch --all --quiet
+        git fetch --all
         git pull
     fi
 }
@@ -433,7 +433,7 @@ function list_commits() {
     GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
 
     if [[ -n "$GIT_OUTPUT" ]]; then
-        printf "\033[37m\033[4m%s\033[0m\n" "$(basename "$(pwd)")"
+        printf "\033[37m\033[4m%s\033[0m\n" "$(pwd)"
         printf "%s\n\n" "$GIT_OUTPUT"
     fi
 }
