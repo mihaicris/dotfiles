@@ -439,7 +439,7 @@ function list_commits() {
 }
 
 function ios() {
-    cd ~/bpme/main || return
+    cd ~/bpme/uk/main || return
 }
 
 function daily() {
@@ -573,7 +573,7 @@ function gpx() {
     cat <<EOF > "$FILE"
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">
-    <wpt lat="$LAT" lon="$LONG"></wpt>b<!--Custom location: $NAME-->
+    <wpt lat="$LAT" lon="$LONG"></wpt><!--Custom location: $NAME-->
 </gpx>
 EOF
 }
