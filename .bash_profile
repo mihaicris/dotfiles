@@ -35,13 +35,28 @@ alias gsf="git submodule foreach"
 alias s="git status"
 alias gti="git"
 
-RED_COLOR=$(tput setaf 1)
-GREEN_COLOR=$(tput setaf 2)
-YELLOW_COLOR=$(tput setaf 3)
-BLUE_COLOR=$(tput setaf 4)
-BOLD_FONT=$(tput bold)
-UNDERLINE_FONT=$(tput smul)
-NORMAL_FONT=$(tput sgr0)
+NORMAL="\033[0m"
+BOLD="\033[1m"
+UNDERLINE="\033[4m"
+BLACK="\033[30m"
+RED="\033[31m"
+#GREEN="\033[32m"
+#YELLOW="\033[33m"
+BLUE="\033[34m"
+#MAGENTA="\033[35m"
+#CYAN="\033[36m"
+LIGHT_GRAY="\033[37m"
+#DARK_GRAY="\033[90m"
+LIGHT_RED="\033[91m"
+LIGHT_GREEN="\033[92m"
+LIGHT_YELLOW="\033[93m"
+LIGHT_BLUE="\033[94m"
+#LIGHT_MAGENTA="\033[95m"
+#LIGHT_CYAN="\033[96m"
+#WHITE="\033[97m"
+BG_BLUE="\033[44m"
+BG_LIGHT_BLUE="\033[104m"
+BG_DARK_GRAY="\033[100m"
 
 function pushdir() {
     command pushd "$@" > /dev/null || printf "%b" "Error, could not popd to previous folder\n" >&2
@@ -53,7 +68,7 @@ function popdir() {
 }
 
 function heading() {
-    printf "\n\033[7m\033[034m%s\033[0m\n\n" "$@"
+    printf "\n${BOLD}${BG_BLUE}%s${NORMAL}\n\n" "$@"
 }
 
 function gr() {
@@ -221,7 +236,7 @@ function ccb() {
     REMOTE_NAME=$(git remote)
 
     if (( $# != 1 )); then
-        printf "\033[92m\nPlease specifiy one argument as branch to checkout locally from remote.\033[0m\n\n"
+        printf "%b\nPlease specifiy one argument as branch to checkout locally from remote.%b\n\n" "${LIGHT_GREEN}" "${NORMAL}"
         return 1
     fi
 
@@ -231,15 +246,15 @@ function ccb() {
     fi
 
     RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
-    COUNT=$(echo "${RESULTS}" | wc -l)
-
+    COUNT=$(echo "${RESULTS}" | sed '/^\s*$/d' | wc -l)
+    
     if (( COUNT == 0 )); then
-        printf "\nThere are no remote branches containing \033[91m%s\033[0m.\n\n" "$CRITERIA"
+        printf "\nThere are no remote branches containing ${LIGHT_RED}%s${NORMAL}.\n\n" "$CRITERIA"
         return 1
     fi
-
+    
     if (( COUNT > 1 )); then
-        printf "\nThere are multiple branches containing \033[91m%s\033[0m:\n\n\033[34m" "$CRITERIA"
+        printf "\nThere are multiple branches containing ${LIGHT_RED}%s${NORMAL}:\n\n${BLUE}" "$CRITERIA"
 
         PROMPT=$PS3
         PS3="Select a number? "
@@ -252,7 +267,7 @@ function ccb() {
             fi
         done
 
-        printf "\033[0m"
+        printf "%b" "${NORMAL}"
         PS3=$PROMPT
     else
         LOCAL_BRANCH=$RESULTS
@@ -263,15 +278,15 @@ function ccb() {
     IS_ALREADY_LOCAL_BRANCH=$(git branch | grep "$LOCAL_BRANCH")
     if [ -n "$IS_ALREADY_LOCAL_BRANCH" ]; then
         if git checkout -q "$LOCAL_BRANCH" ; then
-            printf "\nSuccessfuly switched to the local branch \033[92m%s\033[0m.\n\n" "$LOCAL_BRANCH"
+            printf "\nSuccessfuly switched to the local branch ${LIGHT_GREEN}%s${NORMAL}.\n\n" "$LOCAL_BRANCH"
             return 0
         else
-            prinf "\nCould not switch to the local branch: \033[34m%s\033[0m.\n\n" "$LOCAL_BRANCH"
+            printf "\nCould not switch to the local branch: ${BLUE}%s${NORMAL}.\n\n" "$LOCAL_BRANCH"
             return 1
         fi
     else
         if git checkout -q -b "$LOCAL_BRANCH" --track "$REMOTE_BRANCH" ; then
-            printf "\nSuccessfuly checked out locally the remote branch \033[92m%s\033[0m.\n\n" "$LOCAL_BRANCH"
+            printf "\nSuccessfuly checked out locally the remote branch ${LIGHT_GREEN}%s${NORMAL}.\n\n" "$LOCAL_BRANCH"
             return 0
         fi
     fi
@@ -313,10 +328,10 @@ function pull_branch() {
     IS_DETACHED=$(git symbolic-ref -q HEAD)
 
     if [[ -z $IS_DETACHED ]]; then
-        printf "\033[91mSkipping (detached state).\033[0m\n"
+        printf "%bSkipping (detached state).\n" "${LIGHT_RED}" $"${NORMAL}"
     else
         CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-        printf "\033[93m[%s]\033[0m\n" "$CURRENT_BRANCH"
+        printf "${LIGHT_YELLOW}[%s]${NORMAL}\n" "$CURRENT_BRANCH"
         git fetch --all
         git pull
     fi
@@ -327,7 +342,7 @@ function ff_submodules() {
     [[ -z $SUBMODULES ]] && return 0
     heading "Fast forwarding all submodules"
     for SUBMODULE in $SUBMODULES; do
-        printf "${UNDERLINE_FONT}${GREEN_COLOR}%b${NORMAL_FONT} " "$SUBMODULE"
+        printf "${UNDERLINE}${GREEN}%b${NORMAL} " "$SUBMODULE"
         pushdir "$SUBMODULE"
         pull_branch        
         popdir
@@ -339,7 +354,7 @@ function ff_worktrees() {
     WORKDIRS=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
     heading "Fast forwarding all worktrees"
     for WORKDIR in $WORKDIRS; do
-        printf "${UNDERLINE_FONT}${GREEN_COLOR}%b${NORMAL_FONT} " "$(basename "$WORKDIR")"
+        printf "${UNDERLINE}${GREEN}%b${NORMAL} " "$(basename "$WORKDIR")"
         pushdir "$WORKDIR"
         pull_branch
         popdir
@@ -362,10 +377,10 @@ function refresh() {
 
     if [[ -n $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != "$1" ]]; then
         git switch --quiet "$1"
-        printf "Changed branch to: ${RED_COLOR}%s${NORMAL_FONT}\n" "$1"
+        printf "Changed branch to: ${RED}%s${NORMAL}\n" "$1"
         git pull
     else
-        printf "On branch: ${YELLOW_COLOR}%s${NORMAL}\n" "$CURRENT_BRANCH"
+        printf "On branch: ${YELLOW}%s${NORMAL}\n" "$CURRENT_BRANCH"
     fi
     printf "\n"
 }
@@ -375,12 +390,12 @@ function gg() {
     TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
     SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
 
-    printf "\n${UNDERLINE_FONT}${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$(basename "$TOP_LEVEL_DIR")"
+    printf "\n${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$(basename "$TOP_LEVEL_DIR")"
     pushdir "$TOP_LEVEL_DIR"
     refresh "$BRANCH"
 
     for SUBMODULE in $SUBMODULES; do
-        printf "${UNDERLINE_FONT}${BOLD_FONT}${BLUE_COLOR}%s${NORMAL_FONT}\n" "$SUBMODULE"
+        printf "${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$SUBMODULE"
         pushdir "$SUBMODULE"
         refresh "$BRANCH"
         popdir 
@@ -432,7 +447,7 @@ function list_commits() {
     GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
 
     if [[ -n "$GIT_OUTPUT" ]]; then
-        printf "\033[37m\033[4m%s\033[0m\n" "$(pwd)"
+        printf "${LIGHT_GRAY}${UNDERLINE}%s${NORMAL}\n" "$(pwd)"
         printf "%s\n\n" "$GIT_OUTPUT"
     fi
 }
@@ -454,7 +469,7 @@ function daily() {
 
 function tickets() {
     AUTHOR=${1:-$(git config user.name)}
-    printf "\n\033[92mTickets for: \033[94m%s\033[0m\n\n" "$AUTHOR"
+    printf "\n${LIGHT_GREEN}}mTickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
     SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
     # shellcheck disable=SC2016
     COMMAND='git log --all --author="$AUTHOR" --format="%s" --no-merges'
@@ -468,7 +483,7 @@ function tickets() {
     } | grep -oE "[A-Za-z]+\/\d+" \
       | grep -oE "[0-9]+" \
       | sort -n -u \
-      | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=\033[92m{}\033[0m\n"
+      | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}\n"
     printf "\n"
 }
 
