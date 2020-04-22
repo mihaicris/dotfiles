@@ -66,8 +66,7 @@
     grep = grep -Ii
 
   # Search for files
-    f = "!git ls-files | grep --color -i"
-
+    f = "!fs() { (git ls-files ; git submodule foreach git ls-files) | grep --color -i $1 ; }; fs"
   # How many commits per author
     who = shortlog -n -s --no-merges
 
