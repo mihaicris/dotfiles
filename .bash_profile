@@ -3,15 +3,15 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export BASH_SILENCE_DEPRECATION_WARNING=1
-export PATH="/usr/local/opt/gettext/bin:$PATH"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
+export ANDROID_SDK_HOME="$HOME/.android/avd"
 export PATH="$HOME/.jenv/bin:$PATH"
 export PATH="$HOME/.fastlane/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-
+export PATH="/usr/local/opt/gettext/bin:$PATH"
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
@@ -562,10 +562,10 @@ function gpx() {
     LONGITUDINES=()
 
     LOCATIONS=(
-        'IBM Bucharest;44.4356676;26.0544182'
-        'IBM Brasov;45.6687406;25.6194894'
-        'NL Site;51.9386;4.1083'
-        'Aus Site;-37.821067;144.966071'
+        'Romania IBM Bucharest;44.4356676;26.0544182'
+        'Romania IBM Brasov;45.6687406;25.6194894'
+        'Holland Site;51.9386;4.1083'
+        'Australia Site;-37.821067;144.966071'
         'US one car wash;41.264578;-96.161076'
     )
 
