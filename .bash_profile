@@ -611,9 +611,6 @@ function system_tasks() {
     heading 'Upgrading brew...'
     brew upgrade && brew cask upgrade
 
-    heading 'Updating brew cask...'
-    brew cask upgrade
-
     heading 'Updating cocoapods...'
     pod repo update
 }
