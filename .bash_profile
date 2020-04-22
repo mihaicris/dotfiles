@@ -244,8 +244,7 @@ function ccb() {
         PROMPT=$PS3
         PS3="Select a number? "
         select BRANCH in $RESULTS; do
-            IS_SELECTION_VALID=$([[ -n $BRANCH ]] && echo -e "$RESULTS" | grep "$BRANCH")
-            if [[ $IS_SELECTION_VALID ]]; then
+            if [[ -n "$BRANCH" ]]; then
                 LOCAL_BRANCH="$BRANCH"
                 break
             else
