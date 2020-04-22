@@ -279,6 +279,7 @@ function ccb() {
     REMOTE_BRANCH="$REMOTE_NAME/$LOCAL_BRANCH"
 
     IS_ALREADY_LOCAL_BRANCH=$(git branch | grep "$LOCAL_BRANCH")
+
     if [ -n "$IS_ALREADY_LOCAL_BRANCH" ]; then
         if git checkout -q "$LOCAL_BRANCH" ; then
             printf "\nSuccessfuly switched to the local branch ${LIGHT_GREEN}%s${NORMAL}.\n\n" "$LOCAL_BRANCH"
@@ -328,9 +329,9 @@ function transform_flac_to_m4a() {
 }
 
 function pull_branch() {
-    IS_DETACHED=$(git symbolic-ref -q HEAD)
+    BRANCH_REF=$(git symbolic-ref -q HEAD)
 
-    if [[ -z $IS_DETACHED ]]; then
+    if [[ -z $BRANCH_REF ]]; then
         printf "%bSkipping (detached state).%b\n" "${LIGHT_RED}" $"${NORMAL}"
     else
         CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
