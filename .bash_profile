@@ -254,16 +254,19 @@ function ccb() {
     fi
     
     if (( COUNT > 1 )); then
-        printf "\nThere are multiple branches containing ${LIGHT_RED}%s${NORMAL}:\n\n${BLUE}" "$CRITERIA"
+        printf "\nThere are multiple branches containing ${LIGHT_RED}%s${NORMAL}:\n\n" "$CRITERIA"
 
         PROMPT=$PS3
         PS3="Select a number? "
+        
+        printf "%b" "${BLUE}"
+        
         select BRANCH in $RESULTS; do
             if [[ -n "$BRANCH" ]]; then
                 LOCAL_BRANCH="$BRANCH"
                 break
             else
-                printf "Wrong selection.\n"
+                printf "%bWrong selection.%b\n" "${RED}" "${BLUE}"
             fi
         done
 
@@ -328,7 +331,7 @@ function pull_branch() {
     IS_DETACHED=$(git symbolic-ref -q HEAD)
 
     if [[ -z $IS_DETACHED ]]; then
-        printf "%bSkipping (detached state).\n" "${LIGHT_RED}" $"${NORMAL}"
+        printf "%bSkipping (detached state).%b\n" "${LIGHT_RED}" $"${NORMAL}"
     else
         CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
         printf "${LIGHT_YELLOW}[%s]${NORMAL}\n" "$CURRENT_BRANCH"
