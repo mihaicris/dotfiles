@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export BASH_SILENCE_DEPRECATION_WARNING=1
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export ANDROID_SDK_HOME="$HOME/.android/avd"
-export PATH="$HOME/.jenv/bin:$PATH"
-export PATH="$HOME/.fastlane/bin:$PATH"
+export BASH_SILENCE_DEPRECATION_WARNING=1
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.fastlane/bin:$PATH"
+export PATH="$HOME/.jenv/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="/usr/local/opt/gettext/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/opt/gettext/bin:$PATH"
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
@@ -245,20 +245,20 @@ function ccb() {
 
     RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
     COUNT=$(echo "${RESULTS}" | sed '/^\s*$/d' | wc -l)
-    
+
     if (( COUNT == 0 )); then
         printf "\nThere are no remote branches containing ${LIGHT_RED}%s${NORMAL}.\n\n" "$CRITERIA"
         return 1
     fi
-    
+
     if (( COUNT > 1 )); then
         printf "\nThere are multiple branches containing ${LIGHT_RED}%s${NORMAL}:\n\n" "$CRITERIA"
 
         PROMPT=$PS3
         PS3="Select a number? "
-        
+
         printf "%b" "${BLUE}"
-        
+
         select BRANCH in $RESULTS; do
             if [[ -n "$BRANCH" ]]; then
                 LOCAL_BRANCH="$BRANCH"
@@ -483,15 +483,15 @@ function tickets() {
             popdir
         done
     } | grep -oE "[A-Za-z]+\/\d+" \
-      | grep -oE "[0-9]+" \
-      | sort -n -u \
-      | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}\n"
-    printf "\n"
-}
+        | grep -oE "[0-9]+" \
+        | sort -n -u \
+        | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}\n"
+            printf "\n"
+        }
 
-function oo() {
-    xed .
-}
+    function oo() {
+        xed .
+    }
 
 function cart() {
     carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
