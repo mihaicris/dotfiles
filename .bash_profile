@@ -457,7 +457,7 @@ function list_commits() {
 }
 
 function ios() {
-    cd ~/bpme/uk/main || return
+    cd ~/bpme/uk || return
 }
 
 function daily() {
