@@ -304,6 +304,12 @@ function devteam() {
     popdir
 }
 
+function transform_reduce() {
+    for a in *.mov; do
+        ffmpeg -i "$a" -b:v 2048k -vf scale=2048:-1 "${a%.*}.mp4"
+    done
+}
+
 function transform_ts_to_mp4() {
     for a in *.ts; do
         ffmpeg -i "$a" -c copy "${a%.*}.mp4"
