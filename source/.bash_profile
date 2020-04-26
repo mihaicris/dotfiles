@@ -432,8 +432,8 @@ function list_commits() {
             SINCE="yesterday.midnight"
             ;;
     esac
-    WIDTH=$(stty -a | grep columns | cut -d';' -f3 | grep -oE '\d+')
-    if [[ -n $WIDTH ]] && (( WIDTH > 150 )); then
+    WIDTH=$(tput cols)
+    if (( WIDTH > 150 )); then
         WIDTH=$(( WIDTH - 80))
     else
         WIDTH="80"
