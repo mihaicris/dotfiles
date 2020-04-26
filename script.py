@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import os
 
 dotfiles_dir = os.path.join(os.environ['HOME'], '.dotfiles')

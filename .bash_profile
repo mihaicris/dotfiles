@@ -638,6 +638,7 @@ function completions() {
         # shellcheck disable=SC1090
         source "$PREFIX/$FILE" || printf "Error: Completion file not found: ${RED}%s${NORMAL}\n" "$FILE" >&2
     done
+    __GIT_PROMPT_DIR="/usr/local/opt/bash-git-prompt/share"
 }
 
 completions
