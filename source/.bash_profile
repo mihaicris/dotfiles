@@ -477,7 +477,7 @@ function daily() {
 
 function tickets() {
     AUTHOR=${1:-$(git config user.name)}
-    printf "\n${LIGHT_GREEN}}mTickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
+    printf "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
     SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
     # shellcheck disable=SC2016
     COMMAND='git log --all --author="$AUTHOR" --format="%s" --no-merges'
@@ -541,11 +541,8 @@ function p() {
 }
 
 function vst() {
-    if [ -z "$1" ]; then
-        open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items
-    else
-        open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items/?workitem="$1"
-    fi
+    [ -z "$1" ] && END="" || END='/?workitem='"$1"
+    open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items$END
 }
 
 function def() {
