@@ -1,1 +1,0 @@
-command alias flush e (void)[CATransaction flush]
