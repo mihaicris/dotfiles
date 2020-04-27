@@ -290,6 +290,9 @@ function ccb() {
         if git checkout -q -b "$LOCAL_BRANCH" --track "$REMOTE_BRANCH" ; then
             printf "\nSuccessfuly checked out locally the remote branch ${LIGHT_GREEN}%s${NORMAL}.\n\n" "$LOCAL_BRANCH"
             return 0
+        else
+            printf "\nCould not switch to the remote branch: ${BLUE}%s${NORMAL}.\n\n" "$REMOTE_BRANCH"
+            return 1
         fi
     fi
 }
@@ -542,7 +545,7 @@ function p() {
 
 function vst() {
     [ -z "$1" ] && END="" || END='/?workitem='"$1"
-    open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items$END
+    open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items"$END"
 }
 
 function def() {
