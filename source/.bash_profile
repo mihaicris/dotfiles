@@ -233,17 +233,17 @@ function ccb() {
     REMOTE_NAME_COUNT=$(git remote | wc -l)
     REMOTE_NAME=$(git remote)
 
-    if (( $# != 1 )); then
-        printf "%b\nPlease specifiy one argument as branch to checkout locally from remote.%b\n\n" "${LIGHT_GREEN}" "${NORMAL}"
-        return 1
-    fi
-
     if (( REMOTE_NAME_COUNT != 1 )); then
         printf "Only one remote is supported.\n\n"
         return 1
     fi
 
-    RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
+    if [[ -z $CRITERIA ]]; then
+        RESULTS=$(git branch -r | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
+    else
+        RESULTS=$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")
+    fi
+
     COUNT=$(echo "${RESULTS}" | sed '/^\s*$/d' | wc -l)
 
     if (( COUNT == 0 )); then
