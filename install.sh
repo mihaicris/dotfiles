@@ -8,5 +8,5 @@ for FILE in $FILES; do
     echo "Linking $FILE"
     ln -f -s "$SOURCE_PATH/$FILE" ~/"$FILE"
 done
-popd >/dev/null || exit 1A
+popd >/dev/null || exit 1
 echo "Done."
