@@ -11,5 +11,3 @@ zstyle ':completion:*' menu select
 setopt COMPLETE_ALIASES
 
 PROMPT='%{$fg[green]%}%{$reset_color%} %~ $(git_super_status) '
-
-source ~/.common_shell
