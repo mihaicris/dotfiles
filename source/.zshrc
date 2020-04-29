@@ -501,11 +501,11 @@ function sedi() {
 #        printf "%s\n\n" "$GIT_OUTPUT"
 #    fi
 #}
-#
-#function ios() {
-#    cd ~/bpme/uk || return
-#}
-#
+
+function ios() {
+    cd ~/bpme/uk || return
+}
+
 #function daily() {
 #    heading "Daily Standup"
 #    list_commits "$@"
@@ -521,7 +521,6 @@ function sedi() {
 #    AUTHOR=${1:-$(git config user.name)}
 #    printf "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
 #    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-#    # shellcheck disable=SC2016
 #    COMMAND='git log --all --author="$AUTHOR" --format="%s" --no-merges'
 #    {
 #        eval "$COMMAND" #n
@@ -531,16 +530,16 @@ function sedi() {
 #            popdir
 #        done
 #    } | grep -oE "[A-Za-z]+\/\d+" \
-#        | grep -oE "[0-9]+" \
-#        | sort -n -u \
-#        | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}\n"
-#            printf "\n"
-#        }
-#
-#    function oo() {
-#        xed .
-#    }
-#
+#      | grep -oE "[0-9]+" \
+#      | sort -n -u \
+#      | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}\n"
+#    printf "\n"
+#}
+
+function oo() {
+    xed .
+}
+
 #function cart() {
 #    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
 #    ios_patches
@@ -657,26 +656,4 @@ function sedi() {
 #    heading 'Updating cocoapods...'
 #    pod repo update
 #}
-#
-#function completions() {
-#    PREFIX=$(brew --prefix)
-#    FILES=(
-#        "etc/bash_completion"
-#        "etc/bash_completion.d/brew"
-#        "etc/bash_completion.d/tmux"
-#        "etc/bash_completion.d/bundler"
-#        "etc/bash_completion.d/gem"
-#        "etc/bash_completion.d/gradle"
-#        "etc/bash_completion.d/carthage"
-#        "etc/bash_completion.d/git-completion.bash"
-#        "etc/bash_completion.d/tig-completion.bash"
-#        "etc/bash_completion.d/youtube-dl.bash-completion"
-#        "opt/bash-git-prompt/share/gitprompt.sh"
-#    )
-#    for FILE in "${FILES[@]}"; do
-#        # shellcheck disable=SC1090
-#        source "$PREFIX/$FILE" || printf "Error: Completion file not found: ${RED}%s${NORMAL}\n" "$FILE" >&2
-#    done
-#}
-#
-#completions
+
