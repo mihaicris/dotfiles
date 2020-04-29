@@ -1,17 +1,33 @@
 #!/usr/bin/env zsh
 
 autoload -Uz promptinit && promptinit
-
 autoload -Uz compinit && compinit
-zstyle ':completion:*' menu select
-
 autoload -Uz colors && colors
 
 setopt COMPLETE_ALIASES
 setopt AUTOCD
+# share history across multiple zsh sessions
+setopt SHARE_HISTORY
+# append to history
+setopt APPEND_HISTORY
+# show more data in history
+setopt EXTENDED_HISTORY
+# adds commands as they are typed, not at shell exit
+setopt INC_APPEND_HISTORY
+# expire duplicates first
+setopt HIST_EXPIRE_DUPS_FIRST
+# do not store duplications
+setopt HIST_IGNORE_DUPS
+#ignore duplicates when searching
+setopt HIST_FIND_NO_DUPS
+# removes blank lines from history
+setopt HIST_REDUCE_BLANKS
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 PROMPT='$(git_super_status) %{$fg[yellow]%}%~%{$reset_color%} '
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+
+zstyle ':completion:*' menu select
 
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -43,18 +59,40 @@ alias rb="source ~/.zshrc"
 alias s="git status"
 alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
-#function pushdir() {
-#    command pushd "$@" > /dev/null || printf "%b" "Error, could not popd to previous folder\n" >&2
-#}
-#
-## shellcheck disable=SC2120
-#function popdir() {
-#    command popd "$@" > /dev/null || printf "%b" "Error, could not popd to previous folder\n" >&2
-#}
-#
-#function heading() {
-#    printf "\n${BOLD}${BG_BLUE}%s${NORMAL}\n\n" "$@"
-#}
+NORMAL="\033[0m"
+BOLD="\033[1m"
+UNDERLINE="\033[4m"
+#BLACK="\033[30m"
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+BLUE="\033[34m"
+#MAGENTA="\033[35m"
+#CYAN="\033[36m"
+LIGHT_GRAY="\033[37m"
+#DARK_GRAY="\033[90m"
+LIGHT_RED="\033[91m"
+LIGHT_GREEN="\033[92m"
+LIGHT_YELLOW="\033[93m"
+LIGHT_BLUE="\033[94m"
+#LIGHT_MAGENTA="\033[95m"
+#LIGHT_CYAN="\033[96m"
+#WHITE="\033[97m"
+BG_BLUE="\033[44m"
+#BG_LIGHT_BLUE="\033[104m"
+#BG_DARK_GRAY="\033[100m"
+
+function pushdir() {
+    pushd "$@" > /dev/null || return 1
+}
+
+function popdir() {
+    popd "$@" > /dev/null || return 1
+}
+
+function heading() {
+    printf "\n${BOLD}${BG_BLUE}%s${NORMAL}\n\n" "$@"
+}
 #
 #function gr() {
 #    heading 'Changing to git root folder'
