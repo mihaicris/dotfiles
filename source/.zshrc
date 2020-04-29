@@ -119,154 +119,154 @@ function gr() {
         cd "$(git rev-parse --show-toplevel)" || return
     fi
 }
+
+function ggfa() {
+    prune
+    fetch
+    status
+}
+
+function rr() {
+    unstage
+    discard
+    status
+}
+
+function rrr() {
+    unskipAll
+    unstage
+    discard
+    status
+}
+
+function rrrr() {
+    unskipAll
+    unstage
+    discard
+    clean_untracked
+    status
+}
+
+function rrrrr() {
+    unskipAll
+    unstage
+    discard
+    gclean
+    status
+}
+
+function prune() {
+    heading "Pruning branches"
+    git remote prune origin
+}
+
+function fetch() {
+    heading "Fetching remotes"
+    git fetch --prune --all --tags
+}
 #
-#function ggfa() {
-#    prune
-#    fetch
-#    status
-#}
-#
-#function rr() {
-#    unstage
-#    discard
-#    status
-#}
-#
-#function rrr() {
-#    unskipAll
-#    unstage
-#    discard
-#    status
-#}
-#
-#function rrrr() {
-#    unskipAll
-#    unstage
-#    discard
-#    clean_untracked
-#    status
-#}
-#
-#function rrrrr() {
-#    unskipAll
-#    unstage
-#    discard
-#    gclean
-#    status
-#}
-#
-#function prune() {
-#    heading "Pruning branches"
-#    git remote prune origin
-#}
-#
-#function fetch() {
-#    heading "Fetching remotes"
-#    git fetch --prune --all --tags
-#}
-#
-#function status() {
-#    heading "Status"
-#    git status
-#    echo ""
-#}
-#
-#function unstage() {
-#    heading "Unstaging local changes"
-#    FILES=$(git diff --name-only --cached | wc -l )
-#    if (( FILES > 0 )); then
-#        git diff --name-only --cached 
-#        printf "\n"
-#        git reset HEAD --quiet
-#    else
-#        printf "* Nothing to unstage.\n"
-#    fi
-#}
-#
-#function discard() {
-#    heading "Discarding local changes"
-#    pushdir "$(git rev-parse --show-toplevel)"
-#    FILES=$(git diff --name-only | wc -l)
-#    if (( FILES > 0 )); then
-#        git diff --name-only
-#        git checkout . --quiet
-#    else
-#        printf "* Nothing to discard.\n"
-#    fi
-#    popdir
-#}
-#
-#function clean_untracked() {
-#    heading "Cleaning untracked files"
-#    FILES=$(git clean -fdn | wc -l )
-#    if (( FILES > 0 )); then
-#        git clean -fd
-#    else
-#        printf "* Nothing to clean.\n"
-#    fi
-#}
-#
-#function gclean() {
-#    heading "Cleaning ignored files"
-#    pushdir "$(git rev-parse --show-toplevel)"
-#    FILES=$(git clean -xdfn -e Carthage/ | wc -l )
-#    if (( FILES > 0 )); then
-#        git clean -xdf -e Carthage/
-#    else
-#        printf "* Nothing to clean.\n"
-#    fi
-#    popdir
-#}
-#
-#function recreate_files() {
-#    heading "Recreating all files"
-#    pushdir "$(git rev-parse --show-toplevel)"
-#    git rm --cached -r .
-#    git reset --hard
-#    printf "\n"
-#    popdir
-#}
-#
-#function unskipAll() {
-#    heading "Reactivating skipped files from git"
-#    FILES=$(git ls-files -v | grep '^S' | cut -d ' ' -f 2 | wc -l)
-#    if ((  FILES > 0 )); then
-#        git ls-files -v | grep '^S' | cut -d ' ' -f 2
-#        echo ""
-#        git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
-#    else 
-#        printf "* Nothing to reactivate.\n"
-#    fi
-#}
-#
-#function skip() {
-#    git update-index --skip-worktree "$@"
-#}
-#
-#function unskip() {
-#    git update-index --no-skip-worktree "$@"
-#}
-#
-#function hh() {
-#    heading "Detaching HEAD to previous commit"
-#    git checkout HEAD~1
-#    printf "\n"
-#}
-#
-#function check() {
-#    heading "Skipped files"
-#    git ls-files -v | grep '^S' | cut -d ' ' -f 2
-#    printf "\n"
-#}
-#
-#function sedi() {
-#    if sed --version >/dev/null 2>&1 ; then 
-#        sed -b -i -- "$@"
-#    else
-#        sed -i "" "$@"
-#    fi
-#}
-#
+function status() {
+    heading "Status"
+    git status
+    echo ""
+}
+
+function unstage() {
+    heading "Unstaging local changes"
+    FILES=$(git diff --name-only --cached | wc -l )
+    if (( FILES > 0 )); then
+        git diff --name-only --cached 
+        printf "\n"
+        git reset HEAD --quiet
+    else
+        printf "* Nothing to unstage.\n"
+    fi
+}
+
+function discard() {
+    heading "Discarding local changes"
+    pushdir "$(git rev-parse --show-toplevel)"
+    FILES=$(git diff --name-only | wc -l)
+    if (( FILES > 0 )); then
+        git diff --name-only
+        git checkout . --quiet
+    else
+        printf "* Nothing to discard.\n"
+    fi
+    popdir
+}
+
+function clean_untracked() {
+    heading "Cleaning untracked files"
+    FILES=$(git clean -fdn | wc -l )
+    if (( FILES > 0 )); then
+        git clean -fd
+    else
+        printf "* Nothing to clean.\n"
+    fi
+}
+
+function gclean() {
+    heading "Cleaning ignored files"
+    pushdir "$(git rev-parse --show-toplevel)"
+    FILES=$(git clean -xdfn -e Carthage/ | wc -l )
+    if (( FILES > 0 )); then
+        git clean -xdf -e Carthage/
+    else
+        printf "* Nothing to clean.\n"
+    fi
+    popdir
+}
+
+function recreate_files() {
+    heading "Recreating all files"
+    pushdir "$(git rev-parse --show-toplevel)"
+    git rm --cached -r .
+    git reset --hard
+    printf "\n"
+    popdir
+}
+
+function unskipAll() {
+    heading "Reactivating skipped files from git"
+    FILES=$(git ls-files -v | grep '^S' | cut -d ' ' -f 2 | wc -l)
+    if ((  FILES > 0 )); then
+        git ls-files -v | grep '^S' | cut -d ' ' -f 2
+        echo ""
+        git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
+    else 
+        printf "* Nothing to reactivate.\n"
+    fi
+}
+
+function skip() {
+    git update-index --skip-worktree "$@"
+}
+
+function unskip() {
+    git update-index --no-skip-worktree "$@"
+}
+
+function hh() {
+    heading "Detaching HEAD to previous commit"
+    git checkout HEAD~1
+    printf "\n"
+}
+
+function check() {
+    heading "Skipped files"
+    git ls-files -v | grep '^S' | cut -d ' ' -f 2
+    printf "\n"
+}
+
+function sedi() {
+    if sed --version >/dev/null 2>&1 ; then 
+        sed -b -i -- "$@"
+    else
+        sed -i "" "$@"
+    fi
+}
+
 #function ccb() {
 #    CRITERIA=$1
 #    REMOTE_NAME_COUNT=$(git remote | wc -l)
