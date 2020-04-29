@@ -39,7 +39,7 @@ autoload bashcompinit && bashcompinit
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 
-PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{240}%~ $(git_super_status) %f%# '
+PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{240}%~%f $(git_super_status) %# '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 export LANG=en_US.UTF-8
