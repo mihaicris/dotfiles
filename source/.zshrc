@@ -39,7 +39,8 @@ autoload bashcompinit && bashcompinit
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 
-PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{240}%~%f $(git_super_status) %# '
+PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{027}%~%f $ '
+RPROMPT='$(git_super_status)'
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 export LANG=en_US.UTF-8
@@ -335,7 +336,7 @@ function sedi() {
 #        fi
 #    fi
 #}
-#
+
 #function devteam() {
 #    TEAM=${1:-"S8V3V9GFN2"}
 #    pushdir "$(git rev-parse --show-toplevel)"
@@ -345,35 +346,35 @@ function sedi() {
 #    done
 #    popdir
 #}
-#
-#function transform_reduce() {
-#    for a in *.mov; do
-#        ffmpeg -i "$a" -b:v 2048k -vf scale=2048:-1 "${a%.*}.mp4"
-#    done
-#}
-#
-#function transform_ts_to_mp4() {
-#    for a in *.ts; do
-#        ffmpeg -i "$a" -c copy "${a%.*}.mp4"
-#    done
-#}
-#
-#function transform_mkv_to_mp4() {
-#    for a in *.mkv; do
-#        ffmpeg -i "$a" -c copy "${a%.*}.mp4"
-#    done
-#}
-#
-#function transform_m4a_to_mp3() {
-#    ffmpeg -i "$1" -acodec libmp3lame -q:a 2 "${1%.*}.mp3"
-#}
-#
-#function transform_flac_to_m4a() {
-#    for a in *.flac; do
-#        ffmpeg -i "$a" -map 0:0 -acodec alac "${a%.*}.m4a"
-#    done
-#}
-#
+
+function transform_reduce() {
+    for a in *.mov; do
+        ffmpeg -i "$a" -b:v 2048k -vf scale=2048:-1 "${a%.*}.mp4"
+    done
+}
+
+function transform_ts_to_mp4() {
+    for a in *.ts; do
+        ffmpeg -i "$a" -c copy "${a%.*}.mp4"
+    done
+}
+
+function transform_mkv_to_mp4() {
+    for a in *.mkv; do
+        ffmpeg -i "$a" -c copy "${a%.*}.mp4"
+    done
+}
+
+function transform_m4a_to_mp3() {
+    ffmpeg -i "$1" -acodec libmp3lame -q:a 2 "${1%.*}.mp3"
+}
+
+function transform_flac_to_m4a() {
+    for a in *.flac; do
+        ffmpeg -i "$a" -map 0:0 -acodec alac "${a%.*}.m4a"
+    done
+}
+
 #function pull_branch() {
 #    BRANCH_REF=$(git symbolic-ref -q HEAD)
 #
@@ -386,7 +387,7 @@ function sedi() {
 #        git pull
 #    fi
 #}
-#
+
 #function ff_submodules() {
 #    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
 #    [[ -z $SUBMODULES ]] && return 0
@@ -399,7 +400,7 @@ function sedi() {
 #        printf "%b" "\n"
 #    done
 #}
-#
+
 #function ff_worktrees() {
 #    WORKDIRS=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
 #    heading "Fast forwarding all worktrees"
@@ -411,7 +412,7 @@ function sedi() {
 #        printf "%b" "\n"
 #    done
 #}
-#
+
 #function ff() {
 #    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
 #    pushdir "$TOP_LEVEL_DIR"
@@ -419,7 +420,7 @@ function sedi() {
 #    ff_worktrees
 #    popdir
 #}
-#
+
 #function refresh() {
 #    git fetch --all -p
 #    CURRENT_BRANCH=$(git branch --show-current)
@@ -434,7 +435,7 @@ function sedi() {
 #    fi
 #    printf "\n"
 #}
-#
+
 #function gg() {
 #    BRANCH=${1:-apimaindevelopment}
 #    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
@@ -452,7 +453,7 @@ function sedi() {
 #    done
 #    popdir
 #}
-#
+
 #function list_commits() {
 #    if [[ -z "$1" ]]; then
 #        AUTHOR=$(git config user.name);
@@ -516,7 +517,7 @@ function ios() {
 #        popdir 
 #    done
 #}
-#
+
 #function tickets() {
 #    AUTHOR=${1:-$(git config user.name)}
 #    printf "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
@@ -540,60 +541,59 @@ function oo() {
     xed .
 }
 
-#function cart() {
-#    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
-#    ios_patches
-#}
-#
-#function cart_toolchain() {
-#    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain "$1"
-#}
-#
-#function cart_update() {
-#    carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries
-#}
-#
-#function cart_update_toolchain() {
-#    carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain "$1"
-#}
-#
-#function xcode() {
-#    sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
-#    cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
-#}
-#
-#function xcode10() {
-#    sudo xcode-select -s "/Applications/Xcode10.3.app/Contents/Developer"
-#    cp ~/.dotfiles/xcode/keybindings/Custom10.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
-#}
-#
-#function xcodebeta() {
-#
-#    sudo xcode-select -s "/Applications/Xcode-beta.app/Contents/Developer"
-#    cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
-#}
-#
-#function owa() {
-#    open https://outlook.office.com/mail/inbox
-#}
-#
-#function p() {
-#    open https://bp-vsts.visualstudio.com/BPme/_apps/hub/ryanstedman.tfs-pullrequest-dashboard.tfs-pullrequest-dashboard
-#}
-#
-#function vst() {
-#    [ -z "$1" ] && END="" || END='/?workitem='"$1"
-#    open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items"$END"
-#}
-#
-#function def() {
-#    open https://bp-vsts.visualstudio.com/BPme/_queries/query/6661bd32-ba84-4689-84ba-6850653f115e/
-#}
-#
-#function work() {
-#    open https://bp-vsts.visualstudio.com/BPme/_queries/query/a23efe58-988c-49ce-a397-9ef240b1c696/ 
-#}
-#
+function cart() {
+    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries
+    ios_patches
+}
+
+function cart_toolchain() {
+    carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain "$1"
+}
+
+function cart_update() {
+    carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries
+}
+
+function cart_update_toolchain() {
+    carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries --toolchain "$1"
+}
+
+function xcode() {
+    sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
+    cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
+}
+
+function xcode10() {
+    sudo xcode-select -s "/Applications/Xcode10.3.app/Contents/Developer"
+    cp ~/.dotfiles/xcode/keybindings/Custom10.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
+}
+
+function xcodebeta() {
+    sudo xcode-select -s "/Applications/Xcode-beta.app/Contents/Developer"
+    cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
+}
+
+function owa() {
+    open https://outlook.office.com/mail/inbox
+}
+
+function p() {
+    open https://bp-vsts.visualstudio.com/BPme/_apps/hub/ryanstedman.tfs-pullrequest-dashboard.tfs-pullrequest-dashboard
+}
+
+function vst() {
+    [ -z "$1" ] && END="" || END='/?workitem='"$1"
+    open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items"$END"
+}
+
+function def() {
+    open https://bp-vsts.visualstudio.com/BPme/_queries/query/6661bd32-ba84-4689-84ba-6850653f115e/
+}
+
+function work() {
+    open https://bp-vsts.visualstudio.com/BPme/_queries/query/a23efe58-988c-49ce-a397-9ef240b1c696/ 
+}
+
 #function gpx() {
 #    FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
 #    skip "$FILE"
@@ -637,23 +637,23 @@ function oo() {
 #</gpx>
 #EOF
 #}
-#
-#function search() {
-#    git log -S"$1"
-#}
-#
-#function system_tasks() {
-#    heading 'Updating gem...'
-#    sudo gem update --no-document
-#
-#    heading 'Updating LaTex...'
-#    sudo tlmgr update --self
-#    sudo tlmgr update --all
-#
-#    heading 'Upgrading brew...'
-#    brew upgrade && brew cask upgrade
-#
-#    heading 'Updating cocoapods...'
-#    pod repo update
-#}
+
+function search() {
+    git log -S"$1"
+}
+
+function system_tasks() {
+    heading 'Updating gem...'
+    sudo gem update --no-document
+
+    heading 'Updating LaTex...'
+    sudo tlmgr update --self
+    sudo tlmgr update --all
+
+    heading 'Upgrading brew...'
+    brew upgrade && brew cask upgrade
+
+    heading 'Updating cocoapods...'
+    pod repo update
+}
 
