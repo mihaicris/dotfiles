@@ -39,7 +39,7 @@ autoload bashcompinit && bashcompinit
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 
-PROMPT='%(?.%F{green}✔.%F{red}?%?)%f $(git_super_status) %F{240}%~ %f%# '
+PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{240}%~ $(git_super_status) %f%# '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 export LANG=en_US.UTF-8
@@ -107,18 +107,18 @@ function popdir() {
 function heading() {
     printf "\n${BOLD}${BG_BLUE}%s${NORMAL}\n\n" "$@"
 }
-#
-#function gr() {
-#    heading 'Changing to git root folder'
-#    if git rev-parse --is-inside-git-dir &>/dev/null ; then
-#        cd "$(git rev-parse --git-dir)" || return
-#        cd .. || return
-#        return
-#    fi
-#    if git rev-parse &>/dev/null ; then 
-#        cd "$(git rev-parse --show-toplevel)" || return
-#    fi
-#}
+
+function gr() {
+    heading 'Changing to git root folder'
+    if git rev-parse --is-inside-git-dir &>/dev/null ; then
+        cd "$(git rev-parse --git-dir)" || return
+        cd .. || return
+        return
+    fi
+    if git rev-parse &>/dev/null ; then 
+        cd "$(git rev-parse --show-toplevel)" || return
+    fi
+}
 #
 #function ggfa() {
 #    prune
