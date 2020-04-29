@@ -498,9 +498,7 @@ function tickets() {
         for REPO in $REPOS; do
             git -C $REPO log --all --author="$AUTHOR" --format="%s" --no-merges
         done
-    } | grep -oE "[A-Za-z]+\/\d+" \
-      | grep -oE "[0-9]+" \
-      | sort -n -u \
+    } | grep -oE "[A-Za-z]+\/\d+" | grep -oE "[0-9]+" | sort -n -u \
       | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}\n"
     printf "\n"
 }
