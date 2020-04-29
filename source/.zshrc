@@ -2,39 +2,25 @@
 
 emulate -LR zsh
 
-#
 setopt COMPLETE_ALIASES
-#
 setopt AUTOCD
-# share history across multiple zsh sessions
 setopt SHARE_HISTORY
-# append to history
 setopt APPEND_HISTORY
-# show more data in history
 setopt EXTENDED_HISTORY
-# adds commands as they are typed, not at shell exit
 setopt INC_APPEND_HISTORY
-# expire duplicates first
 setopt HIST_EXPIRE_DUPS_FIRST
-# do not store duplications
 setopt HIST_IGNORE_DUPS
-#ignore duplicates when searching
 setopt HIST_FIND_NO_DUPS
-# removes blank lines from history
 setopt HIST_REDUCE_BLANKS
-#verify history on substitution
 setopt HIST_VERIFY
 
-# menu selection
 zstyle ':completion:*' menu select
-# partial completion suggestions
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
 
 autoload -Uz promptinit && promptinit
 autoload -Uz compinit && compinit
 autoload -Uz colors && colors
-# load bashcompinit for some old bash completions
 autoload bashcompinit && bashcompinit
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
@@ -260,14 +246,6 @@ function check() {
     printf "\n"
 }
 
-function sedi() {
-    if sed --version >/dev/null 2>&1 ; then 
-        sed -b -i -- "$@"
-    else
-        sed -i "" "$@"
-    fi
-}
-
 #function ccb() {
 #    CRITERIA=$1
 #    REMOTE_NAME_COUNT=$(git remote | wc -l)
@@ -337,15 +315,13 @@ function sedi() {
 #    fi
 #}
 
-#function devteam() {
-#    TEAM=${1:-"S8V3V9GFN2"}
-#    pushdir "$(git rev-parse --show-toplevel)"
-#    FILES=$(find . -name "project.pbxproj")
-#    for FILE in $FILES; do
-#        sedi "s/\(DEVELOPMENT_TEAM = \).*\;/\1$TEAM\;/g" "$FILE"
-#    done
-#    popdir
-#}
+function devteam() {
+    TEAM=${1:-"S8V3V9GFN2"}
+    pushdir "$(git rev-parse --show-toplevel)"
+    find . -name "project.pbxproj" \
+           -exec sed -i '' -e "s|\(DEVELOPMENT_TEAM = \).*\;|\1${TEAM}\;|g" {} \;
+    popdir
+}
 
 function transform_reduce() {
     for a in *.mov; do
