@@ -490,7 +490,6 @@ function transform_flac_to_m4a() {
 #}
 
 function tickets() {
-    set -x
     AUTHOR=${1:-$(git config user.name)}
     printf "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
     REPOS=("." "${(@f)$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')}")
