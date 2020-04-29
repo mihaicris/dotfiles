@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+emulate -LR zsh
+
 #
 setopt COMPLETE_ALIASES
 #
@@ -37,7 +39,7 @@ autoload bashcompinit && bashcompinit
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 
-PROMPT='$(git_super_status) %{$fg[yellow]%}%~%{$reset_color%} '
+PROMPT='%(?.%F{green}✔.%F{red}?%?)%f $(git_super_status) %F{240}%~ %f%# '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 export LANG=en_US.UTF-8
