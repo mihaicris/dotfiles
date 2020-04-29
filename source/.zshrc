@@ -1,10 +1,8 @@
 #!/usr/bin/env zsh
 
-autoload -Uz promptinit && promptinit
-autoload -Uz compinit && compinit
-autoload -Uz colors && colors
-
+#
 setopt COMPLETE_ALIASES
+#
 setopt AUTOCD
 # share history across multiple zsh sessions
 setopt SHARE_HISTORY
@@ -22,12 +20,25 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 # removes blank lines from history
 setopt HIST_REDUCE_BLANKS
+#verify history on substitution
+setopt HIST_VERIFY
+
+# menu selection
+zstyle ':completion:*' menu select
+# partial completion suggestions
+zstyle ':completion:*' list-suffixes
+zstyle ':completion:*' expand prefix suffix
+
+autoload -Uz promptinit && promptinit
+autoload -Uz compinit && compinit
+autoload -Uz colors && colors
+# load bashcompinit for some old bash completions
+autoload bashcompinit && bashcompinit
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
+
 PROMPT='$(git_super_status) %{$fg[yellow]%}%~%{$reset_color%} '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
-
-zstyle ':completion:*' menu select
 
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -38,6 +49,7 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/opt/gettext/bin:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
