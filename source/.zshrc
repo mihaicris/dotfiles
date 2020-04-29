@@ -21,7 +21,6 @@ zstyle ':completion:*' expand prefix suffix
 autoload -Uz promptinit && promptinit
 autoload -Uz compinit && compinit
 autoload -Uz colors && colors
-autoload bashcompinit && bashcompinit
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 
@@ -479,10 +478,6 @@ function transform_flac_to_m4a() {
 #    fi
 #}
 
-function ios() {
-    cd ~/bpme/uk || return
-}
-
 #function daily() {
 #    heading "Daily Standup"
 #    list_commits "$@"
@@ -494,27 +489,28 @@ function ios() {
 #    done
 #}
 
-#function tickets() {
-#    AUTHOR=${1:-$(git config user.name)}
-#    printf "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
-#    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-#    COMMAND='git log --all --author="$AUTHOR" --format="%s" --no-merges'
-#    {
-#        eval "$COMMAND" #n
-#        for SUBMODULE in $SUBMODULES; do
-#            pushdir "$SUBMODULE"
-#            eval "$COMMAND"
-#            popdir
-#        done
-#    } | grep -oE "[A-Za-z]+\/\d+" \
-#      | grep -oE "[0-9]+" \
-#      | sort -n -u \
-#      | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}\n"
-#    printf "\n"
-#}
+function tickets() {
+    set -x
+    AUTHOR=${1:-$(git config user.name)}
+    printf "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
+    REPOS=("." "${(@f)$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')}")
+    {
+        for REPO in $REPOS; do
+            git -C $REPO log --all --author="$AUTHOR" --format="%s" --no-merges
+        done
+    } | grep -oE "[A-Za-z]+\/\d+" \
+      | grep -oE "[0-9]+" \
+      | sort -n -u \
+      | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}\n"
+    printf "\n"
+}
 
 function oo() {
     xed .
+}
+
+function ios() {
+    cd ~/bpme/uk || return
 }
 
 function cart() {
