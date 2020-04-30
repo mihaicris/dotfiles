@@ -612,5 +612,15 @@ function system_tasks() {
     pod repo update
 }
 
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+function completions() {
+    PREFIX=$(brew --prefix)
+    FILES=(
+        "share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+        "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    )
+    for FILE in $FILES; do
+        source "$PREFIX/$FILE" || printf "Error: Completion file not found: ${RED}%s${NORMAL}\n" "$FILE" >&2
+    done
+}
+
+completions
