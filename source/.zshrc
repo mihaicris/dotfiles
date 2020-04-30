@@ -24,8 +24,7 @@ autoload -Uz colors && colors
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 
-PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{027}%~%f $ '
-#RPROMPT='$(git_super_status)'
+PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{027}%~%f $(git_super_status) $ '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 export LANG=en_US.UTF-8
