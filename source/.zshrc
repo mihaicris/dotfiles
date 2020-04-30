@@ -292,7 +292,7 @@ function ccb() {
 
     IS_ALREADY_LOCAL_BRANCH=$(git branch | grep "$LOCAL_BRANCH")
 
-    if [ -n "$IS_ALREADY_LOCAL_BRANCH" ]; then
+    if [[ -n "$IS_ALREADY_LOCAL_BRANCH" ]]; then
         if git checkout -q "$LOCAL_BRANCH" ; then
             printf "\nSuccessfuly switched to the local branch ${LIGHT_GREEN}%s${NORMAL}.\n\n" "$LOCAL_BRANCH"
             return 0
@@ -348,38 +348,34 @@ function transform_flac_to_m4a() {
 }
 
 function pull_branch() {
-    BRANCH_REF=$(git symbolic-ref -q HEAD)
-    if [ -z $BRANCH_REF ]; then
+    REPO_PATH=$1
+    [[ -d $REPO_PATH ]] || { echo "Repo path not valid!"; return 1 ; }
+    BRANCH_REF=$(git -C $REPO_PATH symbolic-ref -q HEAD)
+    if [[ -z $BRANCH_REF ]]; then
         printf "%bSkipping (detached state).%b\n" "${LIGHT_RED}" "${NORMAL}"
     else
         CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
         printf "${LIGHT_YELLOW}[%s]${NORMAL}\n" "$CURRENT_BRANCH"
-        git fetch --all
-        git pull
+        git -C $REPO_PATH fetch --all
+        git -C $REPO_PATH pull
     fi
+    printf "\n"
 }
 
 function ff() {
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-    pushdir $TOP_LEVEL_DIR
-    WORKDIRS=(${(@f)$(git worktree list --porcelain  | grep worktree | awk '{print $2}')})
+    WORKDIRS=(${(@f)$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree | awk '{print $2}')})
+    (( $#WORKDIRS == 1 )) && WORKDIRS=($TOP_LEVEL_DIR)
     for WORKDIR in $WORKDIRS; do
-        pushdir $WORKDIR || continue
-        printf "${UNDERLINE}${GREEN}%b${NORMAL} " "$WORKDIR"
-        pull_branch
-        printf "\n"
-        SUBMODULES=(${(@f)$(git config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
+        printf "${UNDERLINE}${BOLD}${BLUE}%b${NORMAL} " $WORKDIR
+        pull_branch $WORKDIR
+        SUBMODULES=(${(@f)$(git config --file $WORKDIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
         (( $#SUBMODULES == 0 )) && continue
         for SUBMODULE in $SUBMODULES; do
-            printf "${UNDERLINE}${GREEN}%b${NORMAL} " "$SUBMODULE"
-            pushdir $SUBMODULE || { printf "Submodule not fetched.\n\n" ; continue }
-            pull_branch
-            popdir
-            printf "\n"
+            printf "${UNDERLINE}${BOLD}${BLUE}%b${NORMAL} " $SUBMODULE
+            pull_branch $WORKDIR/$SUBMODULE
         done
-        popdir
     done
-    popdir
 }
 
 function switch_branch() {
@@ -409,7 +405,7 @@ function gg() {
     BRANCH=${1:-apimaindevelopment}
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
     SUBMODULES=(${(@f)$(git config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
-    printf "\n${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$(basename "$TOP_LEVEL_DIR")"
+    printf "\n${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" $TOP_LEVEL_DIR
     
     switch_branch $TOP_LEVEL_DIR $BRANCH
     for SUBMODULE in $SUBMODULES; do
