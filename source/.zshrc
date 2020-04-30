@@ -360,7 +360,6 @@ function pull_branch() {
 }
 
 function ff() {
-    #set -x
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
     pushdir $TOP_LEVEL_DIR
     WORKDIRS=(${(@f)$(git worktree list --porcelain  | grep worktree | awk '{print $2}')})
@@ -381,7 +380,6 @@ function ff() {
         popdir
     done
     popdir
-    set +x
 }
 
 #function refresh() {
