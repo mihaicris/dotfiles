@@ -549,49 +549,49 @@ function work() {
     open https://bp-vsts.visualstudio.com/BPme/_queries/query/a23efe58-988c-49ce-a397-9ef240b1c696/ 
 }
 
-#function gpx() {
-#    FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
-#    skip "$FILE"
-#
-#    LOCATIONS=()
-#    NAMES=()
-#    LATITUDINES=()
-#    LONGITUDINES=()
-#
-#    LOCATIONS=(
-#        'Romania IBM Bucharest;44.4356676;26.0544182'
-#        'Romania IBM Brasov;45.6687406;25.6194894'
-#        'Holland Site;51.9386;4.1083'
-#        'Australia Site;-37.821067;144.966071'
-#        'US one car wash;41.264578;-96.161076'
-#    )
-#
-#    for LOCATION in "${LOCATIONS[@]}"; do
-#        IFS=";" read -r -a arr <<< "${LOCATION}"
-#        NAMES=("${NAMES[@]}" "${arr[0]}")
-#        LATITUDINES=("${LATITUDINES[@]}" "${arr[1]}")
-#        LONGITUDINES=("${LONGITUDINES[@]}" "${arr[2]}")
-#    done
-#
-#    select NAME in "${NAMES[@]}"; do
-#        if [[ -n $NAME ]]; then
-#            (( INDEX = REPLY-1 ))
-#            break
-#        else
-#            printf "Wrong selection.\n"
-#        fi
-#    done
-#    NAME=${NAMES[$INDEX]}
-#    LAT=${LATITUDINES[$INDEX]}
-#    LONG=${LONGITUDINES[$INDEX]}
-#
-#    cat <<EOF > "$FILE"
-#<?xml version="1.0"?>
-#<gpx version="1.1" creator="Xcode">
-#    <wpt lat="$LAT" lon="$LONG"></wpt><!--Custom location: $NAME-->
-#</gpx>
-#EOF
-#}
+function gpx() {
+    FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
+    skip "$FILE"
+
+    LOCATIONS=()
+    NAMES=()
+    LATITUDINES=()
+    LONGITUDINES=()
+
+    LOCATIONS=(
+       'Romania IBM Bucharest;44.4356676;26.0544182'
+       'Romania IBM Brasov;45.6687406;25.6194894'
+       'Holland Site;51.9386;4.1083'
+       'Australia Site;-37.821067;144.966071'
+       'US one car wash;41.264578;-96.161076'
+    )
+
+    for LOCATION in $LOCATIONS; do
+        IFS=";" read -r -A arr <<< "${LOCATION}"
+        NAMES=("${NAMES[@]}" "${arr[1]}")
+        LATITUDINES=("${LATITUDINES[@]}" "${arr[2]}")
+        LONGITUDINES=("${LONGITUDINES[@]}" "${arr[3]}")
+    done
+
+    select NAME in $NAMES; do
+        if [[ -n $NAME ]]; then
+            break
+        else
+            printf "Wrong selection.\n"
+        fi
+    done
+    
+    NAME=${NAMES[$REPLY]}
+    LAT=${LATITUDINES[$REPLY]}
+    LONG=${LONGITUDINES[$REPLY]}
+    
+    cat <<EOF > "$FILE"
+<?xml version="1.0"?>
+<gpx version="1.1" creator="Xcode">
+    <wpt lat="$LAT" lon="$LONG"></wpt><!--Custom location: $NAME-->
+</gpx>
+EOF
+}
 
 function search() {
     git log -S"$1"
