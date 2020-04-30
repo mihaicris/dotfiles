@@ -406,7 +406,6 @@ function switch_branch() {
 }
 
 function gg() {
-    set -x
     BRANCH=${1:-apimaindevelopment}
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
     SUBMODULES=(${(@f)$(git config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
@@ -417,7 +416,6 @@ function gg() {
         printf "${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$SUBMODULE"
         switch_branch $TOP_LEVEL_DIR/$SUBMODULE $BRANCH
     done
-    set +x
 }
 
 #function list_commits() {
