@@ -349,7 +349,6 @@ function transform_flac_to_m4a() {
 
 function pull_branch() {
     BRANCH_REF=$(git symbolic-ref -q HEAD)
-
     if [ -z $BRANCH_REF ]; then
         printf "%bSkipping (detached state).%b\n" "${LIGHT_RED}" "${NORMAL}"
     else
@@ -360,38 +359,30 @@ function pull_branch() {
     fi
 }
 
-#function ff_submodules() {
-#    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-#    [[ -z $SUBMODULES ]] && return 0
-#    heading "Fast forwarding all submodules"
-#    for SUBMODULE in $SUBMODULES; do
-#        printf "${UNDERLINE}${GREEN}%b${NORMAL} " "$SUBMODULE"
-#        pushdir "$SUBMODULE"
-#        pull_branch        
-#        popdir
-#        printf "%b" "\n"
-#    done
-#}
-
-#function ff_worktrees() {
-#    WORKDIRS=$(git worktree list --porcelain  | grep worktree | awk '{print $2}')
-#    heading "Fast forwarding all worktrees"
-#    for WORKDIR in $WORKDIRS; do
-#        printf "${UNDERLINE}${GREEN}%b${NORMAL} " "$(basename "$WORKDIR")"
-#        pushdir "$WORKDIR"
-#        pull_branch
-#        popdir
-#        printf "%b" "\n"
-#    done
-#}
-
-#function ff() {
-#    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
-#    pushdir "$TOP_LEVEL_DIR"
-#    ff_submodules
-#    ff_worktrees
-#    popdir
-#}
+function ff() {
+    #set -x
+    TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+    pushdir $TOP_LEVEL_DIR
+    WORKDIRS=(${(@f)$(git worktree list --porcelain  | grep worktree | awk '{print $2}')})
+    for WORKDIR in $WORKDIRS; do
+        pushdir $WORKDIR || continue
+        printf "${UNDERLINE}${GREEN}%b${NORMAL} " "$WORKDIR"
+        pull_branch
+        printf "\n"
+        SUBMODULES=(${(@f)$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')})
+        (( $#SUBMODULES == 0 )) && continue
+        for SUBMODULE in $SUBMODULES; do
+            printf "${UNDERLINE}${GREEN}%b${NORMAL} " "$SUBMODULE"
+            pushdir $SUBMODULE || { printf "Submodule not fetched.\n\n" ; continue }
+            pull_branch
+            popdir
+            printf "\n"
+        done
+        popdir
+    done
+    popdir
+    set +x
+}
 
 #function refresh() {
 #    git fetch --all -p
