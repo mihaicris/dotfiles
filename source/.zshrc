@@ -191,32 +191,31 @@ function clean_untracked() {
 
 function gclean() {
     heading "Cleaning ignored files"
-    pushdir "$(git rev-parse --show-toplevel)"
-    FILES=$(git clean -xdfn -e Carthage/ | wc -l )
+    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+    FILES=$(git -C $TOP_LEVEL_DIR clean -xdfn -e Carthage/ | wc -l )
     if (( FILES > 0 )); then
-        git clean -xdf -e Carthage/
+        git -C $TOP_LEVEL_DIR clean -xdf -e Carthage/
     else
         printf "* Nothing to clean.\n"
     fi
-    popdir
 }
 
 function recreate_files() {
     heading "Recreating all files"
-    pushdir "$(git rev-parse --show-toplevel)"
-    git rm --cached -r .
-    git reset --hard
+    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+    git -C $TOP_LEVEL_DIR rm --cached -r .
+    git -C $TOP_LEVEL_DIR reset --hard
     printf "\n"
-    popdir
 }
 
 function unskipAll() {
     heading "Reactivating skipped files from git"
-    FILES=$(git ls-files -v | grep '^S' | cut -d ' ' -f 2 | wc -l)
-    if ((  FILES > 0 )); then
-        git ls-files -v | grep '^S' | cut -d ' ' -f 2
-        echo ""
-        git ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
+    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+    FILES=$(git -C $TOP_LEVEL_DIR ls-files -v | grep '^S' | cut -d ' ' -f 2 | wc -l)
+    if (( FILES > 0 )); then
+        git -C $TOP_LEVEL_DIR ls-files -v | grep '^S' | cut -d ' ' -f 2
+        printf "\n"
+        git -C $TOP_LEVEL_DIR ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
     else 
         printf "* Nothing to reactivate.\n"
     fi
@@ -382,13 +381,10 @@ function switch_branch() {
     REPO_PATH=$1
     NEW_BRANCH=$2
     CURRENT_BRANCH=$(git branch --show-current)
-
     [[ -d $REPO_PATH ]] || { echo "Repo path not valid!"; return 1 ; }
-    [[ $NEW_BRANCH ]] || { echo "Branch name is empty"; return 1 ; }
-    
+    [[ $NEW_BRANCH ]] || { echo "Branch name is empty!"; return 1 ; }
     git -C $REPO_PATH fetch --all --quiet
     git -C $REPO_PATH switch --guess --quiet $NEW_BRANCH
-
     if (( $? == 0 )); then
         printf "Switched to branch: ${GREEN}%s${NORMAL}\n" $NEW_BRANCH
     else
@@ -406,7 +402,6 @@ function gg() {
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
     SUBMODULES=(${(@f)$(git config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
     printf "\n${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" $TOP_LEVEL_DIR
-    
     switch_branch $TOP_LEVEL_DIR $BRANCH
     for SUBMODULE in $SUBMODULES; do
         printf "${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$SUBMODULE"
@@ -479,10 +474,9 @@ function tickets() {
     AUTHOR=${1:-$(git config user.name)}
     printf "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
     REPOS=($TOP_LEVEL_DIR "${(@f)$(git config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')}")
-    {
-        for REPO in $REPOS; do
+    { for REPO in $REPOS; do
             git -C $REPO log --all --author="$AUTHOR" --format="%s" --no-merges
-        done
+       done
     } | grep -oE "[A-Za-z]+\/\d+" | grep -oE "[0-9]+" | sort -n -u \
       | xargs -I {} printf "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}\n"
     printf "\n"
@@ -493,7 +487,7 @@ function oo() {
 }
 
 function ios() {
-    cd ~/bpme/uk || return
+    cd ~/bpme/uk || return 1
 }
 
 function cart() {
@@ -552,12 +546,10 @@ function work() {
 function gpx() {
     FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
     skip "$FILE"
-
     LOCATIONS=()
     NAMES=()
     LATITUDINES=()
     LONGITUDINES=()
-
     LOCATIONS=(
        'Romania IBM Bucharest;44.4356676;26.0544182'
        'Romania IBM Brasov;45.6687406;25.6194894'
@@ -565,14 +557,12 @@ function gpx() {
        'Australia Site;-37.821067;144.966071'
        'US one car wash;41.264578;-96.161076'
     )
-
     for LOCATION in $LOCATIONS; do
         IFS=";" read -r -A arr <<< "${LOCATION}"
         NAMES=("${NAMES[@]}" "${arr[1]}")
         LATITUDINES=("${LATITUDINES[@]}" "${arr[2]}")
         LONGITUDINES=("${LONGITUDINES[@]}" "${arr[3]}")
     done
-
     select NAME in $NAMES; do
         if [[ -n $NAME ]]; then
             break
@@ -580,11 +570,9 @@ function gpx() {
             printf "Wrong selection.\n"
         fi
     done
-    
     NAME=${NAMES[$REPLY]}
     LAT=${LATITUDINES[$REPLY]}
     LONG=${LONGITUDINES[$REPLY]}
-    
     cat <<EOF > "$FILE"
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">
@@ -600,14 +588,11 @@ function search() {
 function system_tasks() {
     heading 'Updating gem...'
     sudo gem update --no-document
-
     heading 'Updating LaTex...'
     sudo tlmgr update --self
     sudo tlmgr update --all
-
     heading 'Upgrading brew...'
     brew upgrade && brew cask upgrade
-
     heading 'Updating cocoapods...'
     pod repo update
 }
@@ -624,3 +609,4 @@ function completions() {
 }
 
 completions
+
