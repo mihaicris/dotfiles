@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-emulate -LR zsh
-
 setopt COMPLETE_ALIASES
 setopt AUTOCD
 setopt SHARE_HISTORY
@@ -349,18 +347,18 @@ function transform_flac_to_m4a() {
     done
 }
 
-#function pull_branch() {
-#    BRANCH_REF=$(git symbolic-ref -q HEAD)
-#
-#    if [[ -z $BRANCH_REF ]]; then
-#        printf "%bSkipping (detached state).%b\n" "${LIGHT_RED}" $"${NORMAL}"
-#    else
-#        CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-#        printf "${LIGHT_YELLOW}[%s]${NORMAL}\n" "$CURRENT_BRANCH"
-#        git fetch --all
-#        git pull
-#    fi
-#}
+function pull_branch() {
+    BRANCH_REF=$(git symbolic-ref -q HEAD)
+
+    if [ -z $BRANCH_REF ]; then
+        printf "%bSkipping (detached state).%b\n" "${LIGHT_RED}" "${NORMAL}"
+    else
+        CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+        printf "${LIGHT_YELLOW}[%s]${NORMAL}\n" "$CURRENT_BRANCH"
+        git fetch --all
+        git pull
+    fi
+}
 
 #function ff_submodules() {
 #    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
