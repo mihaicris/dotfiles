@@ -151,16 +151,17 @@ function fetch() {
 function status() {
     heading "Status"
     git status
-    echo ""
+    printf "\n"
 }
 
 function unstage() {
     heading "Unstaging local changes"
-    FILES=$(git diff --name-only --cached | wc -l )
+    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+    FILES=$(git -C $TOP_LEVEL_DIR diff --name-only --cached | wc -l )
     if (( FILES > 0 )); then
-        git diff --name-only --cached 
+        git -C $TOP_LEVEL_DIR diff --name-only --cached 
         printf "\n"
-        git reset HEAD --quiet
+        git -C $TOP_LEVEL_DIR reset HEAD --quiet
     else
         printf "* Nothing to unstage.\n"
     fi
@@ -168,22 +169,22 @@ function unstage() {
 
 function discard() {
     heading "Discarding local changes"
-    pushdir "$(git rev-parse --show-toplevel)"
-    FILES=$(git diff --name-only | wc -l)
+    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+    FILES=$(git -C $TOP_LEVEL_DIR diff --name-only | wc -l)
     if (( FILES > 0 )); then
-        git diff --name-only
-        git checkout . --quiet
+        git -C $TOP_LEVEL_DIR diff --name-only
+        git -C $TOP_LEVEL_DIR checkout . --quiet
     else
         printf "* Nothing to discard.\n"
     fi
-    popdir
 }
 
 function clean_untracked() {
     heading "Cleaning untracked files"
-    FILES=$(git clean -fdn | wc -l )
+    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+    FILES=$(git -C $TOP_LEVEL_DIR clean -fdn | wc -l )
     if (( FILES > 0 )); then
-        git clean -fd
+        git -C $TOP_LEVEL_DIR clean -fd
     else
         printf "* Nothing to clean.\n"
     fi
@@ -215,7 +216,7 @@ function unskipAll() {
     if (( FILES > 0 )); then
         git -C $TOP_LEVEL_DIR ls-files -v | grep '^S' | cut -d ' ' -f 2
         printf "\n"
-        git -C $TOP_LEVEL_DIR ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git update-index --no-skip-worktree
+        git -C $TOP_LEVEL_DIR ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git -C $TOP_LEVEL_DIR update-index --no-skip-worktree
     else 
         printf "* Nothing to reactivate.\n"
     fi
@@ -368,7 +369,7 @@ function ff() {
     for WORKDIR in $WORKDIRS; do
         printf "${UNDERLINE}${BOLD}${BLUE}%b${NORMAL} " $WORKDIR
         pull_branch $WORKDIR
-        SUBMODULES=(${(@f)$(git config --file $WORKDIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
+        SUBMODULES=(${(@f)$(git -C $WORKDIR config --file $WORKDIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
         (( $#SUBMODULES == 0 )) && continue
         for SUBMODULE in $SUBMODULES; do
             printf "${UNDERLINE}${BOLD}${BLUE}%b${NORMAL} " $SUBMODULE
@@ -380,7 +381,7 @@ function ff() {
 function switch_branch() {
     REPO_PATH=$1
     NEW_BRANCH=$2
-    CURRENT_BRANCH=$(git branch --show-current)
+    CURRENT_BRANCH=$(git -C $REPO_PATH branch --show-current)
     [[ -d $REPO_PATH ]] || { echo "Repo path not valid!"; return 1 ; }
     [[ $NEW_BRANCH ]] || { echo "Branch name is empty!"; return 1 ; }
     git -C $REPO_PATH fetch --all --quiet
@@ -400,7 +401,7 @@ function switch_branch() {
 function gg() {
     BRANCH=${1:-apimaindevelopment}
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-    SUBMODULES=(${(@f)$(git config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
+    SUBMODULES=(${(@f)$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
     printf "\n${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" $TOP_LEVEL_DIR
     switch_branch $TOP_LEVEL_DIR $BRANCH
     for SUBMODULE in $SUBMODULES; do
@@ -473,7 +474,7 @@ function tickets() {
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
     AUTHOR=${1:-$(git config user.name)}
     printf "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
-    REPOS=($TOP_LEVEL_DIR "${(@f)$(git config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')}")
+    REPOS=($TOP_LEVEL_DIR "${(@f)$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')}")
     { for REPO in $REPOS; do
             git -C $REPO log --all --author="$AUTHOR" --format="%s" --no-merges
        done
