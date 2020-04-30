@@ -382,38 +382,41 @@ function ff() {
     popdir
 }
 
-#function refresh() {
-#    git fetch --all -p
-#    CURRENT_BRANCH=$(git branch --show-current)
-#    HAS_BRANCH=$(git branch | grep "$1")
-#
-#    if [[ -n $HAS_BRANCH ]] && [[ $CURRENT_BRANCH != "$1" ]]; then
-#        git switch --quiet "$1"
-#        printf "Changed branch to: ${RED}%s${NORMAL}\n" "$1"
-#        git pull
-#    else
-#        printf "On branch: ${YELLOW}%s${NORMAL}\n" "$CURRENT_BRANCH"
-#    fi
-#    printf "\n"
-#}
+function switch_branch() {
+    REPO_PATH=$1
+    NEW_BRANCH=$2
+    CURRENT_BRANCH=$(git branch --show-current)
 
-#function gg() {
-#    BRANCH=${1:-apimaindevelopment}
-#    TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
-#    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-#
-#    printf "\n${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$(basename "$TOP_LEVEL_DIR")"
-#    pushdir "$TOP_LEVEL_DIR"
-#    refresh "$BRANCH"
-#
-#    for SUBMODULE in $SUBMODULES; do
-#        printf "${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$SUBMODULE"
-#        pushdir "$SUBMODULE"
-#        refresh "$BRANCH"
-#        popdir 
-#    done
-#    popdir
-#}
+    [[ -d $REPO_PATH ]] || { echo "Repo path not valid!"; return 1 ; }
+    [[ $NEW_BRANCH ]] || { echo "Branch name is empty"; return 1 ; }
+    
+    git -C $REPO_PATH fetch --all --quiet
+    git -C $REPO_PATH switch --guess --quiet $NEW_BRANCH
+
+    if (( $? == 0 )); then
+        printf "Switched to branch: ${GREEN}%s${NORMAL}\n" $NEW_BRANCH
+    else
+        if [[ $CURRENT_BRANCH ]]; then
+            printf "On branch: ${LIGHT_RED}%s${NORMAL}\n" "$CURRENT_BRANCH"
+        else
+            printf "Repository is in ${LIGHT_RED}DETACHED state${NORMAL}.\n"
+        fi
+    fi
+    printf "\n"
+}
+
+function gg() {
+    BRANCH=${1:-apimaindevelopment}
+    TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+    SUBMODULES=(${(@f)$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')})
+    printf "\n${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$(basename "$TOP_LEVEL_DIR")"
+    
+    switch_branch $TOP_LEVEL_DIR $BRANCH
+    for SUBMODULE in $SUBMODULES; do
+        printf "${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$SUBMODULE"
+        switch_branch $SUBMODULE $BRANCH
+    done
+}
 
 #function list_commits() {
 #    if [[ -z "$1" ]]; then
