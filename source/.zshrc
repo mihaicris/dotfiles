@@ -484,7 +484,7 @@ function tickets() {
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
     AUTHOR=${1:-$(git config user.name)}
     printf "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n\n" "$AUTHOR"
-    REPOS=("." "${(@f)$(git config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')}")
+    REPOS=($TOP_LEVEL_DIR "${(@f)$(git config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')}")
     {
         for REPO in $REPOS; do
             git -C $REPO log --all --author="$AUTHOR" --format="%s" --no-merges
