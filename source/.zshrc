@@ -21,8 +21,8 @@ autoload -Uz compinit && compinit
 autoload -Uz colors && colors
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
-
-PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{027}%~%f $(git_super_status) $ '
+NEWLINE=$'\n'
+PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{yellow}%~%f $(git_super_status)${NEWLINE}%T $ '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 export LANG=en_US.UTF-8
