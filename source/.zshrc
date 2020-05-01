@@ -393,7 +393,7 @@ function switch_branch() {
         if [[ $CURRENT_BRANCH ]]; then
             printf "On branch: ${LIGHT_RED}%s${NORMAL}\n" "$CURRENT_BRANCH"
         else
-            printf "Repository is in ${LIGHT_RED}DETACHED state${NORMAL}.\n"
+            printf "Repository is in ${LIGHT_RED}DETACHED${NORMAL} state.\n"
         fi
     fi
     printf "\n"
