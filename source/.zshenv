@@ -1,5 +1,8 @@
 #! /usr/bin/env zsh
 
+#Global
+emulate -L zsh
+
 # Colors Aliases
 NORMAL="\033[0m"
 BOLD="\033[1m"
