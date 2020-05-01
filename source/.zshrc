@@ -402,7 +402,7 @@ function gg() {
     BRANCH=${1:-apimaindevelopment}
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
     SUBMODULES=(${(@f)$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
-    printf "\n${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" $TOP_LEVEL_DIR
+    printf "${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" $TOP_LEVEL_DIR
     switch_branch $TOP_LEVEL_DIR $BRANCH
     for SUBMODULE in $SUBMODULES; do
         printf "${UNDERLINE}${BOLD}${BLUE}%s${NORMAL}\n" "$SUBMODULE"
