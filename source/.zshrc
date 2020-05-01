@@ -411,65 +411,55 @@ function gg() {
     done
 }
 
-#function list_commits() {
-#    if [[ -z "$1" ]]; then
-#        AUTHOR=$(git config user.name);
-#    else
-#        if [[ "$1" == "0" ]]; then
-#            AUTHOR=".*";
-#        else
-#            AUTHOR=$1;
-#        fi
-#    fi
-#
-#    DAYTODAY=$(date|cut -d ' ' -f 1)
-#
-#    case $DAYTODAY in
-#        "Sat"|"Sun"|"Mon" )
-#            SINCE="last.friday.midnight"
-#            ;;
-#        * )
-#            SINCE="yesterday.midnight"
-#            ;;
-#    esac
-#    WIDTH=$(tput cols)
-#    if (( WIDTH > 150 )); then
-#        WIDTH=$(( WIDTH - 80))
-#    else
-#        WIDTH="80"
-#    fi
-#    GIT_DATE_FORMAT='%a, %d %b %H:%M'
-#    GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd  %C(yellow)%<(15)%cr%Creset %<('"${WIDTH}"'i,trunc)%s'
-#    GIT_LOG_COMMAND="git --no-pager log
-#    --color=always
-#    --all
-#    --reverse
-#    --abbrev-commit
-#    --no-merges
-#    --oneline
-#    --since='$SINCE'
-#    --author='$AUTHOR'
-#    --date=format:'$GIT_DATE_FORMAT'
-#    --pretty=format:'$GIT_PRETTY_FORMAT'"
-#    # shellcheck disable=SC2086
-#    GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
-#
-#    if [[ -n "$GIT_OUTPUT" ]]; then
-#        printf "${LIGHT_GRAY}${UNDERLINE}%s${NORMAL}\n" "$(pwd)"
-#        printf "%s\n\n" "$GIT_OUTPUT"
-#    fi
-#}
+function list_commits() {
+    REPO=$1
+    shift
+    if [[ -z "$1" ]]; then
+        AUTHOR=$(git config user.name);
+    else
+        if [[ "$1" == "0" ]]; then
+            AUTHOR=".*";
+        else
+            AUTHOR=$1;
+        fi
+    fi
 
-#function daily() {
-#    heading "Daily Standup"
-#    list_commits "$@"
-#    SUBMODULES=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
-#    for SUBMODULE in $SUBMODULES; do
-#        pushdir "$SUBMODULE"
-#        list_commits "$@"
-#        popdir 
-#    done
-#}
+    DAYTODAY=$(date|cut -d ' ' -f 1)
+
+    case $DAYTODAY in
+        "Sat"|"Sun"|"Mon" )
+            SINCE="last.friday.midnight"
+            ;;
+        * )
+            SINCE="yesterday.midnight"
+            ;;
+    esac
+    WIDTH=$(tput cols)
+    if (( WIDTH > 150 )); then
+        WIDTH=$(( WIDTH - 80))
+    else
+        WIDTH="80"
+    fi
+    GIT_DATE_FORMAT='%a, %d %b %H:%M'
+    GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd %C(yellow)%<(15)%cr%Creset %<('${WIDTH}'i,trunc)%s'
+    GIT_LOG_COMMAND="git -C $REPO --no-pager log --color=always --all --reverse --abbrev-commit --no-merges --oneline --since='$SINCE' --author='$AUTHOR' --date=format:'$GIT_DATE_FORMAT' --pretty=format:'$GIT_PRETTY_FORMAT'"
+
+    GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
+
+    if [[ -n "$GIT_OUTPUT" ]]; then
+        printf "${LIGHT_GRAY}${UNDERLINE}%s${NORMAL}\n" "$REPO"
+        printf "%s\n\n" "$GIT_OUTPUT"
+    fi
+}
+
+function daily() {
+    heading "Daily Standup"
+    TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+    REPOS=($TOP_LEVEL_DIR "${(@f)$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')}")
+    for REPO in $REPOS; do
+        list_commits $REPO $@
+    done
+}
 
 function tickets() {
     TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
