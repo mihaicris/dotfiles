@@ -19,6 +19,7 @@ zstyle ':completion:*' expand prefix suffix
 autoload -Uz promptinit && promptinit
 autoload -Uz compinit && compinit
 autoload -Uz colors && colors
+autoload -Uz zmv
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 NEWLINE=$'\n'
