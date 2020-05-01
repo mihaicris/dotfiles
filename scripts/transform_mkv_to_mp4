@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+
+for a in *.mkv; do
+    ffmpeg -i "$a" -c copy "${a%.*}.mp4"
+done

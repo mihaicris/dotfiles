@@ -1,0 +1,4 @@
+#! /usr/bin/env zsh
+
+sudo xcode-select -s "/Applications/Xcode10.3.app/Contents/Developer"
+cp ~/.dotfiles/xcode/keybindings/Custom10.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings

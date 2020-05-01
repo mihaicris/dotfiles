@@ -1,0 +1,11 @@
+#! /usr/bin/env zsh
+
+heading "Discarding local changes"
+TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+FILES=$(git -C $TOP_LEVEL_DIR diff --name-only | wc -l)
+if (( FILES > 0 )); then
+    git -C $TOP_LEVEL_DIR diff --name-only
+    git -C $TOP_LEVEL_DIR checkout . --quiet
+else
+    printf "* Nothing to discard.\n"
+fi

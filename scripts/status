@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+
+heading "Status"
+git status
+printf "\n"

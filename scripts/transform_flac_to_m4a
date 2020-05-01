@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+
+for a in *.flac; do
+    ffmpeg -i "$a" -map 0:0 -acodec alac "${a%.*}.m4a"
+done

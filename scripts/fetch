@@ -1,0 +1,4 @@
+#! /usr/bin/env zsh
+
+heading "Fetching remotes"
+git fetch --prune --all --tags

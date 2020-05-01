@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+
+heading "Detaching HEAD to previous commit"
+git checkout HEAD~1
+printf "\n"

@@ -1,0 +1,4 @@
+#! /usr/bin/env zsh
+
+[ -z "$1" ] && END="" || END='/?workitem='"$1"
+open https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%20Dog/Backlog%20items"$END"

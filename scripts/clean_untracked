@@ -1,0 +1,10 @@
+#! /usr/bin/env zsh
+
+heading "Cleaning untracked files"
+TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+FILES=$(git -C $TOP_LEVEL_DIR clean -fdn | wc -l )
+if (( FILES > 0 )); then
+    git -C $TOP_LEVEL_DIR clean -fd
+else
+    printf "* Nothing to clean.\n"
+fi

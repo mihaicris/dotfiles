@@ -1,0 +1,12 @@
+#! /usr/bin/env zsh
+
+heading "Unstaging local changes"
+TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+FILES=$(git -C $TOP_LEVEL_DIR diff --name-only --cached | wc -l )
+if (( FILES > 0 )); then
+    git -C $TOP_LEVEL_DIR diff --name-only --cached 
+    printf "\n"
+    git -C $TOP_LEVEL_DIR reset HEAD --quiet
+else
+    printf "* Nothing to unstage.\n"
+fi
