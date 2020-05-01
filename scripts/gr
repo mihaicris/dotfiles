@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+heading 'Changing to git root folder'
+if git rev-parse --is-inside-git-dir &>/dev/null ; then
+    cd "$(git rev-parse --git-dir)" || return
+    cd .. || return
+    return
+fi
+if git rev-parse &>/dev/null ; then 
+    cd "$(git rev-parse --show-toplevel)" || return
+fi

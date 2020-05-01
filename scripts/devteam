@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+TEAM=${1:-"S8V3V9GFN2"}
+TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+find $TOP_LEVEL_DIR -name "project.pbxproj" -exec sed -i '' -e "s|\(DEVELOPMENT_TEAM = \).*\;|\1${TEAM}\;|g" {} \;

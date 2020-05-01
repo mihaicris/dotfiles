@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+heading "Daily Standup"
+TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+REPOS=($TOP_LEVEL_DIR "${(@f)$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')}")
+for REPO in $REPOS; do
+    list_commits $REPO $@
+done
+

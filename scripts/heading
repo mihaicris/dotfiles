@@ -1,0 +1,3 @@
+#! /usr/bin/env zsh
+
+printf "\n${BOLD}${BG_BLUE}%s${NORMAL}\n\n" "$@"

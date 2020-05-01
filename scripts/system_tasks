@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+heading 'Updating Ruby gems ...'
+sudo gem update --no-document
+heading 'Updating LaTex...'
+sudo tlmgr update --self
+sudo tlmgr update --all
+heading 'Upgrading brew...'
+brew upgrade && brew cask upgrade
+heading 'Updating cocoapods...'
+pod repo update

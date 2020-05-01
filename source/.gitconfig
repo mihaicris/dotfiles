@@ -51,15 +51,18 @@
     c = commit
 
   # Commit with message
-    cm = "!cim() { git commit -m \"$1\"; }; cim" 
+    cm = "!cm() { git commit -m \"$1\"; }; cm" 
 
   # Ammend last commit
     ca = commit --amend --no-edit
 
   # Make new branch (or set branch to current commit)
     mb = checkout -B
+  
   # Check out particular file ($2) form branch ($1) 
-    cof = "!cb() { git checkout $1 -- $2; }; cb"
+    cof = "!cof() { git checkout $1 -- $2; }; cof"
+
+  # List branches for author
     rb = "!rb() { git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes | grep $1; }; rb"
 
   # Search 
@@ -67,6 +70,9 @@
 
   # Search for files
     f = "!fs() { git ls-files --recurse-submodules | grep --color -i -E $1 ; }; fs"
+
+  # Search for content
+    s = "!fs() { git log -S$1 ; }; fs"  
 
   # How many commits per author
     who = shortlog -n -s --no-merges

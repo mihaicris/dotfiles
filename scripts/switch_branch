@@ -1,0 +1,19 @@
+#! /usr/bin/env zsh
+
+REPO_PATH=$1
+NEW_BRANCH=$2
+CURRENT_BRANCH=$(git -C $REPO_PATH branch --show-current)
+[[ -d $REPO_PATH ]] || { echo "Repo path not valid!"; return 1 ; }
+[[ $NEW_BRANCH ]] || { echo "Branch name is empty!"; return 1 ; }
+git -C $REPO_PATH fetch --all --quiet
+git -C $REPO_PATH switch --guess --quiet $NEW_BRANCH
+if (( $? == 0 )); then
+    printf "Switched to branch: ${GREEN}%s${NORMAL}\n" $NEW_BRANCH
+else
+    if [[ $CURRENT_BRANCH ]]; then
+        printf "On branch: ${LIGHT_RED}%s${NORMAL}\n" "$CURRENT_BRANCH"
+    else
+        printf "Repository is in ${LIGHT_RED}DETACHED${NORMAL} state.\n"
+    fi
+fi
+printf "\n"
