@@ -47,3 +47,7 @@ set tabstop=4 shiftwidth=4 expandtab
 set backupdir=$TMPDIR
 set directory=$TMPDIR
 set undodir=$TMPDIR
+
+" Show trailing blanks 
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
