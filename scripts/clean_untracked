@@ -2,8 +2,8 @@
 
 heading "Cleaning untracked files"
 TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
-FILES=$(git -C $TOP_LEVEL_DIR clean -fdn | wc -l )
-if (( FILES > 0 )); then
+FILES=$(git -C $TOP_LEVEL_DIR clean -fdn)
+if [[ $FILES ]]; then
     git -C $TOP_LEVEL_DIR clean -fd
 else
     print "* Nothing to clean."
