@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-
 CRITERIA=$1
 REMOTE_NAME_COUNT=$(git remote | wc -l)
 REMOTE_NAME=$(git remote)
@@ -9,12 +8,14 @@ if (( REMOTE_NAME_COUNT != 1 )); then
     return 1
 fi
 
-if [[ -z $CRITERIA ]]; then
-    RESULTS=(${(@f)$(git branch -r | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")})
-else
-    RESULTS=(${(@f)$(git branch -r | grep "$CRITERIA" | grep -v "HEAD ->" | sed "s/^[ ]*$REMOTE_NAME\///")})
+REMOTE_BRANCHES=$(git branch -r | grep -v "HEAD ->")
+
+if [[ $CRITERIA ]]; then
+    REMOTE_BRANCHES=$(echo $REMOTE_BRANCHES | grep $CRITERIA)
 fi
 
+REMOTE_BRANCHES=$(echo $REMOTE_BRANCHES | sed "s/^[ ]*$REMOTE_NAME\///")
+RESULTS=( "${(f)REMOTE_BRANCHES}" )
 COUNT=$#RESULTS
 
 if (( COUNT == 0 )); then

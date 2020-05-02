@@ -33,9 +33,9 @@ function list_commits {
 	GIT_DATE_FORMAT='%a, %d %b %H:%M'
 	GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd %C(yellow)%<(15)%cr%Creset %<('${WIDTH}'i,trunc)%s'
 	GIT_LOG_COMMAND="git -C $REPO --no-pager log --color=always --all --reverse --abbrev-commit --no-merges --oneline --since='$SINCE' --author='$AUTHOR' --date=format:'$GIT_DATE_FORMAT' --pretty=format:'$GIT_PRETTY_FORMAT'"
-	GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
+    GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
 
-	if [[ -n "$GIT_OUTPUT" ]]; then
+	if [[ "$GIT_OUTPUT" ]]; then
 	    printf "${LIGHT_GRAY}${UNDERLINE}%s${NORMAL}\n" "$REPO"
 	    printf "%s\n\n" "$GIT_OUTPUT"
 	fi
@@ -44,12 +44,8 @@ function list_commits {
 heading "Daily Standup"
 
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-
-REPOS=(
-	$TOP_LEVEL_DIR 
-	"${(@f)$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')}"
-)
-
+SUBMODULES=$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')
+REPOS=("$TOP_LEVEL_DIR" "${(f)SUBMODULES}")
 for REPO in $REPOS; do
     list_commits $REPO $@
 done
