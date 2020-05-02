@@ -7,5 +7,5 @@ if (( FILES > 0 )); then
     git -C $TOP_LEVEL_DIR diff --name-only
     git -C $TOP_LEVEL_DIR checkout . --quiet
 else
-    printf "* Nothing to discard.\n"
+    print "* Nothing to discard."
 fi

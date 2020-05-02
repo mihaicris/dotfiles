@@ -23,7 +23,7 @@ select NAME in $NAMES; do
     if [[ -n $NAME ]]; then
         break
     else
-        printf "Wrong selection.\n"
+        print "Wrong selection."
     fi
 done
 NAME=${NAMES[$REPLY]}

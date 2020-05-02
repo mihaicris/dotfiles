@@ -6,5 +6,5 @@ FILES=$(git -C $TOP_LEVEL_DIR clean -xdfn -e Carthage/ | wc -l )
 if (( FILES > 0 )); then
     git -C $TOP_LEVEL_DIR clean -xdf -e Carthage/
 else
-    printf "* Nothing to clean.\n"
+    print "* Nothing to clean."
 fi

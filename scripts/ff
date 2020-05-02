@@ -5,26 +5,26 @@ function pull_branch {
     [[ -d $REPO_PATH ]] || { echo "Repo path not valid!"; return 1 ; }
     BRANCH_REF=$(git -C $REPO_PATH symbolic-ref -q HEAD)
     if [[ -z $BRANCH_REF ]]; then
-        printf "%bSkipping (detached state).%b\n" "${LIGHT_RED}" "${NORMAL}"
+        print -n "${LIGHT_RED}Skipping (detached state).${NORMAL}"
     else
         CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-        printf "${LIGHT_YELLOW}[%s]${NORMAL}\n" "$CURRENT_BRANCH"
+        print -n "${LIGHT_YELLOW}[${CURRENT_BRANCH}]${NORMAL}"
         git -C $REPO_PATH fetch --all
         git -C $REPO_PATH pull
     fi
-    printf "\n"
+    print ""
 }
 
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 WORKDIRS=(${(@f)$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree | awk '{print $2}')})
 (( $#WORKDIRS == 1 )) && WORKDIRS=($TOP_LEVEL_DIR)
 for WORKDIR in $WORKDIRS; do
-    printf "${UNDERLINE}${BOLD}${BLUE}%b${NORMAL} " $WORKDIR
+    print -n "${UNDERLINE}${BOLD}${BLUE}${WORKDIR}${NORMAL} "
     pull_branch $WORKDIR
     SUBMODULES=(${(@f)$(git -C $WORKDIR config --file $WORKDIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
     (( $#SUBMODULES == 0 )) && continue
     for SUBMODULE in $SUBMODULES; do
-        printf "${UNDERLINE}${BOLD}${BLUE}%b${NORMAL} " $SUBMODULE
+        print -n "${UNDERLINE}${BOLD}${BLUE}${SUBMODULE}${NORMAL} "
         pull_branch $WORKDIR/$SUBMODULE
     done
 done

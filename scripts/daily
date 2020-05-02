@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+
 function list_commits {
     REPO=$1
     shift
@@ -36,8 +37,8 @@ function list_commits {
     GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
 
     if [[ "$GIT_OUTPUT" ]]; then
-        printf "${LIGHT_GRAY}${UNDERLINE}%s${NORMAL}\n" "$REPO"
-        printf "%s\n\n" "$GIT_OUTPUT"
+        print "${LIGHT_GRAY}${UNDERLINE}${REPO}${NORMAL}"
+        print "$GIT_OUTPUT\n"
     fi
 }
 

@@ -2,4 +2,4 @@
 
 heading "Skipped files"
 git ls-files -v | grep '^S' | cut -d ' ' -f 2
-printf "\n"
+print ""

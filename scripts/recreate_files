@@ -4,4 +4,4 @@ heading "Recreating all files"
 TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
 git -C $TOP_LEVEL_DIR rm --cached -r .
 git -C $TOP_LEVEL_DIR reset --hard
-printf "\n"
+print ""

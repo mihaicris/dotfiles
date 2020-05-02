@@ -5,8 +5,8 @@ TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
 FILES=$(git -C $TOP_LEVEL_DIR ls-files -v | grep '^S' | cut -d ' ' -f 2 | wc -l)
 if (( FILES > 0 )); then
     git -C $TOP_LEVEL_DIR ls-files -v | grep '^S' | cut -d ' ' -f 2
-    printf "\n"
+    print ""
     git -C $TOP_LEVEL_DIR ls-files -v | grep '^S' | cut -d ' ' -f 2 | xargs git -C $TOP_LEVEL_DIR update-index --no-skip-worktree
-else 
-    printf "* Nothing to reactivate.\n"
+else
+    print "* Nothing to reactivate."
 fi
