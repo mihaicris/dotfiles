@@ -39,7 +39,7 @@ alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias def="open https://bp-vsts.visualstudio.com/BPme/_queries/query/6661bd32-ba84-4689-84ba-6850653f115e/"
-alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
+alias edot="pdot && vim ~/.dotfiles"
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
 alias gcm="git add -A && git commit"
