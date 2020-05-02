@@ -7,11 +7,11 @@ NAMES=()
 LATITUDINES=()
 LONGITUDINES=()
 LOCATIONS=(
-   'Romania IBM Bucharest;44.4356676;26.0544182'
-   'Romania IBM Brasov;45.6687406;25.6194894'
-   'Holland Site;51.9386;4.1083'
-   'Australia Site;-37.821067;144.966071'
-   'US one car wash;41.264578;-96.161076'
+    'Romania IBM Bucharest;44.4356676;26.0544182'
+    'Romania IBM Brasov;45.6687406;25.6194894'
+    'Holland Site;51.9386;4.1083'
+    'Australia Site;-37.821067;144.966071'
+    'US one car wash;41.264578;-96.161076'
 )
 for LOCATION in $LOCATIONS; do
     IFS=";" read -r -A arr <<< "${LOCATION}"
