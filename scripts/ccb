@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-heading "Switching to a remote branch"
+heading "Switching the local branch"
 
 is_git_folder || exit 1
 
@@ -60,12 +60,12 @@ IS_ALREADY_LOCAL_BRANCH=$(git branch | grep "$LOCAL_BRANCH")
 
 if [[ $IS_ALREADY_LOCAL_BRANCH ]]; then
     if [[ $CURRENT_BRANCH == $LOCAL_BRANCH ]]; then
-        print "\nAlready on the ${LIGHT_GREEN}${LOCAL_BRANCH}${NORMAL} branch.\n"
+        print "\nAlready on the local branch ${LIGHT_GREEN}${LOCAL_BRANCH}${NORMAL}.\n"
     elif git checkout -q "$LOCAL_BRANCH" ; then
         print "\nSuccessfuly switched to the local branch ${LIGHT_GREEN}${LOCAL_BRANCH}${NORMAL}.\n"
         return 0
     else
-        print "\nCould not switch to the local branch: ${BLUE}${LOCAL_BRANCH}${NORMAL}.\n"
+        print "\nCould not switch to the local branch ${BLUE}${LOCAL_BRANCH}${NORMAL}.\n"
         return 1
     fi
 else
@@ -73,7 +73,7 @@ else
         print "\nSuccessfuly checked out locally the remote branch ${LIGHT_GREEN}${LOCAL_BRANCH}${NORMAL}.\n"
         return 0
     else
-        print "\nCould not switch to the remote branch: ${BLUE}${REMOTE_BRANCH}${NORMAL}.\n"
+        print "\nCould not checkout locally the remote branch ${BLUE}${REMOTE_BRANCH}${NORMAL}.\n"
         return 1
     fi
 fi
