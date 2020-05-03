@@ -29,14 +29,16 @@ is_git_folder || exit 1
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 REMOTE_NAME=$(git -C $TOP_LEVEL_DIR remote)
 
-WORKDIRS=(${(f)$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree | awk '{print $2}')})
+WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree | awk '{print $2}')
+WORKDIRS=( ${(f)WORKDIRS} )
+
 (( $#WORKDIRS == 1 )) && WORKDIRS=($TOP_LEVEL_DIR)
 
 for WORKDIR in $WORKDIRS; do
     print "${UNDERLINE}${BOLD}${BLUE}${WORKDIR}${NORMAL} "
     pull_branch $WORKDIR
     SUBMODULES=$(git -C $WORKDIR config --file $WORKDIR/.gitmodules --get-regexp path | awk '{ print $2 }')
-    SUBMODULES=("${(f)SUBMODULES}")
+    SUBMODULES=( ${(f)SUBMODULES} )
     (( $#SUBMODULES == 0 )) && continue
     for SUBMODULE in $SUBMODULES; do
         print "${UNDERLINE}${BOLD}${BLUE}${SUBMODULE}${NORMAL} "

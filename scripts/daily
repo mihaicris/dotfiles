@@ -87,8 +87,8 @@ if [[ $# -gt 0 ]]; then
 fi
 
 if [[ $OPTION_h ]]; then
-  usage
-  exit 0
+    usage
+    exit 0
 fi
 
 AUTHOR=$(git config user.name)
@@ -103,12 +103,9 @@ fi
 
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 
-SUBMODULES=$(git -C $TOP_LEVEL_DIR config \
-    --file $TOP_LEVEL_DIR/.gitmodules \
-    --get-regexp path \
-    | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')
-    REPOS=("$TOP_LEVEL_DIR" "${(f)SUBMODULES}")
+SUBMODULES=$(git -C $TOP_LEVEL_DIR config  --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')
+REPOS=("$TOP_LEVEL_DIR" ${(f)SUBMODULES})
 
-    for REPO in $REPOS; do
-        list_commits $REPO
-    done
+for REPO in $REPOS; do
+    list_commits $REPO
+done

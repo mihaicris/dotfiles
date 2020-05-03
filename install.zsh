@@ -6,7 +6,7 @@ SOURCE_PATH="$(cd "$SCRIPT" || exit 1 ; pwd -P )/Source"
 pushd "$SOURCE_PATH" >/dev/null || { printf "Error. Exiting.." >&2 ; exit 1 }
 
 FILES=$(find . -type f -print | sed "s|^\./||" )
-FILES=("${(f)FILES}")
+FILES=(${(f)FILES})
 
 for FILE in $FILES; do
     print "Creating symbolic link" "${LIGHT_BLUE}${HOME}/$FILE${NORMAL}"

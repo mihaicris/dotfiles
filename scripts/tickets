@@ -12,7 +12,7 @@ SUBMODULES=$(git -C $TOP_LEVEL_DIR config \
     --get-regexp path \
     | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')
 
-REPOS=($TOP_LEVEL_DIR "${(f)SUBMODULES}")
+REPOS=($TOP_LEVEL_DIR ${(f)SUBMODULES})
 
 { for REPO in $REPOS; do
         git -C $REPO log --all --author="$AUTHOR" --format="%s" --no-merges

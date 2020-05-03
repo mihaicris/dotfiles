@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-set -x
+
 heading "Switching the local branch"
 
 is_git_folder || exit 1
@@ -77,4 +77,4 @@ else
         return 1
     fi
 fi
-set +x
+

@@ -24,7 +24,8 @@ is_git_folder || exit 1
 
 BRANCH=${1:-apimaindevelopment}
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-SUBMODULES=(${(f)$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
+SUBMODULES=$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')}
+SUBMODULES=(${(f)SUBMODULES})
 
 print ${UNDERLINE}${BOLD}${BLUE}${TOP_LEVEL_DIR}${NORMAL}
 switch_branch $TOP_LEVEL_DIR $BRANCH
