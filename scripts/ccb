@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+heading "Switching to a remote branch"
+
+is_git_folder || exit 1
+
 QUERY=$1
 REMOTE_COUNT=$(git remote | wc -l)
 REMOTE_NAME=$(git remote)
@@ -49,13 +53,15 @@ if (( COUNT > 1 )); then
 else
     LOCAL_BRANCH=$RESULTS
 fi
-
+CURRENT_BRANCH=$(git branch --show-current)
 REMOTE_BRANCH="$REMOTE_NAME/$LOCAL_BRANCH"
 
 IS_ALREADY_LOCAL_BRANCH=$(git branch | grep "$LOCAL_BRANCH")
 
-if [[ -n $IS_ALREADY_LOCAL_BRANCH ]]; then
-    if git checkout -q "$LOCAL_BRANCH" ; then
+if [[ $IS_ALREADY_LOCAL_BRANCH ]]; then
+    if [[ $CURRENT_BRANCH == $LOCAL_BRANCH ]]; then
+        print "\nAlready on the ${LIGHT_GREEN}${LOCAL_BRANCH}${NORMAL} branch.\n"
+    elif git checkout -q "$LOCAL_BRANCH" ; then
         print "\nSuccessfuly switched to the local branch ${LIGHT_GREEN}${LOCAL_BRANCH}${NORMAL}.\n"
         return 0
     else

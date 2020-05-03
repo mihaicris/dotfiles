@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+TOP_LEVEL_DIR=$(git rev-parse --show-toplevel 2>/dev/null )
+[[ $TOP_LEVEL_DIR ]] || { print "Not in a git folder. Exiting..." ; exit 1 }
+
