@@ -1,20 +1,23 @@
 #!/usr/bin/env zsh
 
+# Shows the usage
+function usage() {
+    cat <<EOS
+Usage:
+  daily [-a <author name>] [-h]
+  -a      - Specify author to restrict search to
+  -h      - Display this help screen
+  -l      - Show all commits, don't restrict to from yesterday (or from last friday if in weekend or monday)
+Examples:
+  daily -a "Mihai Cristescu" -l
+EOS
+}
+
 function list_commits {
     REPO=$1
-    shift
-
-    if [[ -z "$1" ]]; then
-        AUTHOR=$(git config user.name);
-    else
-        if [[ "$1" == "0" ]]; then
-            AUTHOR=".*";
-        else
-            AUTHOR=$1;
-        fi
-    fi
 
     DAY=$(date|cut -d ' ' -f 1)
+
     case $DAY in
         "Sat"|"Sun"|"Mon" )
             SINCE="last.friday.midnight"
@@ -25,6 +28,7 @@ function list_commits {
     esac
 
     WIDTH=$(tput cols)
+
     if (( WIDTH > 150 )); then
         WIDTH=$(( WIDTH - 80))
     else
@@ -42,7 +46,10 @@ function list_commits {
     GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --abbrev-commit"
     GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --no-merges"
     GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --oneline"
-    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --since='${SINCE}'"
+
+    # If option l is not set, restrict to SINCE date
+    [[ -z $OPTION_l ]] && GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --since='${SINCE}'"
+
     GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --author='${AUTHOR}'"
     GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --date=format:'${GIT_DATE_FORMAT}'"
     GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --pretty=format:'${GIT_PRETTY_FORMAT}'"
@@ -59,14 +66,49 @@ heading "Daily Standup"
 
 is_git_folder || exit 1
 
+while getopts "a:hl" opt; do
+    case $opt in
+        a|h|l)
+            typeset "OPTION_$opt=${OPTARG:-0}"
+            ;;
+        \?)
+            echo >&2 "Use 'daily -h' to see usage info"
+            exit 1
+            ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+if [[ $# -gt 0 ]]; then
+    echo >&2 "Invalid arguments: $@"
+    echo >&2 "Use 'dayly -h' to see usage info"
+    exit 1
+fi
+
+if [[ $OPTION_h ]]; then
+  usage
+  exit 0
+fi
+
+AUTHOR=$(git config user.name)
+
+if [[ $OPTION_a ]] ; then
+    if [[ $OPTION_a = "all" ]] ; then
+        AUTHOR=".*"
+    else
+        AUTHOR="$OPTION_a"
+    fi
+fi
+
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 
 SUBMODULES=$(git -C $TOP_LEVEL_DIR config \
-                 --file $TOP_LEVEL_DIR/.gitmodules \
-                 --get-regexp path \
-                 | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')
-REPOS=("$TOP_LEVEL_DIR" "${(f)SUBMODULES}")
+    --file $TOP_LEVEL_DIR/.gitmodules \
+    --get-regexp path \
+    | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')
+    REPOS=("$TOP_LEVEL_DIR" "${(f)SUBMODULES}")
 
-for REPO in $REPOS; do
-    list_commits $REPO $@
-done
+    for REPO in $REPOS; do
+        list_commits $REPO
+    done
