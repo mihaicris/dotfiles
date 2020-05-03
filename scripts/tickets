@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+heading "Showing work items"
+
 is_git_folder || exit 1
 
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)

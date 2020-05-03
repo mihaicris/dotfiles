@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+heading "Change Development Team in Xcode projects"
+
 is_git_folder || exit 1
 
 TEAM=${1:-"S8V3V9GFN2"}

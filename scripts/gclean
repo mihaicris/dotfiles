@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-heading "Cleaning ignored files"
+heading "Cleaning git ignored files"
 
 is_git_folder || exit 1
 

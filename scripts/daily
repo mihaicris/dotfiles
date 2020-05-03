@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+heading "Daily Standup"
+
 # Shows the usage
 function usage() {
     cat <<EOS
@@ -61,8 +63,6 @@ function list_commits {
         print "$GIT_OUTPUT\n"
     fi
 }
-
-heading "Daily Standup"
 
 is_git_folder || exit 1
 

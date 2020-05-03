@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+heading "Set BP GPS Custom Location"
+
 is_git_folder || exit 1
 
 FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx

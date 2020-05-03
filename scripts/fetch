@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-heading "Fetching remotes"
+heading "Fetching git remotes"
 
 is_git_folder || exit 1
 

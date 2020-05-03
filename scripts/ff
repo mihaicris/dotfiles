@@ -1,4 +1,7 @@
 #!/usr/bin/env zsh
+
+heading "Fast forwarding all workdirs and git submodules"
+
 function pull_branch {
     REPO_PATH=$1
     [[ -d $REPO_PATH ]] || { echo "Repo $REPO_PATH not valid!"; return 1 ; }
@@ -21,8 +24,6 @@ function pull_branch {
     fi
     print ""
 }
-
-heading "Fast forwarding all workdirs and submodules"
 
 is_git_folder || exit 1
 

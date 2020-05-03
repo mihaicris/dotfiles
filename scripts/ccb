@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-heading "Switching the local branch"
+heading "Creating local branch from remote branch"
 
 is_git_folder || exit 1
 

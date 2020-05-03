@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+heading "Switch branch git repo and its submodules"
+
 function switch_branch {
     REPO_PATH=$1
     NEW_BRANCH=$2
