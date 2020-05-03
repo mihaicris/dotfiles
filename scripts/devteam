@@ -3,6 +3,5 @@
 is_git_folder || exit 1
 
 TEAM=${1:-"S8V3V9GFN2"}
-TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-[[ $TOP_LEVEL_DIR ]] || exit 1
+
 find $TOP_LEVEL_DIR -name "project.pbxproj" -print -exec sed -i '' -e "s|\(DEVELOPMENT_TEAM = \).*\;|\1${TEAM}\;|g" {} \;
