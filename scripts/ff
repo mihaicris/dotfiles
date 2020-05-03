@@ -1,17 +1,18 @@
 #! /usr/bin/env zsh
-
 function pull_branch {
     REPO_PATH=$1
     [[ -d $REPO_PATH ]] || { echo "Repo path not valid!"; return 1 ; }
     BRANCH_REF=$(git -C $REPO_PATH symbolic-ref -q HEAD)
+
     if [[ -z $BRANCH_REF ]]; then
-        print -n "${LIGHT_RED}Skipping (detached state).${NORMAL}"
+        print "On branch: ${LIGHT_RED}Detached state${NORMAL}"
     else
-        CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-        print -n "${LIGHT_YELLOW}[${CURRENT_BRANCH}]${NORMAL}"
+        CURRENT_BRANCH=$(git -C $REPO_PATH rev-parse --abbrev-ref HEAD)
+        print "On branch: ${GREEN}${CURRENT_BRANCH}${NORMAL}"
         git -C $REPO_PATH fetch --all
         git -C $REPO_PATH pull
     fi
+
     print ""
 }
 
@@ -21,13 +22,14 @@ TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 
 WORKDIRS=(${(@f)$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree | awk '{print $2}')})
 (( $#WORKDIRS == 1 )) && WORKDIRS=($TOP_LEVEL_DIR)
+
 for WORKDIR in $WORKDIRS; do
-    print -n "${UNDERLINE}${BOLD}${BLUE}${WORKDIR}${NORMAL} "
+    print "${UNDERLINE}${BOLD}${BLUE}${WORKDIR}${NORMAL} "
     pull_branch $WORKDIR
     SUBMODULES=(${(@f)$(git -C $WORKDIR config --file $WORKDIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
     (( $#SUBMODULES == 0 )) && continue
     for SUBMODULE in $SUBMODULES; do
-        print -n "${UNDERLINE}${BOLD}${BLUE}${SUBMODULE}${NORMAL} "
+        print "${UNDERLINE}${BOLD}${BLUE}${SUBMODULE}${NORMAL} "
         pull_branch $WORKDIR/$SUBMODULE
     done
 done
