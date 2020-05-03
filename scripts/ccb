@@ -35,7 +35,7 @@ if (( COUNT > 1 )); then
         print "\nThere are multiple branches containing ${LIGHT_RED}${QUERY}${NORMAL}:\n"
     fi
     SAVED_PROMPT=$PROMPT3
-    PROMPT3="Press ENTER to see if there are more options. Select a branch number: "
+    PROMPT3="Choose a number: "
 
     print -n "${BLUE}"
 
