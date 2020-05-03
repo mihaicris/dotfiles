@@ -1,4 +1,7 @@
 #! /usr/bin/env zsh
 
 heading "Fetching remotes"
+
+is_git_folder || exit 1
+
 git fetch --prune --all --tags

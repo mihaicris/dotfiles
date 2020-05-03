@@ -1,5 +1,8 @@
 #! /usr/bin/env zsh
 
 heading "Detaching HEAD to previous commit"
+
+is_git_folder || exit 1
+
 git checkout HEAD~1
 print ""

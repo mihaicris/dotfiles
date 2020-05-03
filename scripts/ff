@@ -15,7 +15,10 @@ function pull_branch {
     print ""
 }
 
+is_git_folder || exit 1
+
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+
 WORKDIRS=(${(@f)$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree | awk '{print $2}')})
 (( $#WORKDIRS == 1 )) && WORKDIRS=($TOP_LEVEL_DIR)
 for WORKDIR in $WORKDIRS; do

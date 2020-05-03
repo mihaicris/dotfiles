@@ -1,5 +1,8 @@
 #! /usr/bin/env zsh
 
 heading "Status"
+
+is_git_folder || exit 1
+
 git status
 print ""

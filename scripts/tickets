@@ -1,12 +1,16 @@
 #!/usr/bin/env zsh
 
+is_git_folder || exit 1
+
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 AUTHOR=${1:-$(git config user.name)}
 print "\n${LIGHT_GREEN}Tickets for: ${LIGHT_BLUE}%s${NORMAL}\n" "$AUTHOR"
 REPOS=($TOP_LEVEL_DIR "${(@f)$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')}")
+
 { for REPO in $REPOS; do
         git -C $REPO log --all --author="$AUTHOR" --format="%s" --no-merges
    done
 } | grep -oE "[A-Za-z]+\/\d+" | grep -oE "[0-9]+" | sort -n -u \
   | xargs -I {} print "https://bp-vsts.visualstudio.com/BPme/_boards/board/t/Mad%%20Dog/Backlog%%20items/?workitem=${LIGHT_GREEN}{}${NORMAL}"
+
 print ""

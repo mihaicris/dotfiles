@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+is_git_folder || exit 1
+
 prune
 fetch
 status

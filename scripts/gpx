@@ -1,7 +1,10 @@
 #!/usr/bin/env zsh
 
+is_git_folder || exit 1
+
 FILE=$(git rev-parse --show-toplevel)/PayAtPump/PayAtPump/CustomLocation.gpx
 skip "$FILE"
+
 LOCATIONS=()
 NAMES=()
 LATITUDINES=()
@@ -13,12 +16,14 @@ LOCATIONS=(
     'Australia Site;-37.821067;144.966071'
     'US one car wash;41.264578;-96.161076'
 )
+
 for LOCATION in $LOCATIONS; do
     IFS=";" read -r -A arr <<< "${LOCATION}"
     NAMES=("${NAMES[@]}" "${arr[1]}")
     LATITUDINES=("${LATITUDINES[@]}" "${arr[2]}")
     LONGITUDINES=("${LONGITUDINES[@]}" "${arr[3]}")
 done
+
 select NAME in $NAMES; do
     if [[ -n $NAME ]]; then
         break
@@ -26,9 +31,11 @@ select NAME in $NAMES; do
         print "Wrong selection."
     fi
 done
+
 NAME=${NAMES[$REPLY]}
 LAT=${LATITUDINES[$REPLY]}
 LONG=${LONGITUDINES[$REPLY]}
+
 cat <<EOF > "$FILE"
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">

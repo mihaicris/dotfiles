@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+is_git_folder || exit 1
+
 TEAM=${1:-"S8V3V9GFN2"}
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 [[ $TOP_LEVEL_DIR ]] || exit 1

@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 
 heading 'Changing to git root folder'
+
+is_git_folder || exit 1
+
 if git rev-parse --is-inside-git-dir &>/dev/null ; then
     cd "$(git rev-parse --git-dir)" || return
     cd .. || return

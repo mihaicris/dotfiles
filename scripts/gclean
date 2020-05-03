@@ -5,7 +5,6 @@ heading "Cleaning ignored files"
 is_git_folder || exit 1
 
 TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
-
 FILES=$(git -C $TOP_LEVEL_DIR clean -xdfn -e Carthage/ | wc -l )
 
 if (( FILES > 0 )); then
