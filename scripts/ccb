@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-
+set -x
 heading "Switching the local branch"
 
 is_git_folder || exit 1
@@ -20,7 +20,7 @@ if [[ $QUERY ]]; then
 fi
 
 REMOTE_BRANCHES=$(echo $REMOTE_BRANCHES | sed "s/^[ ]*$REMOTE_NAME\///")
-RESULTS=( "${(f)REMOTE_BRANCHES}" )
+RESULTS=(${(f)REMOTE_BRANCHES:#})
 COUNT=$#RESULTS
 
 if (( COUNT == 0 )); then
@@ -77,3 +77,4 @@ else
         return 1
     fi
 fi
+set +x
