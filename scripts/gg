@@ -9,7 +9,7 @@ function switch_branch {
     git -C $REPO_PATH fetch --all --quiet
     git -C $REPO_PATH switch --guess --quiet $NEW_BRANCH
     if (( $? == 0 )); then
-        print "${BOLD}Switched${NORMAL} to branch: ${GREEN}${NEW_BRANCH}${NORMAL}"
+        print "Switched to branch: ${GREEN}${NEW_BRANCH}${NORMAL}"
     else
         if [[ $CURRENT_BRANCH ]]; then
             print "On branch: ${LIGHT_RED}${CURRENT_BRANCH}${NORMAL}"
@@ -24,7 +24,7 @@ is_git_folder || exit 1
 
 BRANCH=${1:-apimaindevelopment}
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-SUBMODULES=$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')}
+SUBMODULES=$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')
 SUBMODULES=(${(f)SUBMODULES})
 
 print ${UNDERLINE}${BOLD}${BLUE}${TOP_LEVEL_DIR}${NORMAL}
