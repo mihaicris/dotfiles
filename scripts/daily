@@ -33,7 +33,20 @@ function list_commits {
 
     GIT_DATE_FORMAT='%a, %d %b %H:%M'
     GIT_PRETTY_FORMAT='%C(bold blue)%<(25,trunc)%an%Creset %<(12,trunc)%Cred%h%Creset %Cgreen%cd %C(yellow)%<(15)%cr%Creset %<('${WIDTH}'i,trunc)%s'
-    GIT_LOG_COMMAND="git -C $REPO --no-pager log --color=always --all --reverse --abbrev-commit --no-merges --oneline --since='$SINCE' --author='$AUTHOR' --date=format:'$GIT_DATE_FORMAT' --pretty=format:'$GIT_PRETTY_FORMAT'"
+
+    GIT_LOG_COMMAND=""
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} git -C $REPO --no-pager log"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --color=always"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --all"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --reverse"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --abbrev-commit"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --no-merges"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --oneline"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --since='${SINCE}'"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --author='${AUTHOR}'"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --date=format:'${GIT_DATE_FORMAT}'"
+    GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --pretty=format:'${GIT_PRETTY_FORMAT}'"
+
     GIT_OUTPUT=$(eval ${GIT_LOG_COMMAND} 2>/dev/null)
 
     if [[ "$GIT_OUTPUT" ]]; then
@@ -44,9 +57,16 @@ function list_commits {
 
 heading "Daily Standup"
 
+is_git_folder || exit 1
+
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-SUBMODULES=$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')
+
+SUBMODULES=$(git -C $TOP_LEVEL_DIR config \
+                 --file $TOP_LEVEL_DIR/.gitmodules \
+                 --get-regexp path \
+                 | awk -v path="${TOP_LEVEL_DIR}/" '{ print path$2 }')
 REPOS=("$TOP_LEVEL_DIR" "${(f)SUBMODULES}")
+
 for REPO in $REPOS; do
     list_commits $REPO $@
 done
