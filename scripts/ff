@@ -1,24 +1,34 @@
 #! /usr/bin/env zsh
 function pull_branch {
     REPO_PATH=$1
-    [[ -d $REPO_PATH ]] || { echo "Repo path not valid!"; return 1 ; }
-    BRANCH_REF=$(git -C $REPO_PATH symbolic-ref -q HEAD)
+    [[ -d $REPO_PATH ]] || { echo "Repo $REPO_PATH not valid!"; return 1 ; }
 
-    if [[ -z $BRANCH_REF ]]; then
+    git -C $REPO_PATH fetch --all
+
+    CURRENT_BRANCH=$(git -C $REPO_PATH symbolic-ref -q --short HEAD)
+    IS_ON_REMOTE=$(git -C $REPO_PATH ls-remote --heads --exit-code $REMOTE_NAME $CURRENT_BRANCH)
+
+    if [[ -z $CURRENT_BRANCH ]]; then
         print "On branch: ${LIGHT_RED}Detached state${NORMAL}"
     else
-        CURRENT_BRANCH=$(git -C $REPO_PATH rev-parse --abbrev-ref HEAD)
-        print "On branch: ${GREEN}${CURRENT_BRANCH}${NORMAL}"
-        git -C $REPO_PATH fetch --all
-        git -C $REPO_PATH pull
+        [[ $IS_ON_REMOTE ]] && CL=${GREEN} || CL=${LIGHT_RED}
+        print "On branch: ${CL}${CURRENT_BRANCH}${NORMAL}"
+        if [[ $IS_ON_REMOTE ]] then
+            git -C $REPO_PATH pull
+        else
+            print "Not on remote: ${BOLD}${REMOTE_NAME}${NORMAL}"
+        fi
     fi
 
     print ""
 }
 
+heading "Fast forwarding all workdirs and submodules"
+
 is_git_folder || exit 1
 
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+REMOTE_NAME=$(git -C $TOP_LEVEL_DIR remote)
 
 WORKDIRS=(${(@f)$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree | awk '{print $2}')})
 (( $#WORKDIRS == 1 )) && WORKDIRS=($TOP_LEVEL_DIR)
