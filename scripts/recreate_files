@@ -1,13 +1,13 @@
-#! /usr/bin/env zsh
-
+#!/usr/bin/env zsh
+set -x
 heading "Recreating all files"
 
 is_git_folder || exit 1
 
-$TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 
 git -C $TOP_LEVEL_DIR rm --cached -r $TOP_LEVEL_DIR
 git -C $TOP_LEVEL_DIR reset --hard
 
 print ""
-
+set +x
