@@ -19,7 +19,6 @@ function pull_branch {
             print "Not on remote: ${BOLD}${REMOTE_NAME}${NORMAL}"
         fi
     fi
-
     print ""
 }
 
@@ -36,7 +35,8 @@ WORKDIRS=(${(f)$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree
 for WORKDIR in $WORKDIRS; do
     print "${UNDERLINE}${BOLD}${BLUE}${WORKDIR}${NORMAL} "
     pull_branch $WORKDIR
-    SUBMODULES=(${(f)$(git -C $WORKDIR config --file $WORKDIR/.gitmodules --get-regexp path | awk '{ print $2 }')})
+    SUBMODULES=$(git -C $WORKDIR config --file $WORKDIR/.gitmodules --get-regexp path | awk '{ print $2 }')
+    SUBMODULES=("${(f)SUBMODULES}")
     (( $#SUBMODULES == 0 )) && continue
     for SUBMODULE in $SUBMODULES; do
         print "${UNDERLINE}${BOLD}${BLUE}${SUBMODULE}${NORMAL} "
