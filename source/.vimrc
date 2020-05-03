@@ -7,7 +7,7 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'ajh17/spacegray.vim'
 Plug 'keith/swift.vim'
-"Plug 'kien/ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 "Plug 'lervag/vimtex'
 Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'

@@ -1,4 +1,4 @@
-#! /usr/bin/env zsh
+#!/usr/bin/env zsh
 
 for a in *.ts; do
     ffmpeg -i "$a" -c copy "${a%.*}.mp4"

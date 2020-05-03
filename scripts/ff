@@ -1,4 +1,4 @@
-#! /usr/bin/env zsh
+#!/usr/bin/env zsh
 function pull_branch {
     REPO_PATH=$1
     [[ -d $REPO_PATH ]] || { echo "Repo $REPO_PATH not valid!"; return 1 ; }
