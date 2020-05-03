@@ -10,5 +10,5 @@ FILES=$(git -C $TOP_LEVEL_DIR clean -fdn)
 if [[ $FILES ]]; then
     git -C $TOP_LEVEL_DIR clean -fd
 else
-    print "${LIGHT_GREEN}* Nothing to clean.${NORMAL}\n"
+    print "${LIGHT_GREEN}* Nothing to clean.${NORMAL}"
 fi

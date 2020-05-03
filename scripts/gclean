@@ -1,10 +1,15 @@
 #! /usr/bin/env zsh
 
 heading "Cleaning ignored files"
+
+is_git_folder || exit 1
+
 TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
+
 FILES=$(git -C $TOP_LEVEL_DIR clean -xdfn -e Carthage/ | wc -l )
+
 if (( FILES > 0 )); then
     git -C $TOP_LEVEL_DIR clean -xdf -e Carthage/
 else
-    print "* Nothing to clean."
+    print "${LIGHT_GREEN}* Nothing to clean.${NORMAL}"
 fi
