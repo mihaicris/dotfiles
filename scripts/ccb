@@ -1,17 +1,18 @@
 #!/usr/bin/env zsh
-CRITERIA=$1
-REMOTE_NAME_COUNT=$(git remote | wc -l)
+
+QUERY=$1
+REMOTE_COUNT=$(git remote | wc -l)
 REMOTE_NAME=$(git remote)
 
-if (( REMOTE_NAME_COUNT != 1 )); then
+if (( REMOTE_COUNT != 1 )); then
     print "\nOnly one remote is supported.\n"
     return 1
 fi
 
 REMOTE_BRANCHES=$(git branch -r | grep -v "HEAD ->")
 
-if [[ $CRITERIA ]]; then
-    REMOTE_BRANCHES=$(echo $REMOTE_BRANCHES | grep $CRITERIA)
+if [[ $QUERY ]]; then
+    REMOTE_BRANCHES=$(echo $REMOTE_BRANCHES | grep $QUERY)
 fi
 
 REMOTE_BRANCHES=$(echo $REMOTE_BRANCHES | sed "s/^[ ]*$REMOTE_NAME\///")
@@ -19,15 +20,18 @@ RESULTS=( "${(f)REMOTE_BRANCHES}" )
 COUNT=$#RESULTS
 
 if (( COUNT == 0 )); then
-    print "\nThere are no remote branches containing ${LIGHT_RED}${CRITERIA}${NORMAL}.\n"
+    print "\nThere are no remote branches containing ${LIGHT_RED}${QUERY}${NORMAL}.\n"
     return 1
 fi
 
 if (( COUNT > 1 )); then
-    print "\nThere are multiple branches containing ${LIGHT_RED}${CRITERIA}${NORMAL}:\n\n"
-
+    if [[ -z $QUERY ]]; then
+        print "\nThe list of remote branches is:\n"
+    else
+        print "\nThere are multiple branches containing ${LIGHT_RED}${QUERY}${NORMAL}:\n"
+    fi
     SAVED_PROMPT=$PROMPT3
-    PROMPT3="Select a number? "
+    PROMPT3="Press ENTER to see if there are more options. Select a branch number: "
 
     print -n "${BLUE}"
 
@@ -50,7 +54,7 @@ REMOTE_BRANCH="$REMOTE_NAME/$LOCAL_BRANCH"
 
 IS_ALREADY_LOCAL_BRANCH=$(git branch | grep "$LOCAL_BRANCH")
 
-if [[ -n "$IS_ALREADY_LOCAL_BRANCH" ]]; then
+if [[ -n $IS_ALREADY_LOCAL_BRANCH ]]; then
     if git checkout -q "$LOCAL_BRANCH" ; then
         print "\nSuccessfuly switched to the local branch ${LIGHT_GREEN}${LOCAL_BRANCH}${NORMAL}.\n"
         return 0
