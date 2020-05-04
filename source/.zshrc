@@ -12,6 +12,13 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 
+FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export PATH="$HOME/.dotfiles/scripts:$PATH"
+export PATH="$HOME/.jenv/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
@@ -24,12 +31,6 @@ autoload -Uz zmv
 NEWLINE=$'\n'
 PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{yellow}%~%f $(git_super_status)${NEWLINE}%T $ '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
-
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export PATH="$HOME/.dotfiles/scripts:$PATH"
-export PATH="$HOME/.jenv/bin:$PATH"
-export PATH="$HOME/.rbenv/bin:$PATH"
 
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
