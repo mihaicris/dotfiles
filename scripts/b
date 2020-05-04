@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+[[ $1 == "clean" ]] && CLEAN="clean"
+xcodebuild build $CLEAN -workspace BPBaseWorkspace.xcworkspace -scheme "PayAtPumpUK" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -sdk iphonesimulator -destination "platform=iOS Simulator,OS=13.4.1,name=iPhone 11 Pro Max" ONLY_ACTIVE_ARCH=YES | xcpretty
