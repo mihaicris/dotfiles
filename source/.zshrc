@@ -36,7 +36,6 @@ eval "$(jenv init -)"
 eval "$(rbenv init -)"
 
 alias ..=".. && ll"
-alias br="git for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)  %(align:40,left)%(color:yellow)%(authorname)%(end)%(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias def="open https://bp-vsts.visualstudio.com/BPme/_queries/query/6661bd32-ba84-4689-84ba-6850653f115e/"
