@@ -2,11 +2,17 @@
 
 heading "Fast forwarding all workdirs and git submodules"
 
+is_git_folder || exit 1
+
 function pull_branch {
     REPO_PATH=$1
+    REMOTE_NAME=$(git -C $REPO_PATH remote)
+
     [[ -d $REPO_PATH ]] || { echo "Repo $REPO_PATH not valid!"; return 1 ; }
+    [[ $REMOTE_NAME ]] || { echo "No remotes available for $REPO_PATH !"; return 1 ; }
 
     git -C $REPO_PATH fetch --all
+    git -C $REPO_PATH prune $REMOTE_NAME
 
     CURRENT_BRANCH=$(git -C $REPO_PATH symbolic-ref -q --short HEAD)
     IS_ON_REMOTE=$(git -C $REPO_PATH ls-remote --heads --exit-code $REMOTE_NAME $CURRENT_BRANCH)
@@ -25,11 +31,7 @@ function pull_branch {
     print ""
 }
 
-is_git_folder || exit 1
-
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-REMOTE_NAME=$(git -C $TOP_LEVEL_DIR remote)
-
 WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree | awk '{print $2}')
 WORKDIRS=( ${(f)WORKDIRS} )
 
