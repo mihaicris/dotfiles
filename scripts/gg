@@ -2,14 +2,18 @@
 
 heading "Switch branch git repo and its submodules"
 
+is_git_folder || exit 1
+
 function switch_branch {
     REPO_PATH=$1
     NEW_BRANCH=$2
     CURRENT_BRANCH=$(git -C $REPO_PATH branch --show-current)
+
     [[ -d $REPO_PATH ]] || { echo "Repo path not valid!"; return 1 ; }
     [[ $NEW_BRANCH ]] || { echo "Branch name is empty!"; return 1 ; }
-    git -C $REPO_PATH fetch --all --quiet
+
     git -C $REPO_PATH switch --guess --quiet $NEW_BRANCH
+
     if (( $? == 0 )); then
         print "Switched to branch: ${GREEN}${NEW_BRANCH}${NORMAL}"
     else
@@ -22,16 +26,17 @@ function switch_branch {
     print ""
 }
 
-is_git_folder || exit 1
-
-BRANCH=${1:-apimaindevelopment}
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-SUBMODULES=$(git -C $TOP_LEVEL_DIR config --file $TOP_LEVEL_DIR/.gitmodules --get-regexp path | awk '{ print $2 }')
-SUBMODULES=(${(f)SUBMODULES})
+BRANCH=${1:-apimaindevelopment}
 
-print ${UNDERLINE}${BOLD}${BLUE}${TOP_LEVEL_DIR}${NORMAL}
-switch_branch $TOP_LEVEL_DIR $BRANCH
-for SUBMODULE in $SUBMODULES; do
-    print ${UNDERLINE}${BOLD}${BLUE}${SUBMODULE}${NORMAL}
-    switch_branch $TOP_LEVEL_DIR/$SUBMODULE $BRANCH
+SUBMODULES=$(git -C $TOP_LEVEL_DIR config \
+                 --file $TOP_LEVEL_DIR/.gitmodules \
+                 --get-regexp path \
+             | awk -v path=${TOP_LEVEL_DIR}/ '{ print path$2 }')
+
+REPOS=($TOP_LEVEL_DIR ${(f)SUBMODULES})
+
+for REPO in $REPOS; do
+    print ${UNDERLINE}${BOLD}${BLUE}${REPO}${NORMAL}
+    switch_branch $REPO $BRANCH
 done

@@ -8,8 +8,8 @@ function pull_branch {
     REPO_PATH=$1
     REMOTE_NAME=$(git -C $REPO_PATH remote)
 
-    [[ -d $REPO_PATH ]] || { echo "Repo $REPO_PATH not valid!"; return 1 ; }
-    [[ $REMOTE_NAME ]] || { echo "No remotes available for $REPO_PATH !"; return 1 ; }
+    [[ -d $REPO_PATH ]] || { echo "Repo $REPO_PATH not valid!"; return 1; }
+    [[ $REMOTE_NAME ]] || { echo "No remotes available for $REPO_PATH !"; return 1; }
 
     git -C $REPO_PATH fetch --all
     git -C $REPO_PATH prune $REMOTE_NAME
@@ -32,19 +32,26 @@ function pull_branch {
 }
 
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
-WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list --porcelain | grep worktree | awk '{print $2}')
-WORKDIRS=( ${(f)WORKDIRS} )
 
-(( $#WORKDIRS == 1 )) && WORKDIRS=($TOP_LEVEL_DIR)
+WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list \
+               --porcelain \
+           | grep worktree \
+           | awk '{ print $2 }')
+
+WORKDIRS=(${(f)WORKDIRS})
+
+#(( $#WORKDIRS == 1 )) && WORKDIRS=($TOP_LEVEL_DIR)
 
 for WORKDIR in $WORKDIRS; do
-    print "${UNDERLINE}${BOLD}${BLUE}${WORKDIR}${NORMAL} "
-    pull_branch $WORKDIR
-    SUBMODULES=$(git -C $WORKDIR config --file $WORKDIR/.gitmodules --get-regexp path | awk '{ print $2 }')
-    SUBMODULES=( ${(f)SUBMODULES} )
-    (( $#SUBMODULES == 0 )) && continue
-    for SUBMODULE in $SUBMODULES; do
-        print "${UNDERLINE}${BOLD}${BLUE}${SUBMODULE}${NORMAL} "
-        pull_branch $WORKDIR/$SUBMODULE
+    SUBMODULES=$(git -C $WORKDIR config \
+                     --file $WORKDIR/.gitmodules \
+                     --get-regexp path \
+                 | awk -v path="$WORKDIR/" '{ print path$2 }')
+
+    REPOS=($WORKDIR ${(f)SUBMODULES})
+
+    for REPO in $REPOS; do
+        print "${UNDERLINE}${BOLD}${BLUE}${REPO}${NORMAL}"
+        pull_branch $REPO
     done
 done
