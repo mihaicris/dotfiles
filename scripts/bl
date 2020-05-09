@@ -42,8 +42,7 @@ function toggle() {
         print "Connecting device..."
         blueutil --connect $DEVICE_ADDRESS
     fi
-    [[ $? ]] && print "Success." || print "Failed."
-    exit $?
+    [[ $? == "0" ]] && print "${LIGHT_GREEN}Success.${RESET}" || print "${LIGHT_RED}Failed.${RESET}"
 }
 
 [[ $1 == "c" ]] && power_cycle
