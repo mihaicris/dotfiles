@@ -26,6 +26,13 @@ function status() {
     exit 0
 }
 
+function power_cycle() {
+    blueutil --power 0
+    sleep 2
+    blueutil --power 1
+    exit 0
+}
+
 function toggle() {
     isPaired || { print "Device not paired!" ; exit 1; }
     if isConnected; then
@@ -39,6 +46,7 @@ function toggle() {
     exit $?
 }
 
+[[ $1 == "c" ]] && power_cycle
 [[ $1 == "s" ]] && status
 [[ $1 == "p" ]] && pair
 
