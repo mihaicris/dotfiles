@@ -61,5 +61,6 @@ alias work="open https://bp-vsts.visualstudio.com/BPme/_queries/query/a23efe58-9
 alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
+GIT_PROMPT_EXECUTABLE="haskell"
 source "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
