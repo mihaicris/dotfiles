@@ -1,0 +1,46 @@
+#!/usr/bin/env zsh
+
+DEVICE_ADDRESS='bc-f2-92-a4-d5-27'
+
+function isPaired() {
+    result=$(blueutil --paired | grep -o $DEVICE_ADDRESS)
+    [[ $result ]] && return 0 || return 1
+}
+
+function pair() {
+    isPaired && { print "Already paired"; exit 0 }
+    print "Pairing..."
+    blueutil --pair $DEVICE_ADDRESS
+    [[ $? ]] && print "Success." || print "Failed, exit code: $?."
+    exit $?
+}
+
+function isConnected() {
+    result=$(blueutil --is-connected $DEVICE_ADDRESS)
+    [[ $result == "0" ]] && return 1 || return 0
+}
+
+function status() {
+    print -n "PAIRED: "; isPaired && print "YES" || echo "NO"
+    print -n "CONNECTED: "; isConnected && echo "YES" || echo "NO"
+    exit 0
+}
+
+function toggle() {
+    isPaired || { print "Device not paired!" ; exit 1; }
+    if isConnected; then
+        print "Disconnecting device..."
+        blueutil --disconnect $DEVICE_ADDRESS
+    else
+        print "Connecting device..."
+        blueutil --connect $DEVICE_ADDRESS
+    fi
+    [[ $? ]] && print "Success." || print "Failed"
+    exit $?
+}
+
+[[ $1 == "s" ]] && status
+[[ $1 == "p" ]] && pair
+
+# If no argument then call default action
+toggle
