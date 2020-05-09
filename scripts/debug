@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+zsh -x $(which $1)
+
