@@ -35,7 +35,7 @@ function toggle() {
         print "Connecting device..."
         blueutil --connect $DEVICE_ADDRESS
     fi
-    [[ $? ]] && print "Success." || print "Failed"
+    [[ $? ]] && print "Success." || print "Failed."
     exit $?
 }
 
