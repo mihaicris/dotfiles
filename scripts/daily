@@ -10,6 +10,8 @@ Usage:
   -a      - Specify author to restrict search to
   -h      - Display this help screen
   -l      - Show all commits, don't restrict to from yesterday (or from last friday if in weekend or monday)
+  -s      - Specify since period to restrict search to
+  -s      - Specify until period to restric search to
 Examples:
   daily -a "Mihai Cristescu" -l
 EOS
@@ -17,17 +19,6 @@ EOS
 
 function list_commits {
     REPO=$1
-
-    DAY=$(date|cut -d ' ' -f 1)
-
-    case $DAY in
-        "Sat"|"Sun"|"Mon" )
-            SINCE="last.friday.midnight"
-            ;;
-        * )
-            SINCE="yesterday.midnight"
-            ;;
-    esac
 
     WIDTH=$(tput cols)
 
@@ -50,7 +41,7 @@ function list_commits {
     GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --oneline"
 
     # If option l is not set, restrict to SINCE date
-    [[ -z $OPTION_l ]] && GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --since='${SINCE}'"
+    [[ -z $OPTION_l ]] && GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --since='${SINCE}' --until='${UNTIL}'"
 
     GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --author='${AUTHOR}'"
     GIT_LOG_COMMAND="${GIT_LOG_COMMAND} --date=format:'${GIT_DATE_FORMAT}'"
@@ -66,9 +57,9 @@ function list_commits {
 
 is_git_folder || exit 1
 
-while getopts "a:hl" opt; do
+while getopts "a:hls:u:" opt; do
     case $opt in
-        a|h|l)
+        a|h|l|s|u)
             typeset "OPTION_$opt=${OPTARG:-0}"
             ;;
         \?)
@@ -101,12 +92,32 @@ if [[ $OPTION_a ]] ; then
     fi
 fi
 
+if [[ $OPTION_s ]]; then
+    SINCE=$OPTION_s
+fi
+if [[ $OPTION_u ]]; then
+    UNTIL=$OPTION_u
+fi
+if [[ -z $SINCE || -z $UNTIL ]]; then
+    DAY=$(date|cut -d ' ' -f 1)
+    case $DAY in
+        "Sat"|"Sun"|"Mon" )
+            SINCE="last.friday.midnight"
+            ;;
+        * )
+            SINCE="yesterday.midnight"
+            ;;
+    esac
+fi
+
+
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 
-SUBMODULES=$(git -C $TOP_LEVEL_DIR config\
-                 --file $TOP_LEVEL_DIR/.gitmodules\
+SUBMODULES=$(git -C $TOP_LEVEL_DIR config \
+                 --file $TOP_LEVEL_DIR/.gitmodules \
                  --get-regexp path \
              | awk -v path=${TOP_LEVEL_DIR}/ '{ print path$2 }')
+
 REPOS=($TOP_LEVEL_DIR ${(f)SUBMODULES})
 
 for REPO in $REPOS; do
