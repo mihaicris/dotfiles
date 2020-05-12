@@ -2,6 +2,25 @@
 
 DEVICE_ADDRESS='bc-f2-92-a4-d5-27'
 
+function usage() {
+    cat <<EOS
+Usage:
+  bl [cdhprs]
+  Launched with no arguments will toogle the connection state (connect <-> disconnect)
+  -c      - Connect device
+  -d      - Disconnect device
+  -h      - Display this help screen
+  -p      - Pair device
+  -r      - Reboot bluetooth (power cycle)
+  -s      - Get connection state
+Examples:
+  bl
+  bl -r
+  bl -c
+EOS
+exit 0
+}
+
 function isPaired() {
     result=$(blueutil --paired | grep -o $DEVICE_ADDRESS)
     [[ $result ]] && return 0 || return 1
@@ -11,7 +30,7 @@ function pair() {
     isPaired && { print "Already paired"; exit 0 }
     print "Pairing..."
     blueutil --pair $DEVICE_ADDRESS
-    [[ $? ]] && print "Success." || print "Failed, exit code: $?."
+    [[ $? ]] && print "Success" || print "Failed, exit code: $?."
     exit $?
 }
 
@@ -33,21 +52,54 @@ function power_cycle() {
     exit 0
 }
 
+function connect() {
+    print "Connecting device..."
+    blueutil --connect $DEVICE_ADDRESS
+    [[ $? == "0" ]] && print "${LIGHT_GREEN}Success${RESET}" || print "${LIGHT_RED}Failed${RESET}"
+    exit 0
+}
+
+function disconnect() {
+    print "Disconnecting device..."
+    blueutil --disconnect $DEVICE_ADDRESS
+    [[ $? == "0" ]] && print "${LIGHT_GREEN}Success${RESET}" || print "${LIGHT_RED}Failed${RESET}"
+    exit 0
+}
+
 function toggle() {
     isPaired || { print "Device not paired!" ; exit 1; }
     if isConnected; then
-        print "Disconnecting device..."
-        blueutil --disconnect $DEVICE_ADDRESS
+        disconnect
     else
-        print "Connecting device..."
-        blueutil --connect $DEVICE_ADDRESS
+        connect
     fi
-    [[ $? == "0" ]] && print "${LIGHT_GREEN}Success.${RESET}" || print "${LIGHT_RED}Failed.${RESET}"
 }
+while getopts "cdhprs" opt; do
+    case $opt in
+        c) connect
+            ;;
+        d) disconnect
+            ;;
+        h) usage
+            ;;
+        p) pair
+            ;;
+        r) power_cycle
+            ;;
+        s) status
+            ;;
+       \?)
+            echo >&2 "Use 'bl -h' to see usage info"
+            exit 1
+            ;;
+    esac
+done
 
-[[ $1 == "c" ]] && power_cycle
-[[ $1 == "s" ]] && status
-[[ $1 == "p" ]] && pair
+shift $((OPTIND-1))
 
-# If no argument then call default action
+if [[ $# -gt 0 ]]; then
+    echo >&2 "Invalid arguments: $@"
+    echo >&2 "Use 'bl -h' to see usage info"
+    exit 1
+fi
 toggle
