@@ -5,7 +5,7 @@ DEVICE_ADDRESS='bc-f2-92-a4-d5-27'
 function usage() {
     cat <<EOS
 Usage:
-  bl [cdhprs]
+  bl [-cdhprs]
   Launched with no arguments will toogle the connection state (connect <-> disconnect)
   -c      - Connect device
   -d      - Disconnect device
@@ -13,10 +13,6 @@ Usage:
   -p      - Pair device
   -r      - Reboot bluetooth (power cycle)
   -s      - Get connection state
-Examples:
-  bl
-  bl -r
-  bl -c
 EOS
 exit 0
 }
