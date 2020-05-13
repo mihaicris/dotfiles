@@ -26,8 +26,6 @@ function pair() {
     isPaired && { print "Already paired"; exit 0 }
     print "Pairing..."
     blueutil --pair $DEVICE_ADDRESS
-    [[ $? ]] && print "Success" || print "Failed, exit code: $?."
-    exit $?
 }
 
 function isConnected() {
@@ -51,14 +49,12 @@ function power_cycle() {
 function connect() {
     print "Connecting device..."
     blueutil --connect $DEVICE_ADDRESS
-    [[ $? == "0" ]] && print "${LIGHT_GREEN}Success${RESET}" || print "${LIGHT_RED}Failed${RESET}"
     exit 0
 }
 
 function disconnect() {
     print "Disconnecting device..."
     blueutil --disconnect $DEVICE_ADDRESS
-    [[ $? == "0" ]] && print "${LIGHT_GREEN}Success${RESET}" || print "${LIGHT_RED}Failed${RESET}"
     exit 0
 }
 
