@@ -56,7 +56,7 @@ alias p="open https://eu-de.git.cloud.ibm.com/ordax/movapp-ios-repo/merge_reques
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias rb="source ~/.zshrc"
 alias s="git status"
-alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'
+alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'"
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 GIT_PROMPT_EXECUTABLE="haskell"
