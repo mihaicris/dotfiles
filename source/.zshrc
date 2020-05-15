@@ -38,7 +38,6 @@ eval "$(rbenv init -)"
 alias ..=".. && ll"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
-alias def="open https://bp-vsts.visualstudio.com/BPme/_queries/query/6661bd32-ba84-4689-84ba-6850653f115e/"
 alias edot="pdot && vim ~/.dotfiles"
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
@@ -47,19 +46,17 @@ alias gcount="git rev-list --count" # argument a branch name
 alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
-alias bp="cd ~/bpme/uk || return 1"
 alias ios="cd ~/clone/movapp-ios-repo || return 1"
 alias ll="ls -Flh"
 alias lla="ll -A"
 alias ls="ls -G"
 alias oo="xed ."
 alias owa="open https://outlook.office.com/mail/inbox"
-alias p="open https://bp-vsts.visualstudio.com/BPme/_apps/hub/ryanstedman.tfs-pullrequest-dashboard.tfs-pullrequest-dashboard"
+alias p="open https://eu-de.git.cloud.ibm.com/ordax/movapp-ios-repo/merge_requests"
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias rb="source ~/.zshrc"
 alias s="git status"
-alias work="open https://bp-vsts.visualstudio.com/BPme/_queries/query/a23efe58-988c-49ce-a397-9ef240b1c696/"
-alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15'"
+alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 GIT_PROMPT_EXECUTABLE="haskell"
