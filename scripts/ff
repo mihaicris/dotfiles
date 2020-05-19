@@ -12,7 +12,7 @@ function pull_branch {
     [[ $REMOTE_NAME ]] || { echo "No remotes available for $REPO_PATH !"; return 1; }
 
     git -C $REPO_PATH fetch --all
-    git -C $REPO_PATH prune $REMOTE_NAME
+    git -C $REPO_PATH remote prune $REMOTE_NAME
 
     CURRENT_BRANCH=$(git -C $REPO_PATH symbolic-ref -q --short HEAD)
     IS_ON_REMOTE=$(git -C $REPO_PATH ls-remote --heads --exit-code $REMOTE_NAME $CURRENT_BRANCH)
