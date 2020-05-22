@@ -48,7 +48,7 @@ alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
 alias bp="cd ~/bpme/uk || return 1"
-alias ios="cd ~/clone/movapp-ios-repo || return 1"
+alias ios="cd ~/covid/work || return 1"
 alias ll="ls -Flh"
 alias lla="ll -A"
 alias ls="ls -G"
@@ -62,6 +62,6 @@ alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-ag
 alias work="open https://bp-vsts.visualstudio.com/BPme/_queries/query/a23efe58-988c-49ce-a397-9ef240b1c696/"
 
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
-GIT_PROMPT_EXECUTABLE="haskell"
+#GIT_PROMPT_EXECUTABLE="haskell"
 source "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
