@@ -18,7 +18,7 @@ export LC_ALL=en_US.UTF-8
 export PATH="$HOME/.dotfiles/scripts:$PATH"
 export PATH="$HOME/.jenv/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
-
+export PATH="/usr/local/sbin:$PATH"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
