@@ -2,11 +2,21 @@
 
 [[ $1 == "clean" ]] && CLEAN="clean"
 xcodebuild build $CLEAN \
-    -workspace BPBaseWorkspace.xcworkspace \
-    -scheme "PayAtPumpUK" \
+    -workspace SERMAS_COVID_19.xcworkspace \
+    -scheme "Cuidate" \
     CODE_SIGN_IDENTITY="" \
     CODE_SIGNING_REQUIRED=NO \
     -sdk iphonesimulator \
-    -destination "platform=iOS Simulator,OS=13.4.1,name=iPhone 11 Pro Max" \
+    -destination "platform=iOS Simulator,OS=13.5,name=iPhone 11 Pro Max" \
+    ONLY_ACTIVE_ARCH=YES \
+    | xcpretty
+
+xcodebuild build $CLEAN \
+    -workspace SERMAS_COVID_19.xcworkspace \
+    -scheme "Verifier" \
+    CODE_SIGN_IDENTITY="" \
+    CODE_SIGNING_REQUIRED=NO \
+    -sdk iphonesimulator \
+    -destination "platform=iOS Simulator,OS=13.5,name=iPhone 11 Pro Max" \
     ONLY_ACTIVE_ARCH=YES \
     | xcpretty

@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+[[ $1 ]] || { print 'No lang specified: lang en'; exit ; }
+
+FILES=$(git ls-files | grep -i -E xcschemes)
+#sed -i '' '/\s*language =.*/d' ${FILES}
+#sed -i '' "/launchStyle/i\\
+#        language = \"$1\"
+#" ${FILES}
+#
+#sed -n -i '' 'p; s/launchstyle//' ${FILES}

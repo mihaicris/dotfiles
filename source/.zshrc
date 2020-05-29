@@ -38,7 +38,6 @@ eval "$(rbenv init -)"
 alias ..=".. && ll"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
-alias def="open https://bp-vsts.visualstudio.com/BPme/_queries/query/6661bd32-ba84-4689-84ba-6850653f115e/"
 alias edot="pdot && vim ~/.dotfiles"
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
@@ -47,14 +46,13 @@ alias gcount="git rev-list --count" # argument a branch name
 alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
-alias bp="cd ~/bpme/uk || return 1"
 alias ios="cd ~/covid/work || return 1"
 alias ll="ls -Flh"
 alias lla="ll -A"
 alias ls="ls -G"
 alias oo="xed ."
 alias owa="open https://outlook.office.com/mail/inbox"
-alias p="open https://bp-vsts.visualstudio.com/BPme/_apps/hub/ryanstedman.tfs-pullrequest-dashboard.tfs-pullrequest-dashboard"
+alias p="open https://eu-de.git.cloud.ibm.com/ordax/movapp-ios-repo/merge_requests"
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias rb="source ~/.zshrc"
 alias s="git status"
