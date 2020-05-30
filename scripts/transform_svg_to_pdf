@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+for a in *.svg; do
+    cairosvg "$a" -o "${a%.*}.pdf"
+done
