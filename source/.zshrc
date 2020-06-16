@@ -47,6 +47,7 @@ alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
 alias ios="cd ~/covid || return 1"
+alias mm="fork ."
 alias ll="ls -Flh"
 alias lla="ll -A"
 alias ls="ls -G"

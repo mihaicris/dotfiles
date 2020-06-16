@@ -1,1 +1,1 @@
-command alias flush e (void)[CATransaction flush]
+command alias flush expression -l objc -- (void)[CATransaction flush]
