@@ -59,7 +59,7 @@ alias rb="source ~/.zshrc"
 alias s="git status"
 alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'"
 alias work="open https://bp-vsts.visualstudio.com/BPme/_queries/query/a23efe58-988c-49ce-a397-9ef240b1c696/"
-
+alias stand="ytp -f 22 'https://www.youtube.com/playlist?list=PLpGHT1n4-mAtTj9oywMWoBx0dCGd51_yG'"
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 #GIT_PROMPT_EXECUTABLE="haskell"
 source "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
