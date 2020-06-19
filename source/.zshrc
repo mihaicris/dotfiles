@@ -12,7 +12,6 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 
-FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PATH="$HOME/.dotfiles/scripts:$PATH"
@@ -61,6 +60,6 @@ alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-ag
 alias work="open https://bp-vsts.visualstudio.com/BPme/_queries/query/a23efe58-988c-49ce-a397-9ef240b1c696/"
 alias stand="ytp -f 22 'https://www.youtube.com/playlist?list=PLpGHT1n4-mAtTj9oywMWoBx0dCGd51_yG'"
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
-#GIT_PROMPT_EXECUTABLE="haskell"
+GIT_PROMPT_EXECUTABLE="haskell"
 source "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
