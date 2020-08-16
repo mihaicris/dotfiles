@@ -8,5 +8,4 @@ sudo tlmgr update --all
 heading 'Upgrading brew ...'
 brew upgrade && brew cask upgrade
 heading 'Updating cocoapods ...'
-sudo gem install cocoapods
 pod repo update

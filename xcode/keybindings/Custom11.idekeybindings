@@ -8,6 +8,148 @@
 		<array>
 			<dict>
 				<key>Action</key>
+				<string>_invokeSourceEditorExtensionCommand:</string>
+				<key>Alternate</key>
+				<string>NO</string>
+				<key>CommandID</key>
+				<string>IDESourceEditorExtension:com.quantumquinn.TextToolset.TextToolsetXcodeExtension,IDESourceEditorExtensionCommand:com.quantumquinn.TextToolset.TextToolsetXcodeExtension.BlockComment</string>
+				<key>Group</key>
+				<string>Editor Menu for Source Code</string>
+				<key>GroupID</key>
+				<string>Xcode.IDEPegasusSourceEditor.MenuDefinition.Editor</string>
+				<key>GroupedAlternate</key>
+				<string>NO</string>
+				<key>Keyboard Shortcut</key>
+				<string>^@/</string>
+				<key>Navigation</key>
+				<string>NO</string>
+				<key>Parent Title</key>
+				<string>Text Toolset</string>
+				<key>Title</key>
+				<string>Block Comment</string>
+			</dict>
+			<dict>
+				<key>Action</key>
+				<string>_invokeSourceEditorExtensionCommand:</string>
+				<key>Alternate</key>
+				<string>NO</string>
+				<key>CommandID</key>
+				<string>IDESourceEditorExtension:com.quantumquinn.TextToolset.TextToolsetXcodeExtension,IDESourceEditorExtensionCommand:com.quantumquinn.TextToolset.TextToolsetXcodeExtension.CopyLine</string>
+				<key>Group</key>
+				<string>Editor Menu for Source Code</string>
+				<key>GroupID</key>
+				<string>Xcode.IDEPegasusSourceEditor.MenuDefinition.Editor</string>
+				<key>GroupedAlternate</key>
+				<string>NO</string>
+				<key>Navigation</key>
+				<string>NO</string>
+				<key>Parent Title</key>
+				<string>Text Toolset</string>
+				<key>Title</key>
+				<string>Copy Line</string>
+			</dict>
+			<dict>
+				<key>Action</key>
+				<string>_invokeSourceEditorExtensionCommand:</string>
+				<key>Alternate</key>
+				<string>NO</string>
+				<key>CommandID</key>
+				<string>IDESourceEditorExtension:com.quantumquinn.TextToolset.TextToolsetXcodeExtension,IDESourceEditorExtensionCommand:com.quantumquinn.TextToolset.TextToolsetXcodeExtension.DeleteLine</string>
+				<key>Group</key>
+				<string>Editor Menu for Source Code</string>
+				<key>GroupID</key>
+				<string>Xcode.IDEPegasusSourceEditor.MenuDefinition.Editor</string>
+				<key>GroupedAlternate</key>
+				<string>NO</string>
+				<key>Navigation</key>
+				<string>NO</string>
+				<key>Parent Title</key>
+				<string>Text Toolset</string>
+				<key>Title</key>
+				<string>Delete Lines</string>
+			</dict>
+			<dict>
+				<key>Action</key>
+				<string>_invokeSourceEditorExtensionCommand:</string>
+				<key>Alternate</key>
+				<string>NO</string>
+				<key>CommandID</key>
+				<string>IDESourceEditorExtension:com.quantumquinn.TextToolset.TextToolsetXcodeExtension,IDESourceEditorExtensionCommand:com.quantumquinn.TextToolset.TextToolsetXcodeExtension.DuplicateLine</string>
+				<key>Group</key>
+				<string>Editor Menu for Source Code</string>
+				<key>GroupID</key>
+				<string>Xcode.IDEPegasusSourceEditor.MenuDefinition.Editor</string>
+				<key>GroupedAlternate</key>
+				<string>NO</string>
+				<key>Keyboard Shortcut</key>
+				<string>@d</string>
+				<key>Navigation</key>
+				<string>NO</string>
+				<key>Parent Title</key>
+				<string>Text Toolset</string>
+				<key>Title</key>
+				<string>Duplicate Lines</string>
+			</dict>
+			<dict>
+				<key>Action</key>
+				<string>_invokeSourceEditorExtensionCommand:</string>
+				<key>Alternate</key>
+				<string>NO</string>
+				<key>CommandID</key>
+				<string>IDESourceEditorExtension:com.quantumquinn.TextToolset.TextToolsetXcodeExtension,IDESourceEditorExtensionCommand:com.quantumquinn.TextToolset.TextToolsetXcodeExtension.LowercaseSelection</string>
+				<key>Group</key>
+				<string>Editor Menu for Source Code</string>
+				<key>GroupID</key>
+				<string>Xcode.IDEPegasusSourceEditor.MenuDefinition.Editor</string>
+				<key>GroupedAlternate</key>
+				<string>NO</string>
+				<key>Navigation</key>
+				<string>NO</string>
+				<key>Parent Title</key>
+				<string>Text Toolset</string>
+				<key>Title</key>
+				<string>Lowercase Selections</string>
+			</dict>
+			<dict>
+				<key>Action</key>
+				<string>_invokeSourceEditorExtensionCommand:</string>
+				<key>Alternate</key>
+				<string>NO</string>
+				<key>CommandID</key>
+				<string>IDESourceEditorExtension:com.quantumquinn.TextToolset.TextToolsetXcodeExtension,IDESourceEditorExtensionCommand:com.quantumquinn.TextToolset.TextToolsetXcodeExtension.UppercaseSelection</string>
+				<key>Group</key>
+				<string>Editor Menu for Source Code</string>
+				<key>GroupID</key>
+				<string>Xcode.IDEPegasusSourceEditor.MenuDefinition.Editor</string>
+				<key>GroupedAlternate</key>
+				<string>NO</string>
+				<key>Navigation</key>
+				<string>NO</string>
+				<key>Parent Title</key>
+				<string>Text Toolset</string>
+				<key>Title</key>
+				<string>Uppercase Selections</string>
+			</dict>
+			<dict>
+				<key>Action</key>
+				<string>duplicate:</string>
+				<key>Alternate</key>
+				<string>NO</string>
+				<key>CommandID</key>
+				<string>Xcode.IDEKit.CmdDefinition.Duplicate</string>
+				<key>Group</key>
+				<string>Edit Menu</string>
+				<key>GroupID</key>
+				<string>Xcode.IDEKit.MenuDefinition.Main</string>
+				<key>GroupedAlternate</key>
+				<string>NO</string>
+				<key>Navigation</key>
+				<string>NO</string>
+				<key>Title</key>
+				<string>Duplicate</string>
+			</dict>
+			<dict>
+				<key>Action</key>
 				<string>printDocument:</string>
 				<key>Alternate</key>
 				<string>NO</string>
