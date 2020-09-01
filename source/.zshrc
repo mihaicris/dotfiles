@@ -37,6 +37,7 @@ eval "$(rbenv init -)"
 alias ..=".. && ll"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
+alias bun="bundle exec pod install"
 alias edot="pdot && vim ~/.dotfiles"
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
