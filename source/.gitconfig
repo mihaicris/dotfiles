@@ -1,7 +1,3 @@
-[user]
-    name = Mihai Cristescu
-    email = mihai.cristescu@gmail.com
-
 [pull]
     rebase = false
 
