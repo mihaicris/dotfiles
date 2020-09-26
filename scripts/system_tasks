@@ -2,9 +2,6 @@
 
 heading 'Updating Ruby gems ...'
 gem update --system --no-document
-heading 'Updating LaTex ...'
-sudo tlmgr update --self
-sudo tlmgr update --all
 heading 'Upgrading brew ...'
 brew upgrade && brew cask upgrade
 heading 'Updating cocoapods ...'
