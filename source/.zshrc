@@ -46,7 +46,7 @@ alias gcount="git rev-list --count" # argument a branch name
 alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
-alias ios="cd ~/adoreme/feature || return 1"
+alias ios="cd ~/adoreme/ || return 1"
 alias jira="open 'https://jira.adoreme.com/secure/RapidBoard.jspa?rapidView=40&quickFilter=124'"
 alias mm="fork ."
 alias ll="ls -Flh"

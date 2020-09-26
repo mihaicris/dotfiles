@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 heading 'Updating Ruby gems ...'
-sudo gem update --no-document
+gem update --system --no-document
 heading 'Updating LaTex ...'
 sudo tlmgr update --self
 sudo tlmgr update --all
