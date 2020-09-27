@@ -3,6 +3,6 @@
 heading 'Updating Ruby gems ...'
 gem update --system --no-document
 heading 'Upgrading brew ...'
-brew upgrade && brew cask upgrade
+brew upgrade && brew upgrade --cask
 heading 'Updating cocoapods ...'
 pod repo update
