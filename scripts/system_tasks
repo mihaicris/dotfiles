@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 heading 'Updating Ruby gems ...'
+gem update --no-document
 gem update --system --no-document
 heading 'Upgrading brew ...'
 brew upgrade && brew upgrade --cask
