@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+
+heading "Choose project worktree:"
+
+TOP_LEVEL_DIR=~/adoreme/develop
+
+WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list)
+WORKDIRS=(${(f)WORKDIRS})
+COUNT=$#WORKDIRS
+
+LOCATIONS=$(git -C $TOP_LEVEL_DIR worktree list --porcelain \
+            | grep worktree \
+            | awk '{ print $2 }')
+
+LOCATIONS=(${(f)LOCATIONS})
+
+if (( COUNT == 0 )); then
+    print "\n There are no  wortrees.\n"
+    exit 1
+fi
+
+select WORKDIR in $WORKDIRS; do
+    if [[ -n "$WORKDIR" ]]; then
+        SELECTION=$REPLY
+        break
+    fi
+done
+
+cd $LOCATIONS[SELECTION]
