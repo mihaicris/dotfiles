@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+TICKET=$1
+
+if [[ $TICKET ]]; then
+    open "https://jira.adoreme.com/browse/AMA-$TICKET"
+else
+    open "https://jira.adoreme.com/secure/RapidBoard.jspa?rapidView=40&quickFilter=124"
+fi
+
