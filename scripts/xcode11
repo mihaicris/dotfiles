@@ -1,4 +1,4 @@
 #!/usr/bin/env zsh
 
 sudo xcode-select -s "/Applications/Xcode11.7.app/Contents/Developer"
-cp ~/.dotfiles/xcode/keybindings/Custom11.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
+cp ~/.dotfiles/xcode/keybindings/Mihai.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
