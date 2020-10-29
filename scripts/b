@@ -1,12 +1,14 @@
 #!/usr/bin/env zsh
 
 [[ $1 == "clean" ]] && CLEAN="clean"
-xcodebuild build $CLEAN \
+[[ $1 == "test" ]] && TEST="test"
+[[ $2 == "test" ]] && TEST="test"
+xcodebuild $CLEAN $TEST build \
     -workspace AdoreMe.xcworkspace \
     -scheme "AdoreMe" \
     -derivedDataPath "DerivedData" \
     -sdk iphonesimulator \
-    -destination "platform=iOS Simulator,OS=14.0,name=iPhone 14.0" \
+    -destination "platform=iOS Simulator,OS=14.1,name=iPhone 14.1" \
     ONLY_ACTIVE_ARCH=YES \
     CODE_SIGN_IDENTITY="" \
     CODE_SIGNING_REQUIRED=NO \
