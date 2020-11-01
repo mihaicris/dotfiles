@@ -3,14 +3,17 @@
 [[ $1 == "clean" ]] && CLEAN="clean"
 [[ $1 == "test" ]] && TEST="test"
 [[ $2 == "test" ]] && TEST="test"
-xcodebuild $CLEAN $TEST build \
-    -workspace AdoreMe.xcworkspace \
-    -scheme "AdoreMe" \
-    -derivedDataPath "DerivedData" \
-    -sdk iphonesimulator \
-    -destination "platform=iOS Simulator,OS=14.1,name=iPhone 14.1" \
-    ONLY_ACTIVE_ARCH=YES \
-    CODE_SIGN_IDENTITY="" \
-    CODE_SIGNING_REQUIRED=NO \
-    | xcpretty
-
+devices=("11.4" "12.4" "13.7" "14.2")
+for name in $devices; do
+    echo "======= Building and testing for device: iOS $name. ======"
+    xcodebuild $CLEAN $TEST build \
+        -workspace AdoreMe.xcworkspace \
+        -scheme "AdoreMe" \
+        -derivedDataPath "DerivedData" \
+        -sdk iphonesimulator \
+        -destination "platform=iOS Simulator,OS=$name,name=iOS $name" \
+        ONLY_ACTIVE_ARCH=YES \
+        CODE_SIGN_IDENTITY="" \
+        CODE_SIGNING_REQUIRED=NO \
+        | xcpretty
+done
