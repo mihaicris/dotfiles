@@ -36,6 +36,7 @@ HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
+eval "$(pyenv init -)"
 
 alias ..=".. && ll"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
@@ -66,4 +67,5 @@ source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 GIT_PROMPT_EXECUTABLE="haskell"
 source "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
 
