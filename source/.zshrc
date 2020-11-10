@@ -18,6 +18,8 @@ export PATH="$HOME/.dotfiles/scripts:$PATH"
 export PATH="$HOME/.jenv/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.rbenv/shims:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
@@ -64,3 +66,4 @@ source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 GIT_PROMPT_EXECUTABLE="haskell"
 source "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
