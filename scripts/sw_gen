@@ -1,31 +1,65 @@
 #!/usr/bin/env zsh
 
-swiftlint rules \
-| tail +4 \
-| sed '$d' \
-| awk \
-'
-BEGIN { 
-	FS = "|"
-	print "disabled_rules:"
-}
-{
-	if ($3 ~ /no/) print " -"$2 
-}
-END {}'
+print "disabled_rules:"
+print ""
+print " # Autocorrectable rules"
+print ""
 
 swiftlint rules \
 | tail +4 \
 | sed '$d' \
 | awk \
 '
-BEGIN { 
-	FS = "|"
-	print
-	print "opt_in_rules:"
-}
+BEGIN { FS = "|" }
 {
-	if ($3 ~ /yes/) print "# -"$2 
+	if ($3 ~ /no/ && $4 ~ /yes/) print " -"$2 
+}
+END {}'
+
+print ""
+print " # Not autocorrectable rules"
+print ""
+
+swiftlint rules \
+| tail +4 \
+| sed '$d' \
+| awk \
+'
+BEGIN { FS = "|" }
+{
+	if ($3 ~ /no/ && $4 ~ /no/) print " -"$2 
+}
+END {}'
+
+print ""
+print "opt_in_rules:"
+print ""
+print " # Autocorrectable rules"
+print ""
+
+swiftlint rules \
+| tail +4 \
+| sed '$d' \
+| awk \
+'
+BEGIN { FS = "|" }
+{
+	if ($3 ~ /yes/ && $4 ~ /yes/) print "# -"$2 
+}
+END {}' 
+
+print ""
+print " # Not autocorrectable rules"
+print ""
+
+swiftlint rules \
+| tail +4 \
+| sed '$d' \
+| awk \
+'
+BEGIN { FS = "|" }
+{
+	if ($3 ~ /yes/ && $4 ~ /no/) print "# -"$2 
 }
 END {}' 
 
