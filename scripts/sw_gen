@@ -1,0 +1,42 @@
+#!/usr/bin/env zsh
+
+swiftlint rules \
+| tail +4 \
+| sed '$d' \
+| awk \
+'
+BEGIN { 
+	FS = "|"
+	print "disabled_rules:"
+}
+{
+	if ($3 ~ /no/) print " -"$2 
+}
+END {}'
+
+swiftlint rules \
+| tail +4 \
+| sed '$d' \
+| awk \
+'
+BEGIN { 
+	FS = "|"
+	print
+	print "opt_in_rules:"
+}
+{
+	if ($3 ~ /yes/) print "# -"$2 
+}
+END {}' 
+
+# swiftlint rules \
+# | awk \
+# '
+# BEGIN { 
+# 	FS = "|"
+# 	print
+# }
+# {
+# 	print
+# }
+# END {}' 
