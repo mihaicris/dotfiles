@@ -101,31 +101,31 @@ opt_in_rules:
 
  # Autocorrectable rules
 
-# - anyobject_protocol
-# - closure_end_indentation
-# - closure_spacing
-# - explicit_init
-# - explicit_self
-# - implicit_return
-# - joined_default_parameter
-# - literal_expression_end_indentation
-# - modifier_order
-# - nimble_operator
-# - number_separator
-# - operator_usage_whitespace
-# - optional_enum_case_matching
-# - prefer_self_type_over_type_of_self
-# - prefer_zero_over_explicit_init
-# - redundant_nil_coalescing
-# - redundant_type_annotation
-# - sorted_imports
-# - toggle_bool
-# - unneeded_parentheses_in_closure_argument
-# - untyped_error_in_catch
-# - unused_import
-# - vertical_whitespace_between_cases
-# - vertical_whitespace_closing_braces
-# - vertical_whitespace_opening_braces
+- anyobject_protocol
+- closure_end_indentation
+- closure_spacing
+- explicit_init
+- explicit_self
+- implicit_return
+- joined_default_parameter
+- literal_expression_end_indentation
+- modifier_order
+- nimble_operator
+- number_separator
+- operator_usage_whitespace
+- optional_enum_case_matching
+- prefer_self_type_over_type_of_self
+- prefer_zero_over_explicit_init
+- redundant_nil_coalescing
+- redundant_type_annotation
+- sorted_imports
+- toggle_bool
+- unneeded_parentheses_in_closure_argument
+- untyped_error_in_catch
+- unused_import
+- vertical_whitespace_between_cases
+- vertical_whitespace_closing_braces
+- vertical_whitespace_opening_braces
 
  # Not autocorrectable rules
 
