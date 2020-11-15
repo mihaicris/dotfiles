@@ -4,5 +4,7 @@ if [[ -z $1 ]]; then
     exit 1
 fi
 
-swiftlint autocorrect -- $1
-swiftlint -- $1
+swiftlint autocorrect --path $1 --config ~/.dotfiles/source/.swiftlint.yml
+swiftlint --path $1 --config ~/.dotfiles/source/.swiftlint.yml
+# swiftformat $1
+swift-format -i -m format --configuration ~/.dotfiles/source/.swift-format.json $1
