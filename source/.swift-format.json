@@ -7,11 +7,11 @@
   },
   "indentConditionalCompilationBlocks" : true,
   "indentSwitchCaseLabels" : false,
-  "lineBreakAroundMultilineExpressionChainComponents" : true,
-  "lineBreakBeforeControlFlowKeywords" : true,
-  "lineBreakBeforeEachArgument" : true,
-  "lineBreakBeforeEachGenericRequirement" : true,
-  "lineLength" : 120,
+  "lineBreakAroundMultilineExpressionChainComponents" : false,
+  "lineBreakBeforeControlFlowKeywords" : false,
+  "lineBreakBeforeEachArgument" : false,
+  "lineBreakBeforeEachGenericRequirement" : false,
+  "lineLength" : 100,
   "maximumBlankLines" : 1,
   "prioritizeKeepingFunctionOutputTogether" : false,
   "respectsExistingLineBreaks" : true,
@@ -49,6 +49,6 @@
     "UseTripleSlashForDocumentationComments" : true,
     "ValidateDocumentationComments" : false
   },
-  "tabWidth" : 4,
+  "tabWidth" : 8,
   "version" : 1
 }
