@@ -1,10 +1,16 @@
 #!/usr/bin/env zsh
 
-if [[ -z $1 ]]; then
-    exit 1
-fi
+# if [[ -z $1 ]]; then
+#     exit 1
+# fi
 
-swiftlint autocorrect --path $1 --config ~/.dotfiles/source/.swiftlint.yml
-swiftlint --path $1 --config ~/.dotfiles/source/.swiftlint.yml
+# swiftlint autocorrect --path $1 --config ~/.dotfiles/source/.swiftlint.yml
+# swiftlint --path $1 --config ~/.dotfiles/source/.swiftlint.yml
 # swiftformat $1
-swift-format -i -m format --configuration ~/.dotfiles/source/.swift-format.json $1
+# swift-format -i -m format --configuration ~/.dotfiles/source/.swift-format.json $1
+
+git diff --diff-filter=d --name-only | grep -e '\(.*\).swift$' | while read line; do
+	swift-format -i -m format --configuration ~/.dotfiles/source/.swift-format.json $line
+	swiftlint autocorrect --config ~/.dotfiles/source/.swiftlint.yml --path $line 
+	swiftlint lint --config ~/.dotfiles/source/.swiftlint.yml --path $line
+done
