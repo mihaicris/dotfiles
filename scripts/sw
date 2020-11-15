@@ -5,3 +5,4 @@ git diff --diff-filter=d --name-only | grep -e '\(.*\).swift$' | while read line
 	swiftlint autocorrect --config ~/.dotfiles/source/.swiftlint.yml --path $line 
 	swiftlint lint --config ~/.dotfiles/source/.swiftlint.yml --path $line
 done
+

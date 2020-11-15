@@ -1,8 +1,14 @@
 #!/usr/bin/env zsh
 
+print "included:
+  - AdoreMe
+  - AdoreMeServiceExtension
+  - AdoreMeUnitTests"
+print ""
+
 print "disabled_rules:"
 print ""
-print " # Autocorrectable rules"
+print "# ---- Autocorrectable rules ----"
 print ""
 
 swiftlint rules \
@@ -12,12 +18,12 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /no/ && $4 ~ /yes/) print " -"$2 
+	if ($3 ~ /no/ && $4 ~ /yes/) print "# -"$2
 }
 END {}'
 
 print ""
-print " # Not autocorrectable rules"
+print "# ---- Not autocorrectable rules ----"
 print ""
 
 swiftlint rules \
@@ -27,14 +33,14 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /no/ && $4 ~ /no/) print " -"$2 
+	if ($3 ~ /no/ && $4 ~ /no/) print "# -"$2
 }
 END {}'
 
 print ""
 print "opt_in_rules:"
 print ""
-print " # Autocorrectable rules"
+print "# ---- Autocorrectable rules ----"
 print ""
 
 swiftlint rules \
@@ -44,12 +50,12 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /yes/ && $4 ~ /yes/) print "# -"$2 
+	if ($3 ~ /yes/ && $4 ~ /yes/) print "# -"$2
 }
-END {}' 
+END {}'
 
 print ""
-print " # Not autocorrectable rules"
+print "# ---- Not autocorrectable rules ----"
 print ""
 
 swiftlint rules \
@@ -59,18 +65,7 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /yes/ && $4 ~ /no/) print "# -"$2 
+	if ($3 ~ /yes/ && $4 ~ /no/) print "# -"$2
 }
-END {}' 
+END {}'
 
-# swiftlint rules \
-# | awk \
-# '
-# BEGIN { 
-# 	FS = "|"
-# 	print
-# }
-# {
-# 	print
-# }
-# END {}' 
