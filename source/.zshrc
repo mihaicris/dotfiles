@@ -41,7 +41,7 @@ eval "$(pyenv init -)"
 alias ..=".. && ll"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
-alias bun="bundle install && bundle exec pod install"
+alias bun="bundle exec pod install"
 alias ios=". ios"
 alias edot="pdot && vim ~/.dotfiles"
 alias gbf="git branch --contains" # argument a commit hash
