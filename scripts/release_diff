@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+
+is_git_folder || exit 1
+
+TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+
+REF1=$1
+REF2=$2
+
+[[ $1 ]] || { print "${LIGHT_GREEN}Ref 1${NORMAL} not specified.\nUsage: release_diff ${LIGHT_GREEN}<ref1> <ref2>${NORMAL}\n"; exit ; }
+[[ $2 ]] || { print "${LIGHT_GREEN}Ref 2${NORMAL} not specified.\nUsage: release_diff ${LIGHT_GREEN}<ref1> <ref2>${NORMAL}\n"; exit ; }
+
+REPOS=($TOP_LEVEL_DIR)
+
+print "\nh3. New features\n"
+{ for REPO in $REPOS; do
+    git -C $REPO log $REF1..$REF2 --no-merges --oneline
+   done
+} | grep -oE "(AMA-\d+|PN-\d+)" \
+  | sort -u \
+  | while read i; do
+    printf "- [${LIGHT_GREEN}$i${NORMAL}]\thttps://jira.adoreme.com/browse/${LIGHT_GREEN}$i${NORMAL}\n"
+done
+print "\nh3. Defects\n"
+print "\nh3. Improvements\n"
+
