@@ -21,6 +21,7 @@ export PATH="$HOME/.rbenv/shims:$PATH"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
@@ -51,6 +52,7 @@ alias gcount="git rev-list --count" # argument a branch name
 alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
+alias fastlane="bundle exec fastlane"
 alias mm="fork ."
 alias ll="ls -Flh"
 alias lla="ll -A"
