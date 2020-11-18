@@ -19,8 +19,8 @@ print "\nh3. New features\n"
 } | grep -oE "(AMA-\d+|PN-\d+)" \
   | sort -u \
   | while read i; do
-    printf "- [${LIGHT_GREEN}$i${NORMAL}]\thttps://jira.adoreme.com/browse/${LIGHT_GREEN}$i${NORMAL}\n"
+    printf "- ${LIGHT_GREEN}$i${NORMAL}\thttps://jira.adoreme.com/browse/${LIGHT_GREEN}$i${NORMAL}\n\n"
 done
-print "\nh3. Defects\n"
+print "h3. Defects\n"
 print "\nh3. Improvements\n"
 
