@@ -42,7 +42,7 @@ eval "$(pyenv init -)"
 alias ..=".. && ll"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
-alias crash='open -n -a Safari "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
+alias crash='open -a Safari "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
 alias bun="bundle exec pod install"
 alias ios=". ios"
 alias edot="pdot && vim ~/.dotfiles"
