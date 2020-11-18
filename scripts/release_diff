@@ -10,9 +10,22 @@ REF2=$2
 [[ $1 ]] || { print "${LIGHT_GREEN}Ref 1${NORMAL} not specified.\nUsage: release_diff ${LIGHT_GREEN}<ref1> <ref2>${NORMAL}\n"; exit ; }
 [[ $2 ]] || { print "${LIGHT_GREEN}Ref 2${NORMAL} not specified.\nUsage: release_diff ${LIGHT_GREEN}<ref1> <ref2>${NORMAL}\n"; exit ; }
 
+printf "Enter JIRA username: (mihai.cristescu@adoreme.com)"
+read USER
+[[ $USER ]] || { USER="mihai.cristescu@adoreme.com"; }
+
+printf "Enter password: "
+read -s PASS
+
+
+[[ $PASS ]] || { print "${LIGHT_GREEN}Password${NORMAL} not specified."; exit ; }
+
+print "\n"
+
 REPOS=($TOP_LEVEL_DIR)
 
-print "\nh3. New features\n"
+print "Tickets and links:\n"
+
 { for REPO in $REPOS; do
     git -C $REPO log $REF1..$REF2 --no-merges --oneline
    done
@@ -21,6 +34,20 @@ print "\nh3. New features\n"
   | while read i; do
     printf "- [${LIGHT_GREEN}$i${NORMAL}]\thttps://jira.adoreme.com/browse/${LIGHT_GREEN}$i${NORMAL}\n"
 done
+
+print "\n---------------------------------------------\n"
+print "h1. Release version\n"
+print "Tickets included in this release:\n"
+print "h3. New features\n"
+{ for REPO in $REPOS; do
+    git -C $REPO log $REF1..$REF2 --no-merges --oneline
+   done
+} | grep -oE "(AMA-\d+|PN-\d+)" \
+  | sort -u \
+  | while read i; do
+  	title=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/$i?fields=summary" | jq -r .fields.summary)
+    printf "- [${LIGHT_GREEN}$i${NORMAL}]\t${title}\n\n"
+done
 print "\nh3. Defects\n"
 print "\nh3. Improvements\n"
-
+print "\n---------------------------------------------\n"
