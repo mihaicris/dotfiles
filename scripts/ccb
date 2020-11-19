@@ -14,13 +14,16 @@ if (( REMOTE_COUNT != 1 )); then
 fi
 
 REMOTE_BRANCHES=$(git branch -r | grep -v "HEAD ->")
-
-if [[ $QUERY ]]; then
-    REMOTE_BRANCHES=$(echo $REMOTE_BRANCHES | grep $QUERY)
-fi
+ONLY_LOCAL_BRANCHES=$(git for-each-ref --format='%(refname:short) %(upstream)' refs/heads | awk '$2 !~/^refs\/remotes/' | awk '{$1=$1;print}')
 
 REMOTE_BRANCHES=$(echo $REMOTE_BRANCHES | sed "s/^[ ]*$REMOTE_NAME\///")
-RESULTS=(${(f)REMOTE_BRANCHES:#})
+ALL_BRANCHES=$(echo $ONLY_LOCAL_BRANCHES ; echo $REMOTE_BRANCHES)
+
+if [[ $QUERY ]]; then
+    ALL_BRANCHES=$(echo $ALL_BRANCHES | grep $QUERY)
+fi
+
+RESULTS=(${(f)ALL_BRANCHES:#})
 COUNT=$#RESULTS
 
 if (( COUNT == 0 )); then
@@ -30,7 +33,7 @@ fi
 
 if (( COUNT > 1 )); then
     if [[ -z $QUERY ]]; then
-        print "\nThe list of remote branches is:\n"
+        print "\nThe list of branches is:\n"
     else
         print "\nThere are multiple branches containing ${LIGHT_RED}${QUERY}${NORMAL}:\n"
     fi
