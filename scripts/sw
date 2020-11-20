@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-git diff --diff-filter=d --name-only | grep -e '\(.*\).swift$' | while read line; do
+git diff develop..HEAD --name-only | grep -e '\(.*\).swift$' | while read line; do
 	swift-format -i -m format --configuration ~/.dotfiles/source/.swift-format.json $line
 	swiftlint autocorrect --config ~/.dotfiles/source/.swiftlint.yml --path $line 
 	swiftlint lint --config ~/.dotfiles/source/.swiftlint.yml --path $line

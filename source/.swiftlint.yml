@@ -63,7 +63,7 @@ disabled_rules:
 # - function_body_length
 # - function_parameter_count
 # - generic_type_name
-# - identifier_name
+- identifier_name
 # - implicit_getter
 # - inclusive_language
 # - inert_defer
@@ -215,3 +215,9 @@ opt_in_rules:
 # - vertical_parameter_alignment_on_call
 # - xct_specific_matcher
 # - yoda_condition
+
+
+line_length:
+  warning: 180
+  error: 400
+  ignores_comments: true
