@@ -18,7 +18,7 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /no/ && $4 ~ /yes/) print "# -"$2
+	if ($3 ~ /no/ && $4 ~ /yes/) print "#  -"$2
 }
 END {}'
 
@@ -33,7 +33,7 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /no/ && $4 ~ /no/) print "# -"$2
+	if ($3 ~ /no/ && $4 ~ /no/) print "#  -"$2
 }
 END {}'
 
@@ -50,7 +50,7 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /yes/ && $4 ~ /yes/) print "# -"$2
+	if ($3 ~ /yes/ && $4 ~ /yes/) print "#  -"$2
 }
 END {}'
 
@@ -65,7 +65,13 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /yes/ && $4 ~ /no/) print "# -"$2
+	if ($3 ~ /yes/ && $4 ~ /no/) print "#  -"$2
 }
 END {}'
+
+print ""
+print "line_length:"
+print "  warning: 180"
+print "  error: 400"
+print "  ignores_comments: true"
 
