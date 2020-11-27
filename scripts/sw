@@ -1,12 +1,31 @@
 #!/usr/bin/env zsh
 
-FILES=$(git diff develop..HEAD --diff-filter=AM --name-only | grep -e '\(.*\).swift$' | awk 'NF { print "\""$0"\""}' ORS=' ')
+BRANCH=${1:-develop}
 
-heading "Swift format"
-eval "swift-format -i -m format --configuration ~/.dotfiles/source/.swift-format.json $FILES"
+FILES=$(git diff $BRANCH..HEAD --diff-filter=AM --name-only | grep -e '\(.*\).swift$')
+FILES_FLAT=$(echo $FILES | awk 'NF { print "\""$0"\""}' ORS=' ')
 
-heading "Swiftlint autocorrect"
-eval "swiftlint autocorrect --config ~/.dotfiles/source/.swiftlint.yml $FILES"
+COUNT=$#FILES_FLAT
 
-heading "Swiftlint"
-eval "swiftlint lint --config ~/.dotfiles/source/.swiftlint.yml $FILES"
+if (( COUNT == 0 )); then
+    print "\nNo files changes\n"
+    return 1
+fi
+
+heading "Files to procces:"
+echo $FILES
+print ""
+
+if read -q '?Do you wish to process this list? (y/n) ? '; then
+    heading "Swift format"
+    eval "swift-format -i -m format --configuration ~/.dotfiles/source/.swift-format.json $FILES_FLAT"
+
+    heading "Swiftlint autocorrect"
+    eval "swiftlint autocorrect --config ~/.dotfiles/source/.swiftlint.yml $FILES_FLAT"
+
+    heading "Swiftlint"
+    eval "swiftlint lint --config ~/.dotfiles/source/.swiftlint.yml $FILES_FLAT"
+
+fi
+
+print "\n"
