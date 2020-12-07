@@ -18,10 +18,10 @@ export PATH="$HOME/.dotfiles/scripts:$PATH"
 export PATH="$HOME/.jenv/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.rbenv/shims:$PATH"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
@@ -37,7 +37,7 @@ HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
-eval "$(pyenv init -)"
+# eval "$(pyenv init -)"
 
 alias ..=".. && ll"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"

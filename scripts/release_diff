@@ -46,7 +46,7 @@ print "h3. New features\n"
   | sort -u \
   | while read i; do
   	title=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/$i?fields=summary" | jq -r .fields.summary)
-    printf "- [${LIGHT_GREEN}$i${NORMAL}]\t${title}\n\n"
+    printf "* [${LIGHT_GREEN}$i${NORMAL}]\t${title}\n\n"
 done
 print "\nh3. Defects\n"
 print "\nh3. Improvements\n"
