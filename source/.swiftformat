@@ -1,59 +1,59 @@
 --header strip
 --swiftversion 5.3
---allman false
---indent 4
---semicolons never
---guardelse same-line
+# --allman false
+# --indent 4
+# --semicolons never
+# --guardelse same-line
 --rules \
-    anyObjectProtocol,          \
-    blankLinesAroundMark,       \
-    blankLinesAtEndOfScope,     \
-    blankLinesAtStartOfScope,   \
-    blankLinesBetweenScopes,    \
-    braces,                     \
-    consecutiveBlankLines,      \
-    consecutiveSpaces,          \
-    duplicateImports,           \
-    elseOnSameLine,             \
-    emptyBraces,                \
+#     anyObjectProtocol,          \
+#     blankLinesAroundMark,       \
+#     blankLinesAtEndOfScope,     \
+#     blankLinesAtStartOfScope,   \
+#     blankLinesBetweenScopes,    \
+#     braces,                     \
+#     consecutiveBlankLines,      \
+#     consecutiveSpaces,          \
+#     duplicateImports,           \
+#     elseOnSameLine,             \
+#     emptyBraces,                \
     fileHeader,                 \
-    hoistPatternLet,            \
-    indent,                     \
-    isEmpty,                    \
-    leadingDelimiters,          \
-    organizeDeclarations,       \
-    redundantBackticks,         \
-    redundantBreak,             \
-    redundantExtensionACL,      \
-    redundantFileprivate,       \
-    redundantGet,               \
-    redundantInit,              \
-    redundantLet,               \
-    redundantLetError,          \
-    redundantNilInit,           \
-    redundantObjc,              \
-    redundantParens,            \
-    redundantPattern,           \
-    redundantRawValues,         \
-    redundantReturn,            \
-    redundantVoidReturnType,    \
-    semicolons,                 \
-    sortedImports,              \
-    spaceAroundBraces,          \
-    spaceAroundBrackets,        \
-    spaceAroundComments,        \
-    spaceAroundGenerics,        \
-    spaceAroundOperators,       \
-    spaceAroundParens,          \
-    spaceInsideBraces,          \
-    spaceInsideBrackets,        \
-    spaceInsideComments,        \
-    spaceInsideGenerics,        \
-    spaceInsideParens,          \
-    strongifiedSelf,            \
-    todos,                      \
-    trailingClosures,           \
-    trailingCommas,             \
-    trailingSpace,              \
-    typeSugar,                  \
-    void
+#     hoistPatternLet,            \
+#     indent,                     \
+#     isEmpty,                    \
+#     leadingDelimiters,          \
+#     organizeDeclarations,       \
+#     redundantBackticks,         \
+#     redundantBreak,             \
+#     redundantExtensionACL,      \
+#     redundantFileprivate,       \
+#     redundantGet,               \
+#     redundantInit,              \
+#     redundantLet,               \
+#     redundantLetError,          \
+#     redundantNilInit,           \
+#     redundantObjc,              \
+#     redundantParens,            \
+#     redundantPattern,           \
+#     redundantRawValues,         \
+#     redundantReturn,            \
+#     redundantVoidReturnType,    \
+#     semicolons,                 \
+#     sortedImports,              \
+#     spaceAroundBraces,          \
+#     spaceAroundBrackets,        \
+#     spaceAroundComments,        \
+#     spaceAroundGenerics,        \
+#     spaceAroundOperators,       \
+#     spaceAroundParens,          \
+#     spaceInsideBraces,          \
+#     spaceInsideBrackets,        \
+#     spaceInsideComments,        \
+#     spaceInsideGenerics,        \
+#     spaceInsideParens,          \
+#     strongifiedSelf,            \
+#     todos,                      \
+#     trailingClosures,           \
+#     trailingCommas,             \
+#     trailingSpace,              \
+#     typeSugar,                  \
+#     void
