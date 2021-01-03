@@ -44,6 +44,7 @@ alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-buil
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
 alias bun="bundle exec pod install"
+alias sim="xcrun simctl openurl booted"
 alias ios=". ios"
 alias edot="pdot && vim ~/.dotfiles"
 alias gbf="git branch --contains" # argument a commit hash
