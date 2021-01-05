@@ -56,6 +56,7 @@ alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
 alias fastlane="bundle exec fastlane"
 alias mm="fork ."
+alias kand="killall studio; killall qemu-system-x86_64"
 alias ll="ls -Flh"
 alias lla="ll -A"
 alias meet="open https://meet.google.com"
