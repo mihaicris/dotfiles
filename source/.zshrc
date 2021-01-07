@@ -40,14 +40,13 @@ eval "$(rbenv init -)"
 # eval "$(pyenv init -)"
 
 alias ..=".. && ll"
+alias bun="bundle exec pod install"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
+alias cdot="git -C ~/.dotfiles commit -am 'Updates' && git -C ~/.dotfiles push"
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
-alias bun="bundle exec pod install"
-alias simi="xcrun simctl openurl booted"
-alias sima='/Users/mihaicris/Library/Android/sdk/platform-tools/adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d'
-alias ios=". ios"
 alias edot="pdot && vim ~/.dotfiles"
+alias fastlane="bundle exec fastlane"
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
 alias gcm="git add -A && git commit"
@@ -55,17 +54,16 @@ alias gcount="git rev-list --count" # argument a branch name
 alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
-alias fastlane="bundle exec fastlane"
-alias mm="fork ."
+alias ios=". ios"
 alias kand="killall studio; killall qemu-system-x86_64"
 alias ll="ls -Flh"
 alias lla="ll -A"
-alias meet='open -a "Google Chrome" https://meet.google.com'
 alias ls="ls -G"
+alias meet='open -a "Google Chrome" https://meet.google.com'
+alias mm="fork ."
 alias oo="xed ."
 alias p='https://github.com/adore-me/app-iOS/pulls'
 alias pdot="git -C ~/.dotfiles pull && rb"
-alias cdot="git -C ~/.dotfiles commit -am 'Updates' && git -C ~/.dotfiles push"
 alias rb="source ~/.zshrc"
 alias s="git status"
 alias t="tuist edit"
