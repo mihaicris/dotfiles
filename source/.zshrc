@@ -71,8 +71,8 @@ alias tt="tuist generate --open"
 alias wt="git worktree list"
 alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'"
 
-source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 GIT_PROMPT_EXECUTABLE="haskell"
+source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 source "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
