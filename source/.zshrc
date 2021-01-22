@@ -54,6 +54,7 @@ alias gcount="git rev-list --count" # argument a branch name
 alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
+alias gmes="git log --oneline HEAD...develop --format='%s' | cut -d' ' -f2-"
 alias ios=". ios"
 alias kand="killall studio; killall qemu-system-x86_64"
 alias ll="ls -Flh"
