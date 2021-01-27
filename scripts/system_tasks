@@ -4,4 +4,4 @@ heading 'Upgrading brew ...'
 brew upgrade && brew upgrade --cask
 heading 'Updating cocoapods ...'
 pod repo update
-xcodes uppdate
+xcodes update
