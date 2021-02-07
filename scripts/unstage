@@ -11,7 +11,7 @@ FILES=$(git -C $TOP_LEVEL_DIR diff --name-only --cached | wc -l )
 if (( FILES > 0 )); then
     git -C $TOP_LEVEL_DIR diff --name-only --cached
     print ""
-    git -C $TOP_LEVEL_DIR reset HEAD --quiet
+    git -C $TOP_LEVEL_DIR restore --source=HEAD --staged --recurse-submodules --quiet .
 else
     print "${LIGHT_GREEN}* Nothing to unstage.${NORMAL}"
 fi
