@@ -6,11 +6,11 @@ is_git_folder || exit 1
 
 TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
 
-FILES=$(git -C $TOP_LEVEL_DIR diff --name-only | wc -l)
+FILES=$(git --no-pager -C $TOP_LEVEL_DIR diff --name-only | wc -l)
 
 if (( FILES > 0 )); then
-    git -C $TOP_LEVEL_DIR diff --no-pager --name-only
-    git -C $TOP_LEVEL_DIR restore --source=HEAD --worktree --recurse-submodules --quiet .
+    git --no-pager -C $TOP_LEVEL_DIR diff --name-only
+    git --no-pager -C $TOP_LEVEL_DIR restore --source=HEAD --worktree --recurse-submodules --quiet .
 else
     print "${LIGHT_GREEN}* Nothing to discard.${NORMAL}"
 fi
