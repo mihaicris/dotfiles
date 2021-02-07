@@ -5,5 +5,5 @@ is_git_folder || exit 1
 unskipAll
 unstage
 discard
-clean_untracked
+clean
 status
