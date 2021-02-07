@@ -53,7 +53,7 @@
     ca = commit --amend --no-edit
 
   # Make new branch (or set branch to current commit)
-    mb = checkout -B
+    mb = switch -c
 
   # Check out particular file ($2) form branch ($1)
     cof = "!cof() { git checkout $1 -- $2; }; cof"

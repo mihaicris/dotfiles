@@ -10,7 +10,7 @@ FILES=$(git -C $TOP_LEVEL_DIR diff --name-only | wc -l)
 
 if (( FILES > 0 )); then
     git -C $TOP_LEVEL_DIR diff --name-only
-    git -C $TOP_LEVEL_DIR checkout . --quiet
+    git -C $TOP_LEVEL_DIR restore --source=HEAD --staged --worktree --quiet .
 else
     print "${LIGHT_GREEN}* Nothing to discard.${NORMAL}"
 fi
