@@ -6,10 +6,10 @@ is_git_folder ||  exit 1
 
 TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
 
-FILES=$(git -C $TOP_LEVEL_DIR diff --name-only --cached | wc -l )
+FILES=$(git -C $TOP_LEVEL_DIR diff --name-only --staged | wc -l )
 
 if (( FILES > 0 )); then
-    git -C $TOP_LEVEL_DIR diff --name-only --cached
+    git -C $TOP_LEVEL_DIR diff --name-only --staged
     print ""
     git -C $TOP_LEVEL_DIR restore --source=HEAD --staged --recurse-submodules --quiet .
 else

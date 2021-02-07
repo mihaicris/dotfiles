@@ -39,10 +39,6 @@
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
     lll = log -u
 
-  # Most common diffs
-    diffc = diff --cached HEAD^
-    diffw = diff --color --word-diff
-
   # Committing
     c = commit
 
