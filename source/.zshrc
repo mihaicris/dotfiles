@@ -61,6 +61,7 @@ alias ll="ls -Flh"
 alias lla="ll -A"
 alias ls="ls -G"
 alias meet='open -a "Google Chrome" https://meet.google.com'
+alias meetc='open -a"Google Chrome" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
 alias oo="xed ."
 alias p='open https://github.com/adore-me/app-iOS/pulls'
