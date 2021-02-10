@@ -3,7 +3,7 @@
 [[ $1 == "clean" ]] && CLEAN="clean"
 [[ $1 == "test" ]] && TEST="test"
 [[ $2 == "test" ]] && TEST="test"
-devices=(12.4 13.7 14.4)
+devices=(14.4 13.7 12.4)
 for name in $devices; do
     echo "======= Building and testing for device: iOS $name ======"
     xcodebuild $CLEAN $TEST build \
