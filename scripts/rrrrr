@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+is_git_folder || exit 1
+
+unskipAll
+unstage
+discard
+clean
+clean_ignored
+status
