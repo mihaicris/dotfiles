@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
-heading "Cleaning git ignored files"
+heading "Cleaning files not in version control"
 
 is_git_folder || exit 1
 
 TOP_LEVEL_DIR="$(git rev-parse --show-toplevel)"
-FILES=$(git -C $TOP_LEVEL_DIR clean -xdffn | wc -l )
+FILES=$(git -C $TOP_LEVEL_DIR clean -dffn | wc -l )
 
 if (( FILES > 0 )); then
-    git -C $TOP_LEVEL_DIR clean -xdff
+    git -C $TOP_LEVEL_DIR clean -dff
 else
     print "${LIGHT_GREEN}* Nothing to clean.${NORMAL}"
 fi
