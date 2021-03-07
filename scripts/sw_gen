@@ -1,9 +1,6 @@
 #!/usr/bin/env zsh
 
-print "included:
-  - AdoreMe
-  - AdoreMeServiceExtension
-  - AdoreMeUnitTests"
+print "# Rules for swiftlint version: $(swiftlint version)"
 print ""
 
 print "disabled_rules:"
@@ -18,7 +15,7 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /no/ && $4 ~ /yes/) print "#  -"$2
+	if ($3 ~ /no/ && $4 ~ /yes/) print " -"$2
 }
 END {}'
 
@@ -33,7 +30,7 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /no/ && $4 ~ /no/) print "#  -"$2
+	if ($3 ~ /no/ && $4 ~ /no/) print " -"$2
 }
 END {}'
 
@@ -50,7 +47,7 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /yes/ && $4 ~ /yes/) print "#  -"$2
+	if ($3 ~ /yes/ && $4 ~ /yes/) print "# -"$2
 }
 END {}'
 
@@ -65,7 +62,7 @@ swiftlint rules \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /yes/ && $4 ~ /no/) print "#  -"$2
+	if ($3 ~ /yes/ && $4 ~ /no/) print "# -"$2
 }
 END {}'
 
