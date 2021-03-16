@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# Note: This script requires that you have $GITHUB_TOKEN set.
+# Get one here: https://github.com/settings/tokens
+
+ORG=nsscreencast
+
+HAS_NEXT=true
+i=1
+
+while $HAS_NEXT
+do
+    REPOS=$(curl "https://api.github.com/orgs/$ORG/repos?per_page=100&page=$i" \
+        -H "Accept: application/vnd.github.machine-man-preview+json" \
+         | jq ".[].ssh_url")
+    if [[ $(echo $REPOS | wc -w) -eq 0 ]]
+    then
+        HAS_NEXT=false
+    fi
+    echo $REPOS | xargs -n 1 git clone
+
+    i=$(expr $i + 1)
+done
