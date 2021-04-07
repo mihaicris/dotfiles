@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+
+heading "Checkout previous commit"
+
+is_git_folder || exit 1
+
+TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+
+WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list \
+               --porcelain \
+           | grep worktree \
+           | awk '{ print $2 }')
+
+WORKDIRS=(${(f)WORKDIRS})
+
+for WORKDIR in $WORKDIRS; do
+    pushd $WORKDIR
+    hh
+    popd
+done
