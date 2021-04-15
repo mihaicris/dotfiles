@@ -60,7 +60,7 @@ print "\nh2. Changed"
 print "\nh2. Fixed"
 
 print "\n\n${LIGHT_RED}CHANGELOG.md${NORMAL}\n"
-print "## ${REF1} - Name of release\n\n"
+print "## ${REF2} - Name of release\n\n"
 print "### Added"
 for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
     NUMBER=${ISSUES_ARRAY[$i]}
