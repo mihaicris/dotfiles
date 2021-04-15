@@ -42,7 +42,7 @@ done
 COUNT=${#ISSUES_ARRAY[@]}
 for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
   NUMBER=${ISSUES_ARRAY[$i]}
-  print "($i/$COUNT) Fetching $NUMBER ..."
+  print "($i/$COUNT) Fetching ${LIGHT_GREEN}$NUMBER${NORMAL}"
   TITLE=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/$NUMBER?fields=summary" | jq -r .fields.summary)
   TITLES_ARRAY+=($TITLE)
 done
@@ -54,7 +54,7 @@ print "h2. Added"
 for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
     NUMBER=${ISSUES_ARRAY[$i]}
     TITLE=${TITLES_ARRAY[$i]}
-    printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}] ${TITLE}\n"
+    printf "* (!) [${LIGHT_GREEN}${NUMBER}${NORMAL}] ${TITLE}\n"
 done
 print "\nh2. Changed"
 print "\nh2. Fixed"
