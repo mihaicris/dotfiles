@@ -24,30 +24,49 @@ print "\n"
 
 REPOS=($TOP_LEVEL_DIR)
 
-print "Tickets and links:\n"
+declare -a ISSUES_ARRAY
+declare -a TITLES_ARRAY
 
+# Make array with issues
 { for REPO in $REPOS; do
     git -C $REPO log $REF1..$REF2 --no-merges --oneline
    done
 } | grep -oE "(AMA-\d+|PN-\d+)" \
   | sort -u \
   | while read i; do
-    printf "- [${LIGHT_GREEN}$i${NORMAL}]\thttps://jira.adoreme.com/browse/${LIGHT_GREEN}$i${NORMAL}\n"
+    ISSUES_ARRAY+=($i)
 done
 
-print "\n---------------------------------------------\n"
+# Make array with issue titles
+
+COUNT=${#ISSUES_ARRAY[@]}
+for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
+  NUMBER=${ISSUES_ARRAY[$i]}
+  print "($i/$COUNT) Fetching $NUMBER ..."
+  TITLE=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/$NUMBER?fields=summary" | jq -r .fields.summary)
+  TITLES_ARRAY+=($TITLE)
+done
+
+print "\n\n${LIGHT_RED}JIRA RELEASE${NORMAL}\n"
 print "h1. Release version"
 print "Tickets included in this release:\n"
-print "h2. New features"
-{ for REPO in $REPOS; do
-    git -C $REPO log $REF1..$REF2 --no-merges --oneline
-   done
-} | grep -oE "(AMA-\d+|PN-\d+)" \
-  | sort -u \
-  | while read i; do
-  	title=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/$i?fields=summary" | jq -r .fields.summary)
-    printf "* [${LIGHT_GREEN}$i${NORMAL}]\t${title}\n"
+print "h2. Added"
+for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
+    NUMBER=${ISSUES_ARRAY[$i]}
+    TITLE=${TITLES_ARRAY[$i]}
+    printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}] ${TITLE}\n"
 done
-print "\nh2. Defects"
-print "\nh2. Improvements"
-print "\n---------------------------------------------\n"
+print "\nh2. Changed"
+print "\nh2. Fixed"
+
+print "\n\n${LIGHT_RED}CHANGELOG.md${NORMAL}\n"
+print "## ${REF1} - Name of release\n\n"
+print "### Added"
+for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
+    NUMBER=${ISSUES_ARRAY[$i]}
+    TITLE=${TITLES_ARRAY[$i]}
+  printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}](https://jira.adoreme.com/browse/${LIGHT_GREEN}$NUMBER${NORMAL}) ${TITLE}\n"
+done
+print ""
+print "### Changed\n"
+print "### Fixed\n"

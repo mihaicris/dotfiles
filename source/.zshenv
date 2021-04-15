@@ -26,3 +26,4 @@ WHITE="\033[97m"
 BG_BLUE="\033[44m"
 BG_LIGHT_BLUE="\033[104m"
 BG_DARK_GRAY="\033[100m"
+if [ -e /Users/mihaicris/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/mihaicris/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
