@@ -70,7 +70,7 @@ alias pdot="git -C ~/.dotfiles pull && rb"
 alias rb="source ~/.zshrc"
 alias s="git status"
 alias t="tuist edit"
-alias tt="tuist generate --open"
+alias tt="killall Xcode && tuist generate --open"
 alias wt="git worktree list"
 alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'"
 
