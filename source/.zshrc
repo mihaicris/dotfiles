@@ -45,6 +45,7 @@ alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-buil
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' && git -C ~/.dotfiles push"
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
+alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
 alias edot="pdot && vim ~/.dotfiles"
 alias fastlane="bundle exec fastlane"
 alias gbf="git branch --contains" # argument a commit hash
@@ -65,6 +66,7 @@ alias meetc='open -a"Google Chrome" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
 alias ss="smerge ."
 alias oo="xed ."
+alias android='open -a "Android Studio" ~/adoreme/android'
 alias p='open https://github.com/adore-me/app-iOS/pulls'
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias rb="source ~/.zshrc"
