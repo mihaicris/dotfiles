@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
 
-sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
 ln -f -s  ~/.dotfiles/xcode/KeyBindings/Mihai.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 ln -F -f -s  ~/.dotfiles/xcode/CodeSnippets ~/Library/Developer/Xcode/UserData/CodeSnippets
