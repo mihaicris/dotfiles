@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+
+heading "Change Development Environement"
+
+ENVIRONMENTS=(
+    'Production;https://www.adoreme.com'
+    'Gamma 1;http://magento-ns-gamma-1.stg.adoreme.com'
+    'Gamma 2;http://magento-ns-gamma-2.stg.adoreme.com'
+    'Gamma 3;http://magento-ns-gamma-3.stg.adoreme.com'
+    'Delta 1;http://magento-ns-delta-1.stg.adoreme.com'
+    'Delta 2;http://magento-ns-delta-2.stg.adoreme.com'
+    'Delta 3;http://magento-ns-delta-3.stg.adoreme.com'
+)
+NAMES=()
+BASEURLS=()
+
+for ENVIRONMENT in $ENVIRONMENTS; do
+    IFS=";" read -r -A arr <<< "${ENVIRONMENT}"
+    NAMES=("${NAMES[@]}" "${arr[1]}")
+    BASEURLS=("${BASEURLS[@]}" "${arr[2]}")
+done
+export COLUMNS=1
+select NAME in $NAMES; do
+    if [[ -n $NAME ]]; then
+        break
+    else
+        print "Wrong selection."
+    fi
+done
+
+BASEURL=${BASEURLS[$REPLY]}
+find Targets -name "URLs.plist" -print -exec /usr/libexec/PlistBuddy -c "Set :BaseUrl ${BASEURL}" {} \;
+find Targets -name "URLs.plist" -print -exec /usr/libexec/PlistBuddy -c "Set :FrontendWebUrl ${BASEURL}/?is_adoreme_webview=true" {} \;
