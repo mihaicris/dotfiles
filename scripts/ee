@@ -4,12 +4,18 @@ heading "Change Development Environement"
 
 ENVIRONMENTS=(
     'Production;https://www.adoreme.com'
-    'Gamma 1;http://magento-ns-gamma-1.stg.adoreme.com'
-    'Gamma 2;http://magento-ns-gamma-2.stg.adoreme.com'
-    'Gamma 3;http://magento-ns-gamma-3.stg.adoreme.com'
     'Delta 1;http://magento-ns-delta-1.stg.adoreme.com'
     'Delta 2;http://magento-ns-delta-2.stg.adoreme.com'
     'Delta 3;http://magento-ns-delta-3.stg.adoreme.com'
+    'Gamma 1;http://magento-ns-gamma-1.stg.adoreme.com'
+    'Gamma 2;http://magento-ns-gamma-2.stg.adoreme.com'
+    'Gamma 3;http://magento-ns-gamma-3.stg.adoreme.com'
+    'Sigma 1;http://magento-ns-sigma-1.stg.adoreme.com'
+    'Sigma 2;http://magento-ns-sigma-2.stg.adoreme.com'
+    'Sigma 3;http://magento-ns-sigma-3.stg.adoreme.com'
+    'Omega 1;http://magento-ns-omega-1.stg.adoreme.com'
+    'Omega 2;http://magento-ns-omega-2.stg.adoreme.com'
+    'Omega 3;http://magento-ns-omega-3.stg.adoreme.com'
 )
 NAMES=()
 BASEURLS=()
