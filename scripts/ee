@@ -4,18 +4,18 @@ heading "Change Development Environement"
 
 ENVIRONMENTS=(
     'Production;https://www.adoreme.com'
-    'Delta 1;http://magento-ns-delta-1.stg.adoreme.com'
-    'Delta 2;http://magento-ns-delta-2.stg.adoreme.com'
-    'Delta 3;http://magento-ns-delta-3.stg.adoreme.com'
-    'Gamma 1;http://magento-ns-gamma-1.stg.adoreme.com'
-    'Gamma 2;http://magento-ns-gamma-2.stg.adoreme.com'
-    'Gamma 3;http://magento-ns-gamma-3.stg.adoreme.com'
-    'Sigma 1;http://magento-ns-sigma-1.stg.adoreme.com'
-    'Sigma 2;http://magento-ns-sigma-2.stg.adoreme.com'
-    'Sigma 3;http://magento-ns-sigma-3.stg.adoreme.com'
-    'Omega 1;http://magento-ns-omega-1.stg.adoreme.com'
-    'Omega 2;http://magento-ns-omega-2.stg.adoreme.com'
-    'Omega 3;http://magento-ns-omega-3.stg.adoreme.com'
+    'Delta 1;delta-1'
+    'Delta 2;delta-2'
+    'Delta 3;delta-3'
+    'Gamma 1;gamma-1'
+    'Gamma 2;gamma-2'
+    'Gamma 3;gamma-3'
+    'Sigma 1;sigma-1'
+    'Sigma 2;sigma-2'
+    'Sigma 3;sigma-3'
+    'Omega 1;omega-1'
+    'Omega 2;omega-2'
+    'Omega 3;omega-3'
 )
 NAMES=()
 BASEURLS=()
@@ -34,21 +34,23 @@ select NAME in $NAMES; do
     fi
 done
 
-BASEURL=${BASEURLS[$REPLY]}
+ENVIRONMENT=${BASEURLS[$REPLY]}
+BASE_URL="http://magento-ns-${ENVIRONMENT}.stg.adoreme.com"
+FRONTEND_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com/?is_adoreme_webview=true"
 
 #iOS
 find Targets \
     -name "URLs.plist" \
     -print \
     -exec /usr/libexec/PlistBuddy \
-    -c "Set :BaseUrl ${BASEURL}" \
-    -c "Set :FrontendWebUrl ${BASEURL}/?is_adoreme_webview=true" \
+    -c "Set :BaseUrl ${BASE_URL}" \
+    -c "Set :FrontendWebUrl ${FRONTEND_URL}" \
     {} \;
 
 # Adnroid
 
 PATTERN="\"BASE_URL\", \'\"\(.*\)\"\'"
-REPLACE="\"BASE_URL\", \'\"${BASEURL}\/\"\'"
+REPLACE="\"BASE_URL\", \'\"${BASE_URL}\/\"\'"
 
 find ../android/app \
     -name "build.gradle" \
