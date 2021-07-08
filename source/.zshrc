@@ -37,7 +37,7 @@ HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 eval "$(jenv init -)"
 eval "$(rbenv init -)"
-# eval "$(pyenv init -)"
+ssh-add -A &> /dev/null
 
 alias ..=".. && ll"
 alias bun="bundle exec pod install"
