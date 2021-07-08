@@ -35,5 +35,24 @@ select NAME in $NAMES; do
 done
 
 BASEURL=${BASEURLS[$REPLY]}
-find Targets -name "URLs.plist" -print -exec /usr/libexec/PlistBuddy -c "Set :BaseUrl ${BASEURL}" {} \;
-find Targets -name "URLs.plist" -print -exec /usr/libexec/PlistBuddy -c "Set :FrontendWebUrl ${BASEURL}/?is_adoreme_webview=true" {} \;
+
+#iOS
+find Targets \
+    -name "URLs.plist" \
+    -print \
+    -exec /usr/libexec/PlistBuddy \
+    -c "Set :BaseUrl ${BASEURL}" \
+    -c "Set :FrontendWebUrl ${BASEURL}/?is_adoreme_webview=true" \
+    {} \;
+
+# Adnroid
+
+PATTERN="\"BASE_URL\", \'\"\(.*\)\"\'"
+REPLACE="\"BASE_URL\", \'\"${BASEURL}\/\"\'"
+
+find ../android/app \
+    -name "build.gradle" \
+    -print \
+    -exec sed -i "" -e "s|${PATTERN}|${REPLACE}|" \
+    {} \;
+            
