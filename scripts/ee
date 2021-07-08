@@ -55,4 +55,3 @@ find ../android/app \
     -print \
     -exec sed -i "" -e "s|${PATTERN}|${REPLACE}|" \
     {} \;
-            
