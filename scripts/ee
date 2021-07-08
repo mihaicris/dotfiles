@@ -4,18 +4,18 @@ heading "Change Development Environement"
 
 ENVIRONMENTS=(
     'Production;https://www.adoreme.com'
-    'Delta 1;delta-1'
-    'Delta 2;delta-2'
-    'Delta 3;delta-3'
-    'Gamma 1;gamma-1'
-    'Gamma 2;gamma-2'
-    'Gamma 3;gamma-3'
-    'Sigma 1;sigma-1'
-    'Sigma 2;sigma-2'
-    'Sigma 3;sigma-3'
-    'Omega 1;omega-1'
-    'Omega 2;omega-2'
-    'Omega 3;omega-3'
+    'DELTA - 1;delta-1'
+    'DELTA - 2;delta-2'
+    'DELTA - 3;delta-3'
+    'GAMMA - 1;gamma-1'
+    'GAMMA - 2;gamma-2'
+    'GAMMA - 3;gamma-3'
+    'SIGMA - 1;sigma-1'
+    'SIGMA - 2;sigma-2'
+    'SIGMA - 3;sigma-3'
+    'OMEGA - 1;omega-1'
+    'OMEGA - 2;omega-2'
+    'OMEGA - 3;omega-3'
 )
 NAMES=()
 BASEURLS=()
@@ -33,10 +33,16 @@ select NAME in $NAMES; do
         print "Wrong selection."
     fi
 done
-
+echo $REPLY
 ENVIRONMENT=${BASEURLS[$REPLY]}
-BASE_URL="http://magento-ns-${ENVIRONMENT}.stg.adoreme.com"
-FRONTEND_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com/?is_adoreme_webview=true"
+
+if [[ "$REPLY" -eq "1" ]]; then
+    BASE_URL="$ENVIRONMENT"
+    FRONTEND_URL="$ENVIRONMENT/?is_adoreme_webview=true"
+else
+    BASE_URL="http://magento-ns-${ENVIRONMENT}.stg.adoreme.com"
+    FRONTEND_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com/?is_adoreme_webview=true"
+fi
 
 #iOS
 find Targets \
@@ -48,7 +54,6 @@ find Targets \
     {} \;
 
 # Adnroid
-
 PATTERN="\"BASE_URL\", \'\"\(.*\)\"\'"
 REPLACE="\"BASE_URL\", \'\"${BASE_URL}\/\"\'"
 
