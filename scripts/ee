@@ -5,17 +5,17 @@ heading "Change Development Environement"
 ENVIRONMENTS=(
     'Production;https://www.adoreme.com'
     'DELTA - 1;delta-1'
-    'DELTA - 2;delta-2'
-    'DELTA - 3;delta-3'
+    '        2;delta-2'
+    '        3;delta-3'
     'GAMMA - 1;gamma-1'
-    'GAMMA - 2;gamma-2'
-    'GAMMA - 3;gamma-3'
+    '        2;gamma-2'
+    '        3;gamma-3'
     'SIGMA - 1;sigma-1'
-    'SIGMA - 2;sigma-2'
-    'SIGMA - 3;sigma-3'
+    '        2;sigma-2'
+    '        3;sigma-3'
     'OMEGA - 1;omega-1'
-    'OMEGA - 2;omega-2'
-    'OMEGA - 3;omega-3'
+    '        2;omega-2'
+    '        3;omega-3'
 )
 NAMES=()
 BASEURLS=()
@@ -39,9 +39,11 @@ ENVIRONMENT=${BASEURLS[$REPLY]}
 if [[ "$REPLY" -eq "1" ]]; then
     BASE_URL="$ENVIRONMENT"
     FRONTEND_URL="$ENVIRONMENT/?is_adoreme_webview=true"
+    WEB_URL="$ENVIRONMENT"
 else
     BASE_URL="http://magento-ns-${ENVIRONMENT}.stg.adoreme.com"
     FRONTEND_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com/?is_adoreme_webview=true"
+    WEB_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com"
 fi
 
 #iOS
@@ -62,3 +64,5 @@ find ../android/app \
     -print \
     -exec sed -i "" -e "s|${PATTERN}|${REPLACE}|" \
     {} \;
+
+open -a "Safari" $WEB_URL
