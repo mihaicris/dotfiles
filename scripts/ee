@@ -5,17 +5,17 @@ heading "Change Development Environement"
 ENVIRONMENTS=(
     'Production;https://www.adoreme.com'
     'DELTA - 1;delta-1'
-    '        2;delta-2'
-    '        3;delta-3'
+    'DELTA - 2;delta-2'
+    'DELTA - 3;delta-3'
     'GAMMA - 1;gamma-1'
-    '        2;gamma-2'
-    '        3;gamma-3'
+    'GAMMA - 2;gamma-2'
+    'GAMMA - 3;gamma-3'
     'SIGMA - 1;sigma-1'
-    '        2;sigma-2'
-    '        3;sigma-3'
+    'SIGMA - 2;sigma-2'
+    'SIGMA - 3;sigma-3'
     'OMEGA - 1;omega-1'
-    '        2;omega-2'
-    '        3;omega-3'
+    'OMEGA - 2;omega-2'
+    'OMEGA - 3;omega-3'
 )
 NAMES=()
 BASEURLS=()
@@ -25,7 +25,9 @@ for ENVIRONMENT in $ENVIRONMENTS; do
     NAMES=("${NAMES[@]}" "${arr[1]}")
     BASEURLS=("${BASEURLS[@]}" "${arr[2]}")
 done
+
 export COLUMNS=1
+
 select NAME in $NAMES; do
     if [[ -n $NAME ]]; then
         break
@@ -33,7 +35,7 @@ select NAME in $NAMES; do
         print "Wrong selection."
     fi
 done
-echo $REPLY
+
 ENVIRONMENT=${BASEURLS[$REPLY]}
 
 if [[ "$REPLY" -eq "1" ]]; then
@@ -65,4 +67,3 @@ find ../android/app \
     -exec sed -i "" -e "s|${PATTERN}|${REPLACE}|" \
     {} \;
 
-open -a "Safari" $WEB_URL
