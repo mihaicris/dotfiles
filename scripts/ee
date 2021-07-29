@@ -49,7 +49,7 @@ else
 fi
 
 #iOS
-find Targets \
+find . \
     -name "URLs.plist" \
     -print \
     -exec /usr/libexec/PlistBuddy \

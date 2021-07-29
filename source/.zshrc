@@ -47,7 +47,7 @@ alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
 alias connect='open https://appstoreconnect.apple.com'
 alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
-alias edot="pdot && vim ~/.dotfiles"
+alias edot="pdot && vim ~/.dotfiles/source/zshrc.sh"
 alias fastlane="bundle exec fastlane"
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
@@ -74,6 +74,7 @@ alias rb="source ~/.zshrc"
 alias s="git status"
 alias t="tuist edit"
 alias tt="tuist generate --open"
+alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
 alias wt="git worktree list"
 alias ytp="youtube-dl --socket-timeout 10 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'"
 
