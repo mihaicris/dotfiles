@@ -47,7 +47,7 @@ alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
 alias connect='open https://appstoreconnect.apple.com'
 alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
-alias edot="pdot && vim ~/.dotfiles/source/zshrc"
+alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
 alias fastlane="bundle exec fastlane"
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
