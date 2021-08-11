@@ -41,10 +41,12 @@ ENVIRONMENT=${BASEURLS[$REPLY]}
 if [[ "$REPLY" -eq "1" ]]; then
     BASE_URL="$ENVIRONMENT"
     FRONTEND_URL="$ENVIRONMENT/?is_adoreme_webview=true"
+    ELITE_MEMBERSHIP_URL="$ENVIRONMENT/customer/membership-settings/?is_adoreme_webview=true"
     WEB_URL="$ENVIRONMENT"
 else
     BASE_URL="http://magento-ns-${ENVIRONMENT}.stg.adoreme.com"
     FRONTEND_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com/?is_adoreme_webview=true"
+    ELITE_MEMBERSHIP_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com/customer/membership-settings/?is_adoreme_webview=true"
     WEB_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com"
 fi
 
@@ -55,6 +57,7 @@ find . \
     -exec /usr/libexec/PlistBuddy \
     -c "Set :BaseUrl ${BASE_URL}" \
     -c "Set :FrontendWebUrl ${FRONTEND_URL}" \
+    -c "Set :EliteMembershipSettingsUrl ${ELITE_MEMBERSHIP_URL}" \
     {} \;
 
 # Adnroid

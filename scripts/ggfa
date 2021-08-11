@@ -2,6 +2,5 @@
 
 is_git_folder || exit 1
 
-prune
 fetch
 status

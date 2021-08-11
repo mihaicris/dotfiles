@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-
-heading "Pruning branches"
-
-is_git_folder || exit 1
-
-git remote prune origin
