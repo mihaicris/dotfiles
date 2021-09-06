@@ -5,6 +5,6 @@ TICKET=$1
 if [[ $TICKET ]]; then
     open "https://jira.adoreme.com/browse/AMA-$TICKET"
 else
-    open "https://jira.adoreme.com/secure/RapidBoard.jspa?rapidView=40&quickFilter=124"
+    open "https://jira.adoreme.com/secure/RapidBoard.jspa?rapidView=141&selectedIssue=AMA-4471&quickFilter=407"
 fi
 
