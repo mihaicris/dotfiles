@@ -26,6 +26,8 @@ for ENVIRONMENT in $ENVIRONMENTS; do
     BASEURLS=("${BASEURLS[@]}" "${arr[2]}")
 done
 
+export COLUMNS=1
+
 select NAME in $NAMES; do
     if [[ -n $NAME ]]; then
         break

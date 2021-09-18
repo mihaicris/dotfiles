@@ -51,7 +51,7 @@ else
 fi
 
 #iOS
-find . \
+find ./Sources \
     -name "URLs.plist" \
     -print \
     -exec /usr/libexec/PlistBuddy \
