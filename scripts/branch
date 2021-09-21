@@ -1,0 +1,34 @@
+#!/usr/bin/env zsh
+
+is_git_folder || exit 1
+
+TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
+
+JIRA_NUMBER=$1
+
+[[ $1 ]] || { print "${LIGHT_GREEN}JIRA issue number${NORMAL} not specified.\nUsage: branch ${LIGHT_GREEN}<JIRA_NUMBER>${NORMAL}\n"; exit ; }
+
+printf "Enter JIRA username: (mihai.cristescu@adoreme.com)"
+read USER
+[[ $USER ]] || { USER="mihai.cristescu@adoreme.com"; }
+
+printf "Enter password: "
+read -s PASS
+
+
+[[ $PASS ]] || { print "${LIGHT_GREEN}Password${NORMAL} not specified."; exit ; }
+
+print "\n"
+
+TYPES=("FEATURE" "TECHNICAL-DEBT" "BUGFIX" "SPIKE" "TASK")
+select BRANCH_TYPE in "${TYPES[@]}"; do
+    break
+done
+
+print "Fetching JIRA issue: ${LIGHT_GREEN}$JIRA_NUMBER${NORMAL}"
+TITLE=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/AMA-$JIRA_NUMBER?fields=summary" | jq -r .fields.summary)
+echo $TITLE
+[[ $TITLE ]] || { print "${LIGHT_GREEN}Could not get the issue title${NORMAL}\n"; exit ; }
+TITLE_DASHED=$(echo ${TITLE#\[iOS\] } | tr " " "-")
+git switch -c ${BRANCH_TYPE:l}/AMA-${JIRA_NUMBER}-${TITLE_DASHED:l}
+
