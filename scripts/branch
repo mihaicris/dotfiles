@@ -30,5 +30,5 @@ TITLE=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/
 echo $TITLE
 [[ $TITLE ]] || { print "${LIGHT_GREEN}Could not get the issue title${NORMAL}\n"; exit ; }
 TITLE_DASHED=$(echo ${TITLE#\[iOS\] } | tr " " "-")
-git switch -c ${BRANCH_TYPE:l}/AMA-${JIRA_NUMBER}-${TITLE_DASHED:l}
+git switch -c ${BRANCH_TYPE:l}/AMA-${JIRA_NUMBER}-${TITLE_DASHED:l} --detach develop
 
