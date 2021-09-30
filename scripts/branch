@@ -15,20 +15,28 @@ read USER
 printf "Enter password: "
 read -s PASS
 
-
 [[ $PASS ]] || { print "${LIGHT_GREEN}Password${NORMAL} not specified."; exit ; }
 
 print "\n"
 
-TYPES=("FEATURE" "TECHNICAL-DEBT" "BUGFIX" "SPIKE" "TASK")
+print "Fetching JIRA issue: ${LIGHT_GREEN}$JIRA_NUMBER${NORMAL}"
+TITLE=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/AMA-$JIRA_NUMBER?fields=summary" | jq -r .fields.summary)
+
+[[ $TITLE ]] || { print "${LIGHT_GREEN}Could not get the issue title${NORMAL}\n"; exit ; }
+
+print "\nIssue title: ${LIGHT_GREEN}$TITLE${NORMAL}\n"
+
+TYPES=("FEATURE" "BUGFIX" "SPIKE" "TASK")
 select BRANCH_TYPE in "${TYPES[@]}"; do
     break
 done
 
-print "Fetching JIRA issue: ${LIGHT_GREEN}$JIRA_NUMBER${NORMAL}"
-TITLE=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/AMA-$JIRA_NUMBER?fields=summary" | jq -r .fields.summary)
-echo $TITLE
-[[ $TITLE ]] || { print "${LIGHT_GREEN}Could not get the issue title${NORMAL}\n"; exit ; }
-TITLE_DASHED=$(echo ${TITLE#\[iOS\] } | tr " " "-")
-git switch -c ${BRANCH_TYPE:l}/AMA-${JIRA_NUMBER}-${TITLE_DASHED:l} --detach develop
+TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\/|\?|\*|\(|\))//g" | sed -r "s/\ +/-/g")
+
+FINAL_BRANCH=${BRANCH_TYPE:l}/AMA-${JIRA_NUMBER}-${TITLE_DASHED:l}
+print "\nSwitching to branch:${LIGHT_GREEN} ${FINAL_BRANCH} ${NORMAL}?"
+
+read -k1 -s
+
+git switch -c ${FINAL_BRANCH} develop
 
