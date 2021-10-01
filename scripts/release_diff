@@ -54,7 +54,7 @@ print "h2. Added"
 for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
     NUMBER=${ISSUES_ARRAY[$i]}
     TITLE=${TITLES_ARRAY[$i]}
-    printf "* (!) [${LIGHT_GREEN}${NUMBER}${NORMAL}] ${TITLE}\n"
+    printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}] ${TITLE}\n"
 done
 print "\nh2. Changed"
 print "\nh2. Fixed"
