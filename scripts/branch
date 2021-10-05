@@ -35,7 +35,7 @@ TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\/|\?|\*|\(|\
 
 FINAL_BRANCH=${BRANCH_TYPE:l}/AMA-${JIRA_NUMBER}-${TITLE_DASHED:l}
 print "\nSwitching to branch:${LIGHT_GREEN} ${FINAL_BRANCH} ${NORMAL}?"
-
+printf "Press a key to confirm or CTRL+C to cancel..."
 read -k1 -s
 
 git switch -c ${FINAL_BRANCH} develop
