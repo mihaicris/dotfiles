@@ -8,9 +8,10 @@ JIRA_NUMBER=$1
 
 [[ $1 ]] || { print "${LIGHT_GREEN}JIRA issue number${NORMAL} not specified.\nUsage: branch ${LIGHT_GREEN}<JIRA_NUMBER>${NORMAL}\n"; exit ; }
 
-printf "Enter JIRA username: (mihai.cristescu@adoreme.com)"
-read USER
-[[ $USER ]] || { USER="mihai.cristescu@adoreme.com"; }
+#printf "Enter JIRA username: (mihai.cristescu@adoreme.com)"
+#read USER
+#[[ $USER ]] || { USER="mihai.cristescu@adoreme.com"; }
+USER="mihai.cristescu@adoreme.com"
 
 printf "Enter password: "
 read -s PASS
@@ -31,7 +32,7 @@ select BRANCH_TYPE in "${TYPES[@]}"; do
     break
 done
 
-TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\/|\?|\*|\(|\))//g" | sed -r "s/\ +/-/g")
+TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\/|\?|\*|\&|\(|\))//g" | sed -r "s/\ +/-/g")
 
 FINAL_BRANCH=${BRANCH_TYPE:l}/AMA-${JIRA_NUMBER}-${TITLE_DASHED:l}
 print "\nSwitching to branch:${LIGHT_GREEN} ${FINAL_BRANCH} ${NORMAL}?"
