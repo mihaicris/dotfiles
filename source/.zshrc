@@ -36,7 +36,7 @@ PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{yellow}%~%f $(git_super_status)${NEWLI
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 eval "$(jenv init -)"
-eval "$(rbenv init -)"
+. /usr/local/opt/asdf/libexec/asdf.sh
 ssh-add -A &> /dev/null
 
 alias ..=".. && ll"
@@ -84,5 +84,4 @@ GIT_PROMPT_EXECUTABLE="haskell"
 source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
 source "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
 
