@@ -1,4 +1,14 @@
 #!/usr/bin/env zsh
- 
+
+# Define New Command in Xcode
+
+XCODE_PATH=$(xcode-select -p)
+XCODE_CONTENTS=${XCODE_PATH%"/Developer"}
+
+PLIST="${XCODE_CONTENTS}/Frameworks/IDEKit.framework/Versions/Current/Resources/IDETextKeyBindingSet.plist"
+sudo /usr/libexec/PlistBuddy -c "Add :'Custom Commands':'Duplicate Current Lines Down' string 'selectParagraph:, delete:, yank:, moveToBeginningOfParagraph:, yank:, moveUp:, moveToEndOfParagraph:'" "$PLIST"
+sudo /usr/libexec/PlistBuddy -c "Add :'Custom Commands':'Delete Current Line' string 'deleteToBeginningOfLine:, moveToEndOfLine:, deleteToBeginningOfLine:, deleteBackward:, moveDown:, moveToBeginningOfLine:'" "$PLIST"
+
+# Link Shortcuts to Xcode
 ln -f -s  ~/.dotfiles/xcode/KeyBindings/Mihai.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 ln -F -f -s  ~/.dotfiles/xcode/CodeSnippets ~/Library/Developer/Xcode/UserData/CodeSnippets
