@@ -16,4 +16,4 @@ ln -f -s ~/.dotfiles/xcode/FontAndColorThemes/CodeSlicing_01.xccolortheme ~/Libr
 ln -f -s ~/.dotfiles/xcode/KeyBindings/Mihai.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 
 # Link CodeSnippets
-ln -f -s ~/.dotfiles/xcode/CodeSnippets ~/Library/Developer/Xcode/UserData/CodeSnippets
+ln -f -s -h ~/.dotfiles/xcode/CodeSnippet ~/Library/Developer/Xcode/UserData/CodeSnippets
