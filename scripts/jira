@@ -3,8 +3,8 @@
 TICKET=$1
 
 if [[ $TICKET ]]; then
-    open "https://jira.adoreme.com/browse/AMA-$TICKET"
+    open -a "Google Chrome" "https://jira.adoreme.com/browse/AMA-$TICKET"
 else
-    open "https://jira.adoreme.com/secure/RapidBoard.jspa?rapidView=141&selectedIssue=AMA-4471&quickFilter=407"
+    open -a "Google Chrome" "https://jira.adoreme.com/secure/RapidBoard.jspa?rapidView=141&&quickFilter=412"
 fi
 

@@ -1,4 +1,4 @@
 #!/usr/bin/env zsh
 
-#/Users/mihaicris/Library/Android/sdk/platform-tools/adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d $1
+$HOME/Library/Android/sdk/platform-tools/adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d $1
 xcrun simctl openurl booted $1
