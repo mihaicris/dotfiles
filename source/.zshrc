@@ -44,9 +44,9 @@ alias bun="bundle exec pod install"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
-alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
+alias crash='open -a "Vivaldi" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
 alias connect='open https://appstoreconnect.apple.com'
-alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
+alias remote='open -a "Vivaldi" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
 alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
 alias fastlane="bundle exec fastlane"
 alias gbf="git branch --contains" # argument a commit hash
@@ -62,8 +62,8 @@ alias kand="killall studio; killall qemu-system-x86_64"
 alias ll="ls -Flh"
 alias lla="ll -A"
 alias ls="ls -G"
-alias meet='open -a "Google Meet" https://meet.google.com'
-alias meetc='open -a"Google Meet" https://meet.google.com/eeu-pgga-wsm'
+alias meet='open -a "Vivaldi" https://meet.google.com'
+alias meetc='open -a "Vivaldi" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
 alias ss="smerge ."
 alias oo="xed ."
