@@ -1,4 +1,67 @@
 #!/usr/bin/env zsh
 
-$HOME/Library/Android/sdk/platform-tools/adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d $1
-xcrun simctl openurl booted $1
+USERS=(
+"Current"
+"EXVIP | mihai.cristescu@gmail.com"
+"VIP   | vlad.georgescu+a04@adoreme.com"
+"ELITE | cionita+tlm@adoreme.com"
+)
+
+DEEPLINKS=(
+"/"
+"/app-survey"
+"/auth/reset-password?reset_password_token=TOKEN"
+"/checkout/cart"
+"/customer/account"
+"/customer/account/personal-info/edit"
+"/customer/membership-cancel"
+"/customer/membership-pause/dashboard"
+"/customer/membership-settings"
+"/customer/store-credit"
+"/elite-dashboard"
+"/elite-dashboard/history"
+"/elite-dashboard/my-elite-list"
+"/elite-dashboard/my-preferences"
+"/messages"
+"/messages/ID"
+"/my-showroom"
+"/sales/order/history"
+"/sales/order/view/order_id/ID"
+"/sales/order/view/elite_box/id/review"
+"/upgrade-to-elite"
+"/wishlist"
+)
+
+TOKENS=(
+""
+"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJ6bFMwRVZycnFWS3duOXRmTnFpVDJQMXFlMGZPWmRiejZWcHVVMFBCTTgifQ.eyJzdWIiOiIyNTk0ODMwNCIsImlzcyI6Ikd3LU1haW4iLCJpYXQiOjE2Mzc5MTkzMDksImV4cCI6MTY1MzY5OTMwOX0.DeGqiQ_q3cj1yDsXsOrM7tqKYq6E5YwQGb9_8Uvww-BO05V8MNzNjeXQIncH1r_hkjazsptQw1QgBMoBGnGJlQ-Mo6IUcRXZYXh3LJiBgPbMvXWTEFLKdcnq2yvJDetInMX_jQguujBFH3oOUy_V18GuWRCtOIJfrMozlhb2eo1DfxW410MPyJHV4tvv6mE6oeLVEsnkjO6vKYtUMqZ9HPDwsyVAguwmltM0sfglYUltjMvJEUldruFFijDvu6lNymfgJAjARayEWDyk6TZpYLUpSHQtQNLHvJnjLaPGSFXDN6F-ZiaDsmmZLnFSST-xdVXvnRjfsKpTI8RlcbhddQ"
+"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJ6bFMwRVZycnFWS3duOXRmTnFpVDJQMXFlMGZPWmRiejZWcHVVMFBCTTgifQ.eyJzdWIiOiIyNTYzNjY1NiIsImlzcyI6Ikd3LU1haW4iLCJpYXQiOjE2Mzc5MzYwMzQsImV4cCI6MTY1MzcxNjAzNH0.W35N7YcUa-MWHhUkq3vEeOejWyBTBZxEvdwyVYuJi4EN2x0Vrt-IeErEq93ecJrqMi8gwklLoLplM-mrgjhzqb6aHturtO0iL8sMuEgmsQTk7wiORKBa3nBN5CPMGEWyEuu6_d08FwTvL56RJm8TE7FgB50mZ7k2YETbu2HDtsPIgDoGsHjjOCl0uU32S-kw0l16ipMw0VHxewpyUYdipeVSk_vYrWjSw40znNT2UA-ahox6p6uYFEDWyhla0i0AmVVthEuCTn17WFpRyfEIJUTTed7Pn-StpcpsYHXkvCEgPq_-znxWWIL2uQjgTc8cYe1c_iHz-fYkSWrIZPZ36Q"
+"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJ6bFMwRVZycnFWS3duOXRmTnFpVDJQMXFlMGZPWmRiejZWcHVVMFBCTTgifQ.eyJzdWIiOiIyNjM5Mjg1NCIsImlzcyI6Ikd3LU1haW4iLCJpYXQiOjE2Mzc5MzQzMzIsImV4cCI6MTY1MzcxNDMzMn0.I1jaqc_B9ykid0ROFGEhDBE3M3c3Nx9NovZ1CeX6_r1gEp8w7XvpgsjlmSAx0dhZBxCaYRyhsuRgZ0adlnt32tjXF4KI9UO_iQPgFr2Q3DxMzTn5eJXEa7iYeFojw5V9jSuBZLV2hrzp6PhzuZfH5-Q2UPNa5ade7kUpFkfJzXuJ9x1DosmmlP-KdYIcrOXB-emFYzVpTxvnW09FEXY1w_2OeZM8rwYo25Cl8-ctZrKT1-PRxFnWePKSp_IWoOPLUe5UpLFRx5BSa2CrrLnr6WkiBDZWXA5uTQdHQ5X4hLGDhbgFm1FQ-t2k3gzf_PvrsbRARt9QFpIgXWmyWEe5Gw"
+)
+
+export COLUMNS=1
+
+print "Select user:"
+select USER in $USERS; do
+    if [[ -n "$USER" ]]; then
+        RESULT_TOKEN=$TOKENS[$REPLY]
+        break
+    fi
+done
+
+print "Select deeplink:"
+select DEEPLINK in $DEEPLINKS; do
+    if [[ -n "$DEEPLINK" ]]; then
+        RESULT_DEEPLINK=$DEEPLINKS[$REPLY]
+        break
+    fi
+done
+
+RESULT_LINK="https://www.adoreme.com${RESULT_DEEPLINK}?am_sl=$RESULT_TOKEN"
+
+
+echo $RESULT_LINK
+
+
+xcrun simctl openurl booted $RESULT_LINK
+$HOME/Library/Android/sdk/platform-tools/adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d $LINKS[SELECTION]
