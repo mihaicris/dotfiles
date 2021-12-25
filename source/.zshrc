@@ -25,7 +25,7 @@ export PATH="/usr/local/sbin:$PATH"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
-
+zstyle ':completion:*:*:make:*' tag-order 'targets'
 autoload -Uz promptinit && promptinit
 autoload -Uz compinit && compinit
 autoload -Uz colors && colors
@@ -45,7 +45,7 @@ alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-buil
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
-alias connect='open https://appstoreconnect.apple.com'
+alias connect='https://appstoreconnect.apple.com/apps/661053119/appstore/ios/version/deliverable'
 alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
 alias d='~/cloned/deeplinks/.build/release/deeplinks'
 alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
