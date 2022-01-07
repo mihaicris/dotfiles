@@ -37,8 +37,8 @@ PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{yellow}%~%f $(git_super_status)${NEWLI
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
 eval "$(jenv init -)"
-. /usr/local/opt/asdf/libexec/asdf.sh
-ssh-add -A &> /dev/null
+#. /usr/local/opt/asdf/libexec/asdf.sh
+grep -slR "PRIVATE" ~/.ssh | xargs ssh-add --apple-use-keychain &> /dev/null
 
 alias ..=".. && ll"
 alias bun="bundle exec pod install"
@@ -83,8 +83,8 @@ alias wt="git worktree list"
 alias ytp="youtube-dl --socket-timeout 20 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'"
 alias xx="killall Xcode"
 
-GIT_PROMPT_EXECUTABLE="haskell"
-source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
-source "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+#GIT_PROMPT_EXECUTABLE="haskell"
+source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
+source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
