@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>IDECodeSnippetCompletionPrefix</key>
-	<string>iba</string>
+	<string>www</string>
 	<key>IDECodeSnippetCompletionScopes</key>
 	<array>
 		<string>All</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>@IBAction private func handleButtonTapped(_ sender: UIButton) {
-    
-}</string>
+	<string>#warning("💥💥💥 Mihai Cristescu: &lt;#FIX THIS#&gt;")</string>
 	<key>IDECodeSnippetIdentifier</key>
-	<string>43FD08D3-FA19-4C01-B135-091C44BEB082</string>
+	<string>16BF51F6-CCA1-4F67-98EB-082223C75001</string>
 	<key>IDECodeSnippetLanguage</key>
 	<string>Xcode.SourceCodeLanguage.Swift</string>
 	<key>IDECodeSnippetSummary</key>
 	<string></string>
 	<key>IDECodeSnippetTitle</key>
-	<string>IBAction</string>
+	<string>Swift Warning</string>
 	<key>IDECodeSnippetUserSnippet</key>
 	<true/>
 	<key>IDECodeSnippetVersion</key>
