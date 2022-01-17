@@ -9,9 +9,9 @@
 		<string>All</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>@IBAction private func &lt;#handleButtonTapped#&gt;(_ sender: UIButton) {
-    
-}</string>
+	<string>@IBAction func &lt;#name#&gt;(sender: &lt;#Any#&gt;) {
+        &lt;#function body#&gt;
+    }</string>
 	<key>IDECodeSnippetIdentifier</key>
 	<string>16BF51F6-CCA1-4F67-98EB-082223C75000</string>
 	<key>IDECodeSnippetLanguage</key>
