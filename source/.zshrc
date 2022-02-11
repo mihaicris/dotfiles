@@ -70,7 +70,8 @@ alias meetc='open -a "Google Chrome" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
 alias ss="smerge ."
 alias oo="xed ."
-alias android='cd ~/adoreme/android && open -a "Android Studio" ~/adoreme/android'
+alias ooa='open -a "Android Studio" ~/adoreme/android'
+alias android='cd ~/adoreme/android'
 alias p='open https://github.com/adore-me/app-iOS/pulls'
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias rb="source ~/.zshrc"
@@ -88,3 +89,5 @@ source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
 source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh

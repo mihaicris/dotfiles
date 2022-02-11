@@ -9,6 +9,7 @@
 
 [merge]
     tool = code
+    conflictstyle = diff3
 
 [mergetool "code"]
     cmd = code --wait $MERGED
@@ -75,4 +76,4 @@
     editor = interactive-rebase-tool
 [user]
 	name = Mihai Cristescu
-	email = mihai.cristescu@gmail.com
+	email = mihai.cristescu@adoreme.com
