@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Note: This script requires that you have $GITHUB_TOKEN set.
+# Get one here: https://github.com/settings/tokens
+
+ORG=$1
+
+for REPO in *; do
+    heading $REPO
+    pushd $REPO
+    git pull
+    popd
+done
