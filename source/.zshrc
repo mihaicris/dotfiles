@@ -84,7 +84,6 @@ alias ttv="tuist generate --verbose && bundle exec pod install && open AdoreMe.x
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
 alias wt="git worktree list"
 alias ytp="youtube-dl --socket-timeout 20 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'"
-alias xx="killall Xcode"
 
 #GIT_PROMPT_EXECUTABLE="haskell"
 source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"

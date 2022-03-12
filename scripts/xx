@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+[[ $1 == "intel" ]] && ARCH="x86_64"
+[[ $1 == "arm" ]] && ARCH="arm64"
+
+killAll Xcode
+
+[[ $ARCH == "" ]] && exit 0
+
+/usr/bin/arch -arch $ARCH xed .
