@@ -14,12 +14,6 @@
 [mergetool "code"]
     cmd = code --wait $MERGED
 
-[filter "lfs"]
-    clean = git-lfs clean -- %f
-    smudge = git-lfs smudge -- %f
-    process = git-lfs filter-process
-    required = true
-
 [diff]
     tool = code
 
@@ -77,3 +71,8 @@
 [user]
 	name = Mihai Cristescu
 	email = mihai.cristescu@adoreme.com
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

@@ -51,6 +51,7 @@ alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/p
 alias d='~/cloned/deeplinks/.build/release/deeplinks'
 alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
 alias fastlane="bundle exec fastlane"
+alias ga='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/report-home/a25560459w76793507p79384694'
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
 alias gcm="git add -A && git commit"
@@ -65,6 +66,7 @@ alias ll="ls -Flh"
 alias lla="ll -A"
 alias ls="ls -G"
 alias mc="mc --nosubshell"
+alias mc-edit="mc-edit --nosubshell"
 alias meet='open -a "Google Chrome" https://meet.google.com'
 alias meetc='open -a "Google Chrome" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
