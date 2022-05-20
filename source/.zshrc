@@ -76,6 +76,7 @@ alias ooa='open -a "Android Studio" ~/adoreme/android'
 alias android='cd ~/adoreme/android'
 alias p='open https://github.com/adore-me/app-iOS/pulls'
 alias pdot="git -C ~/.dotfiles pull && rb"
+alias python="python3"
 alias rb="source ~/.zshrc"
 alias s="git status"
 alias t="tuist edit"
@@ -83,12 +84,12 @@ alias tt="tuist generate && bundle exec pod install && open AdoreMe.xcworkspace"
 alias ttv="tuist generate --verbose && bundle exec pod install && open AdoreMe.xcworkspace"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
 alias wt="git worktree list"
-alias ytp="youtube-dl --socket-timeout 20 --external-downloader aria2c --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.1'"
+alias ytp="youtube-dl --socket-timeout 20 --external-downloader aria2c"
+alias ytpw="youtube-dl --socket-timeout 20 -f worst --external-downloader aria2c"
 
-#GIT_PROMPT_EXECUTABLE="haskell"
+GIT_PROMPT_EXECUTABLE="python"
 source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
 source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh

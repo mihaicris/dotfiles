@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+EMAIL=$1
+
+curl -s "https://gw-tools.prd.adoreme.com/customer_care/v1/customers?page=1&per_page=5&sort=-id&filter=email::$EMAIL" | jq '.[0]'.id
+
