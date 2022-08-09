@@ -46,6 +46,7 @@ alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-buil
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
+alias cram='open -a "Google Chrome" "https://cramberry.adoreme.com"'
 alias connect='open "https://appstoreconnect.apple.com/apps/661053119/appstore/ios/version/deliverable"'
 alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
 alias d='~/cloned/deeplinks/.build/release/deeplinks'
@@ -72,7 +73,7 @@ alias meetc='open -a "Google Chrome" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
 alias ss="smerge ."
 alias oo="xed ."
-alias ooa='open -a "Android Studio" ~/adoreme/android'
+alias ooa=cd "~/adoreme/android && open -a 'Android Studio' ~/adoreme/android"
 alias android='cd ~/adoreme/android'
 alias p='open https://github.com/adore-me/app-iOS/pulls'
 alias pdot="git -C ~/.dotfiles pull && rb"
@@ -80,6 +81,7 @@ alias python="python3"
 alias rb="source ~/.zshrc"
 alias s="git status"
 alias t="tuist edit"
+alias tag='open -a "Google Chrome" "https://tagmanager.google.com/#/container/accounts/131805499/containers/6116323/workspaces/126?orgId=wO26D2aFTgy1rvfFYjn9Sw"'
 alias tt="tuist generate && bundle exec pod install && open AdoreMe.xcworkspace"
 alias ttv="tuist generate --verbose && bundle exec pod install && open AdoreMe.xcworkspace"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
