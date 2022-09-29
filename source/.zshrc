@@ -53,6 +53,8 @@ alias d='~/cloned/deeplinks/.build/release/deeplinks'
 alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
 alias fastlane="bundle exec fastlane"
 alias ga='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/report-home/a25560459w76793507p79384694'
+alias ga4='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/p152238647'
+alias ga4s='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/p167739832'
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
 alias gcm="git add -A && git commit"
@@ -82,10 +84,7 @@ alias rb="source ~/.zshrc"
 alias s="git status"
 alias t="tuist edit"
 alias tag='open -a "Google Chrome" "https://tagmanager.google.com/#/container/accounts/131805499/containers/6116323/workspaces/126?orgId=wO26D2aFTgy1rvfFYjn9Sw"'
-alias tt="tuist generate && bundle exec pod install && open AdoreMe.xcworkspace"
-alias ttv="tuist generate --verbose && bundle exec pod install && open AdoreMe.xcworkspace"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
-alias wt="git worktree list"
 alias ytp="youtube-dl --socket-timeout 20 --external-downloader aria2c"
 alias ytpw="youtube-dl --socket-timeout 20 -f worst --external-downloader aria2c"
 

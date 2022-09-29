@@ -32,7 +32,7 @@ select BRANCH_TYPE in "${TYPES[@]}"; do
     break
 done
 
-TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\/|\?|\*|\&|\(|\))//g" | sed -r "s/\ +/-/g" | sed -r "s/-+/-/g")
+TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\/|\?|\.|\*|\&|\(|\))//g" | sed -r "s/\ +/-/g" | sed -r "s/-+/-/g")
 
 FINAL_BRANCH=${BRANCH_TYPE:l}/AMA-${JIRA_NUMBER}-${TITLE_DASHED:l}
 print "\nSwitching to branch:${LIGHT_GREEN} ${FINAL_BRANCH} ${NORMAL}?"

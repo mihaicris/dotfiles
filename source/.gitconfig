@@ -9,7 +9,7 @@
 
 [merge]
     tool = code
-	conflictstyle = merge
+	conflictstyle = diff3
 
 [mergetool "code"]
     cmd = code --wait $MERGED
