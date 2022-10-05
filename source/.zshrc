@@ -83,7 +83,7 @@ alias python="python3"
 alias rb="source ~/.zshrc"
 alias s="git status"
 alias t="tuist edit"
-alias tag='open -a "Google Chrome" "https://tagmanager.google.com/#/container/accounts/131805499/containers/6116323/workspaces/126?orgId=wO26D2aFTgy1rvfFYjn9Sw"'
+alias gtm='open -a "Google Chrome" "https://tagmanager.google.com/#/container/accounts/131805499/containers/6116323/workspaces/126?orgId=wO26D2aFTgy1rvfFYjn9Sw"'
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
 alias ytp="youtube-dl --socket-timeout 20 --external-downloader aria2c"
 alias ytpw="youtube-dl --socket-timeout 20 -f worst --external-downloader aria2c"
