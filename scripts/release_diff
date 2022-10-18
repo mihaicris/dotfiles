@@ -10,17 +10,8 @@ REF2=$2
 [[ $1 ]] || { print "${LIGHT_GREEN}Ref 1${NORMAL} not specified.\nUsage: release_diff ${LIGHT_GREEN}<ref1> <ref2>${NORMAL}\n"; exit ; }
 [[ $2 ]] || { print "${LIGHT_GREEN}Ref 2${NORMAL} not specified.\nUsage: release_diff ${LIGHT_GREEN}<ref1> <ref2>${NORMAL}\n"; exit ; }
 
-printf "Enter JIRA username: (mihai.cristescu@adoreme.com)"
-read USER
-[[ $USER ]] || { USER="mihai.cristescu@adoreme.com"; }
-
-printf "Enter password: "
-read -s PASS
-
-
-[[ $PASS ]] || { print "${LIGHT_GREEN}Password${NORMAL} not specified."; exit ; }
-
-print "\n"
+USER="delta"
+PASS=$(security find-generic-password -w -s 'JIRA_SCRIPTS' -a "$USER")
 
 REPOS=($TOP_LEVEL_DIR)
 
