@@ -8,14 +8,14 @@
     excludesfile = /Users/mihaicris/.gitignore_global
 
 [merge]
-    tool = code
+	tool = vimdiff3
 	conflictstyle = diff3
 
 [mergetool "code"]
     cmd = code --wait $MERGED
 
 [diff]
-    tool = code
+	tool = vimdiff3
 
 [difftool]
     prompt = false
@@ -76,3 +76,5 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[mergetool "vimdiff3"]
+	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
