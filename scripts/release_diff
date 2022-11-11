@@ -16,7 +16,15 @@ PASS=$(security find-generic-password -w -s 'JIRA_SCRIPTS' -a "$USER")
 REPOS=($TOP_LEVEL_DIR)
 
 declare -a ISSUES_ARRAY
-declare -a TITLES_ARRAY
+
+declare -a TASKS_TITLES_ARRAY
+declare -a TASKS_NUMBERS_ARRAY
+
+declare -a FEATURES_TITLES_ARRAY
+declare -a FEATURES_NUMBERS_ARRAY
+
+declare -a DEFECTS_TITLES_ARRAY
+declare -a DEFECTS_NUMBERS_ARRAY
 
 # Make array with issues
 { for REPO in $REPOS; do
@@ -28,36 +36,85 @@ declare -a TITLES_ARRAY
     ISSUES_ARRAY+=($i)
 done
 
+TASK_TYPE="Task (Capex)"
+DEFECT_TYPE="Bug (Opex)"
+FEATURE_TYPE="Story (Capex)"
+
 # Make array with issue titles
 
 COUNT=${#ISSUES_ARRAY[@]}
 for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
   NUMBER=${ISSUES_ARRAY[$i]}
-  print "($i/$COUNT) Fetching ${LIGHT_GREEN}$NUMBER${NORMAL}"
-  TITLE=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/$NUMBER?fields=summary" | jq -r .fields.summary)
-  TITLES_ARRAY+=($TITLE)
+  print "(${(l:2::0:)i}/${(l:2::0:)COUNT}) Fetching ${LIGHT_GREEN}$NUMBER${NORMAL}"
+  INFO=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/$NUMBER" | jq -r ".fields.issuetype.name, .fields.summary")
+  TITLE=$(echo ${INFO} | tail -1 | sed -r "s/\ *\[iOS\\ *] //g")
+  TYPE=$(echo ${INFO} | head -1)
+  case $TYPE in
+      $TASK_TYPE)
+          TASKS_TITLES_ARRAY+=($TITLE)
+          TASKS_NUMBERS_ARRAY+=($NUMBER)
+          ;;
+      $DEFECT_TYPE)
+          DEFECTS_TITLES_ARRAY+=($TITLE)
+          DEFECTS_NUMBERS_ARRAY+=($NUMBER)
+          ;;
+      $FEATURE_TYPE)
+          FEATURES_TITLES_ARRAY+=($TITLE)
+          FEATURES_NUMBERS_ARRAY+=($NUMBER)
+          ;;
+      *)
+          ;;
+  esac
+
 done
 
 print "\n\n${LIGHT_RED}JIRA RELEASE${NORMAL}\n"
 print "h1. Release version"
 print "Tickets included in this release:\n"
-print "h2. Added"
-for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
-    NUMBER=${ISSUES_ARRAY[$i]}
-    TITLE=${TITLES_ARRAY[$i]}
+
+for ((i = 1; i <= $#FEATURES_NUMBERS_ARRAY; i++)); do
+    (( i == 1 )) && print "h2. Added"
+    NUMBER=${FEATURES_NUMBERS_ARRAY[$i]}
+    TITLE=${FEATURES_TITLES_ARRAY[$i]}
     printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}] ${TITLE}\n"
 done
-print "\nh2. Changed"
-print "\nh2. Fixed"
+
+for ((i = 1; i <= $#TASKS_NUMBERS_ARRAY; i++)); do
+    (( i == 1 )) && print "\nh2. Changed"
+    NUMBER=${TASKS_NUMBERS_ARRAY[$i]}
+    TITLE=${TASKS_TITLES_ARRAY[$i]}
+    printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}] ${TITLE}\n"
+done
+
+for ((i = 1; i <= $#DEFECTS_NUMBERS_ARRAY; i++)); do
+    (( i == 1 )) && print "\nh2. Fixed"
+    NUMBER=${DEFECTS_NUMBERS_ARRAY[$i]}
+    TITLE=${DEFECTS_TITLES_ARRAY[$i]}
+    printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}] ${TITLE}\n"
+done
 
 print "\n\n${LIGHT_RED}CHANGELOG.md${NORMAL}\n"
-print "## ${REF2} - Name of release\n\n"
-print "### Added"
-for ((i = 1; i <= $#ISSUES_ARRAY; i++)); do
-    NUMBER=${ISSUES_ARRAY[$i]}
-    TITLE=${TITLES_ARRAY[$i]}
+print "## ${REF2} - Name of release\n"
+
+for ((i = 1; i <= $#FEATURES_NUMBERS_ARRAY; i++)); do
+    (( i == 1 )) && print "### Added"
+    NUMBER=${FEATURES_NUMBERS_ARRAY[$i]}
+    TITLE=${FEATURES_TITLES_ARRAY[$i]}
   printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}](https://jira.adoreme.com/browse/${LIGHT_GREEN}$NUMBER${NORMAL}) ${TITLE}\n"
 done
+
+for ((i = 1; i <= $#TASKS_NUMBERS_ARRAY; i++)); do
+    (( i == 1 )) && print "\n### Changed"
+    NUMBER=${TASKS_NUMBERS_ARRAY[$i]}
+    TITLE=${TASKS_TITLES_ARRAY[$i]}
+  printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}](https://jira.adoreme.com/browse/${LIGHT_GREEN}$NUMBER${NORMAL}) ${TITLE}\n"
+done
+
+for ((i = 1; i <= $#DEFECTS_NUMBERS_ARRAY; i++)); do
+    (( i == 1 )) && print "\n### Fixed"
+    NUMBER=${DEFECTS_NUMBERS_ARRAY[$i]}
+    TITLE=${DEFECTS_TITLES_ARRAY[$i]}
+  printf "* [${LIGHT_GREEN}${NUMBER}${NORMAL}](https://jira.adoreme.com/browse/${LIGHT_GREEN}$NUMBER${NORMAL}) ${TITLE}\n"
+done
+
 print ""
-print "### Changed\n"
-print "### Fixed\n"
