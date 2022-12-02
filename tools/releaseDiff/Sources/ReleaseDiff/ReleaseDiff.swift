@@ -21,6 +21,12 @@ struct ReleaseDiff: AsyncParsableCommand {
 }
 
 private func printJiraDescription(_ issues: [Issue]) {
+    func jiraIssue(_ issue: Issue) {
+        let key = issue.key.lightGreen
+        let summary = issue.fields.summary.lightBlue
+        print("* [\(key)] \(summary)")
+    }
+
     print("")
     print("JIRA Release".lightRed, "\n")
     print("Tickets included in this release:")
@@ -43,14 +49,13 @@ private func printJiraDescription(_ issues: [Issue]) {
     print("")
 }
 
-private func jiraIssue(_ issue: Issue) {
-    let key = issue.key.lightGreen
-    let summary = issue.fields.summary
-    print("* [\(key)] \(summary)")
-}
-
-
 private func printChangelogDescription(_ issues: [Issue]) {
+    func changelogIssue(_ issue: Issue) {
+        let key = issue.key.lightGreen
+        let summary = issue.fields.summary.lightBlue
+        print("* [\(key)](https://jira.adoreme.com/browse/\(key)) \(summary)")
+    }
+
     print("")
     print("CHANGELOG.md".lightRed, "\n")
     print("## Version")
@@ -73,13 +78,7 @@ private func printChangelogDescription(_ issues: [Issue]) {
     print("")
 }
 
-private func changelogIssue(_ issue: Issue) {
-    let key = issue.key.lightGreen
-    let summary = issue.fields.summary
-    print("* [\(key)](https://jira.adoreme.com/browse/\(key)) \(summary)")
-}
-
-func fetchIssues(user: User, refs: [String]) async -> [Issue] {
+private func fetchIssues(user: User, refs: [String]) async -> [Issue] {
     return await withTaskGroup(of: Issue?.self) { group in
         var issues = [Issue?]()
         issues.reserveCapacity(refs.count)
@@ -103,7 +102,7 @@ func fetchIssues(user: User, refs: [String]) async -> [Issue] {
     }
 }
 
-func getUser() -> User? {
+private func getUser() -> User? {
     do {
         let output = try shellOut(to: "security", arguments: ["find-generic-password", "-w", "-s", "JIRA_SCRIPTS", "-a", "delta"])
         return User(password: output)
@@ -113,7 +112,7 @@ func getUser() -> User? {
     }
 }
 
-func getTopLevelDir() -> String? {
+private func getTopLevelDir() -> String? {
     do {
         return try shellOut(to: "git", arguments: ["rev-parse", "--show-toplevel"])
     } catch {
@@ -122,7 +121,7 @@ func getTopLevelDir() -> String? {
     }
 }
 
-func getIssues(repo: String, ref1: String, ref2: String) -> [String] {
+private func getIssues(repo: String, ref1: String, ref2: String) -> [String] {
     guard let output = try? shellOut(
         to: "git",
         arguments: ["-C", repo, "log", "\(ref1)..\(ref2)", "--no-merges", "--oneline"]
@@ -139,7 +138,7 @@ func getIssues(repo: String, ref1: String, ref2: String) -> [String] {
     return issues
 }
 
-func fetchIssue(user: User, ref: String) async -> Issue? {
+private func fetchIssue(user: User, ref: String) async -> Issue? {
     guard let output = try? shellOut(
         to: "curl",
         arguments: ["-s",
