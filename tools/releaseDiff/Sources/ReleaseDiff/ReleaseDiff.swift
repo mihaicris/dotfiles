@@ -23,12 +23,12 @@ struct ReleaseDiff: AsyncParsableCommand {
 private func printJiraDescription(_ issues: [Issue]) {
     func jiraIssue(_ issue: Issue) {
         let key = issue.key.lightGreen
-        let summary = issue.fields.summary.lightWhite
+        let summary = issue.fields.summary.lightWhite.bold
         print("* [\(key)] \(summary)")
     }
 
     print("")
-    print("JIRA Release".lightRed, "\n")
+    print("JIRA Release".lightRed.bold, "\n")
     print("Tickets included in this release:")
 
     for (idx, issue) in issues.added {
@@ -52,12 +52,12 @@ private func printJiraDescription(_ issues: [Issue]) {
 private func printChangelogDescription(_ issues: [Issue]) {
     func changelogIssue(_ issue: Issue) {
         let key = issue.key.lightGreen
-        let summary = issue.fields.summary.lightWhite
+        let summary = issue.fields.summary.lightWhite.bold
         print("* [\(key)](https://jira.adoreme.com/browse/\(key)) \(summary)")
     }
 
     print("")
-    print("CHANGELOG.md".lightRed, "\n")
+    print("CHANGELOG.md".lightRed.bold, "\n")
     print("## Version")
 
     for (idx, issue) in issues.added {
@@ -89,15 +89,11 @@ private func fetchIssues(user: User, refs: [String]) async -> [Issue] {
             }
         }
 
-        var count = 1
         for await issue in group {
             issues.append(issue)
-
-            count += 1
         }
 
-        return
-            issues
+        return issues
             .compactMap { $0 }
             .sorted(by: { $0.key < $1.key })
     }
@@ -174,7 +170,6 @@ private let regex = Regex {
         }
         "-"
         OneOrMore(.digit)
-
     }
     "]"
     OneOrMore(.any)
