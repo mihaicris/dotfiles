@@ -23,7 +23,7 @@ struct ReleaseDiff: AsyncParsableCommand {
 private func printJiraDescription(_ issues: [Issue]) {
     func jiraIssue(_ issue: Issue) {
         let key = issue.key.lightGreen
-        let summary = issue.fields.summary.lightBlue
+        let summary = issue.fields.summary.lightWhite
         print("* [\(key)] \(summary)")
     }
 
@@ -52,7 +52,7 @@ private func printJiraDescription(_ issues: [Issue]) {
 private func printChangelogDescription(_ issues: [Issue]) {
     func changelogIssue(_ issue: Issue) {
         let key = issue.key.lightGreen
-        let summary = issue.fields.summary.lightBlue
+        let summary = issue.fields.summary.lightWhite
         print("* [\(key)](https://jira.adoreme.com/browse/\(key)) \(summary)")
     }
 
@@ -96,7 +96,8 @@ private func fetchIssues(user: User, refs: [String]) async -> [Issue] {
             count += 1
         }
 
-        return issues
+        return
+            issues
             .compactMap { $0 }
             .sorted(by: { $0.key < $1.key })
     }
@@ -104,7 +105,9 @@ private func fetchIssues(user: User, refs: [String]) async -> [Issue] {
 
 private func getUser() -> User? {
     do {
-        let output = try shellOut(to: "security", arguments: ["find-generic-password", "-w", "-s", "JIRA_SCRIPTS", "-a", "delta"])
+        let output = try shellOut(
+            to: "security",
+            arguments: ["find-generic-password", "-w", "-s", "JIRA_SCRIPTS", "-a", "delta"])
         return User(password: output)
     } catch {
         print(error)
@@ -122,10 +125,12 @@ private func getTopLevelDir() -> String? {
 }
 
 private func getIssues(repo: String, ref1: String, ref2: String) -> [String] {
-    guard let output = try? shellOut(
-        to: "git",
-        arguments: ["-C", repo, "log", "\(ref1)..\(ref2)", "--no-merges", "--oneline"]
-    ) else {
+    guard
+        let output = try? shellOut(
+            to: "git",
+            arguments: ["-C", repo, "log", "\(ref1)..\(ref2)", "--no-merges", "--oneline"]
+        )
+    else {
         return []
     }
 
@@ -139,11 +144,14 @@ private func getIssues(repo: String, ref1: String, ref2: String) -> [String] {
 }
 
 private func fetchIssue(user: User, ref: String) async -> Issue? {
-    guard let output = try? shellOut(
-        to: "curl",
-        arguments: ["-s",
-                    "-u", "\(user.name):\(user.password)",
-                    "https://jira.adoreme.com/rest/api/2/issue/\(ref)?fields=summary,issuetype,parent"]),
+    guard
+        let output = try? shellOut(
+            to: "curl",
+            arguments: [
+                "-s",
+                "-u", "\(user.name):\(user.password)",
+                "https://jira.adoreme.com/rest/api/2/issue/\(ref)?fields=summary,issuetype,parent",
+            ]),
         let data = output.data(using: .utf8)
     else { return nil }
 
@@ -160,7 +168,10 @@ private let regex = Regex {
     OneOrMore(.any)
     "["
     Capture {
-        ChoiceOf { "AMA"; "PN" }
+        ChoiceOf {
+            "AMA"
+            "PN"
+        }
         "-"
         OneOrMore(.digit)
 
@@ -170,15 +181,15 @@ private let regex = Regex {
 }
 
 extension Array where Element == Issue {
-    var added: EnumeratedSequence<Array<Element>> {
-        (self.filter { $0.type == .added}).enumerated()
+    var added: EnumeratedSequence<[Element]> {
+        (self.filter { $0.type == .added }).enumerated()
     }
 
-    var changed: EnumeratedSequence<Array<Element>> {
-        (self.filter { $0.type == .changed}).enumerated()
+    var changed: EnumeratedSequence<[Element]> {
+        (self.filter { $0.type == .changed }).enumerated()
     }
 
-    var defects: EnumeratedSequence<Array<Element>> {
-        (self.filter { $0.type == .defect}).enumerated()
+    var defects: EnumeratedSequence<[Element]> {
+        (self.filter { $0.type == .defect }).enumerated()
     }
 }
