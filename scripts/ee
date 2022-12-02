@@ -16,6 +16,7 @@ ENVIRONMENTS=(
     'OMEGA 1;omega-1'
     'OMEGA 2;omega-2'
     'OMEGA 3;omega-3'
+    'Black Friday;core-3'
 )
 NAMES=()
 BASEURLS=()
@@ -61,7 +62,7 @@ find ./Sources \
 PATTERN="\"BASE_URL\", \'\"\(.*\)\"\'"
 REPLACE="\"BASE_URL\", \'\"${BASE_URL}\/\"\'"
 
-find ../android/app \
+find ../android-app/app \
     -name "build.gradle" \
     -print \
     -exec sed -i "" -e "s|${PATTERN}|${REPLACE}|" \

@@ -76,17 +76,19 @@ alias mm="fork ."
 alias ss="smerge ."
 alias oo="xed ."
 alias ooa=cd "~/adoreme/android && open -a 'Android Studio' ~/adoreme/android"
-alias android='cd ~/adoreme/android'
+alias android='cd ~/adoreme/android-app'
 alias p='open https://github.com/adore-me/app-iOS/pulls'
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias python="python3"
 alias rb="source ~/.zshrc"
 alias s="git status"
 alias t="tuist edit"
+alias tca="~/adoreme/TCA/ios-app-tca && make"
 alias gtm='open -a "Google Chrome" "https://tagmanager.google.com/#/container/accounts/131805499/containers/6116323/workspaces/126?orgId=wO26D2aFTgy1rvfFYjn9Sw"'
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
 alias ytp="youtube-dl --socket-timeout 20 --external-downloader aria2c"
 alias ytpw="youtube-dl --socket-timeout 20 -f worst --external-downloader aria2c"
+alias releaseDiff="~/.dotfiles/tools/releaseDiff/.build/arm64-apple-macosx/release/ReleaseDiff"
 
 GIT_PROMPT_EXECUTABLE="python"
 source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
