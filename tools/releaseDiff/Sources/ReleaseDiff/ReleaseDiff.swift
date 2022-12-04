@@ -15,6 +15,11 @@ struct ReleaseDiff: AsyncParsableCommand {
         let refs = getIssues(repo: repo, ref1: ref1, ref2: ref2)
         let issues = await fetchIssues(user: user, refs: refs)
 
+        guard !issues.isEmpty else {
+            print("\nNo issues available.\n".red)
+            return
+        }
+
         printJiraDescription(issues)
         printChangelogDescription(issues)
     }
@@ -28,7 +33,7 @@ private func printJiraDescription(_ issues: [Issue]) {
     }
 
     print("")
-    print("JIRA Release".lightRed.bold, "\n")
+    print("JIRA Release".blue.bold.underline, "\n")
     print("Tickets included in this release:")
 
     for (idx, issue) in issues.added {
@@ -57,7 +62,7 @@ private func printChangelogDescription(_ issues: [Issue]) {
     }
 
     print("")
-    print("CHANGELOG.md".lightRed.bold, "\n")
+    print("CHANGELOG.md".blue.bold.underline, "\n")
     print("## Version")
 
     for (idx, issue) in issues.added {
