@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "ReleaseDiff",
+    name: "AdoreMe",
     platforms: [.macOS(.v13)],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
@@ -13,7 +13,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "ReleaseDiff",
+            name: "am",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "Rainbow", package: "Rainbow"),
