@@ -16,7 +16,12 @@ ENVIRONMENTS=(
     'OMEGA 1;omega-1'
     'OMEGA 2;omega-2'
     'OMEGA 3;omega-3'
-    'Black Friday;core-3'
+    'ALPHA 1;alpha-1'
+    'ALPHA 2;alpha-2'
+    'ALPHA 3;alpha-3'
+    'CORE 1;core-1'
+    'CORE 2;core-2'
+    'CORE 3;core-3'
 )
 NAMES=()
 BASEURLS=()
