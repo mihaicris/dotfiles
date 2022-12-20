@@ -4,8 +4,12 @@ import Rainbow
 import RegexBuilder
 import ShellOut
 
-@main
-struct ReleaseDiff: AsyncParsableCommand {
+
+struct Diff: AsyncParsableCommand {
+    static var configuration = CommandConfiguration(
+        abstract: "Provides list of JIRA issues between two GIT refs"
+    )
+
     @Argument(help: "Git Reference 1") var ref1: String
     @Argument(help: "Git Reference 2") var ref2: String
 
@@ -101,27 +105,6 @@ private func fetchIssues(user: User, refs: [String]) async -> [Issue] {
         return issues
             .compactMap { $0 }
             .sorted(by: { $0.key < $1.key })
-    }
-}
-
-private func getUser() -> User? {
-    do {
-        let output = try shellOut(
-            to: "security",
-            arguments: ["find-generic-password", "-w", "-s", "JIRA_SCRIPTS", "-a", "delta"])
-        return User(password: output)
-    } catch {
-        print(error)
-        return nil
-    }
-}
-
-private func getTopLevelDir() -> String? {
-    do {
-        return try shellOut(to: "git", arguments: ["rev-parse", "--show-toplevel"])
-    } catch {
-        print(error)
-        return nil
     }
 }
 
