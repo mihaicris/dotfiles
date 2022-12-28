@@ -33,12 +33,14 @@ struct Issue: Decodable, Sendable {
         if fields.issuetype?.name == "Story (Capex)" { return .added }
         if fields.issuetype?.name == "Task (Capex)" { return .changed }
         if fields.issuetype?.name == "Bug (Opex)" { return .defect }
+        if fields.issuetype?.name == "Support (Opex)" { return .changed }
 
         if fields.issuetype?.name == "Sub-task" {
             if let issuetype = fields.parent?.fields.issuetype.name {
                 if issuetype == "Story (Capex)" { return .added }
                 if issuetype == "Task (Capex)" { return .changed }
                 if issuetype == "Bug (Opex)" { return .defect }
+                if issuetype == "Support (Opex)" { return .changed }
             }
         }
 
