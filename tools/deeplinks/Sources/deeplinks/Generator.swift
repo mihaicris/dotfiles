@@ -27,6 +27,21 @@ func generateURL(action: Action, deeplink: Deeplink) -> String? {
     return components.url?.absoluteString
 }
 
+func generateURL() -> String {
+    var components = URLComponents()
+    components.scheme = "https"
+    components.host = "www.adoreme.com"
+
+    var queryItems: [URLQueryItem] = []
+    queryItems.append(URLQueryItem(name: "utm_source", value: "development"))
+    queryItems.append(URLQueryItem(name: "utm_medium", value: "cpc"))
+    queryItems.append(URLQueryItem(name: "utm_campaign", value: "test_mihai"))
+    queryItems.append(URLQueryItem(name: "utm_content", value: "001"))
+    components.queryItems = queryItems
+
+    return components.url?.absoluteString ?? ""
+}
+
 func generateFirebaseDynamicLinkURL(urlString: String) -> String? {
     let encodedUrlString = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
 
