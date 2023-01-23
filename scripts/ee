@@ -46,11 +46,9 @@ ENVIRONMENT=${BASEURLS[$REPLY]}
 
 if [[ "$REPLY" -eq "1" ]]; then
     BASE_URL="$ENVIRONMENT"
-    FRONTEND_URL="$ENVIRONMENT/?is_adoreme_webview=true"
     WEB_URL="$ENVIRONMENT"
 else
     BASE_URL="http://magento-ns-${ENVIRONMENT}.stg.adoreme.com"
-    FRONTEND_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com/?is_adoreme_webview=true"
     WEB_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com"
 fi
 
@@ -60,7 +58,6 @@ find ./Sources \
     -print \
     -exec /usr/libexec/PlistBuddy \
     -c "Set :BaseUrl ${BASE_URL}" \
-    -c "Set :FrontendWebUrl ${FRONTEND_URL}" \
     {} \;
 
 # Adnroid
