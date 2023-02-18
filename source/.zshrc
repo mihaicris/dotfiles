@@ -36,7 +36,7 @@ NEWLINE=$'\n'
 PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{yellow}%~%f $(git_super_status)${NEWLINE}%T $ '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
-eval "$(jenv init -)"
+# eval "$(jenv init -)"
 #. /usr/local/opt/asdf/libexec/asdf.sh
 grep -slR "PRIVATE" ~/.ssh | xargs ssh-add --apple-use-keychain &> /dev/null
 
@@ -64,6 +64,7 @@ alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
 alias gtm='open -a "Google Chrome" "https://tagmanager.google.com/#/container/accounts/131805499/containers/6116323/workspaces/126?orgId=wO26D2aFTgy1rvfFYjn9Sw"'
+alias gg='open "https://github.com/adore-me/app-iOS"'
 alias ios=". ios"
 alias kand="killall studio; killall qemu-system-x86_64"
 alias ll="ls -Flh"
@@ -83,16 +84,16 @@ alias rb="source ~/.zshrc"
 alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
 alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
 alias s="git status"
-alias ss="smerge ."
 alias t="tuist edit"
 alias tca="~/adoreme/TCA/ios-app-tca && make"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
-alias ytp="youtube-dl --socket-timeout 20 --external-downloader aria2c"
-alias ytpw="youtube-dl --socket-timeout 20 -f worst --external-downloader aria2c"
+alias ytp="youtube-dl -f best --external-downloader aria2c -o '%(release_date) - %(title)s'"
+alias ytp1="youtube-dl --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
+alias ytp2="youtube-dl --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
 
 GIT_PROMPT_EXECUTABLE="python"
 source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
 source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+#. /opt/homebrew/opt/asdf/libexec/asdf.sh
