@@ -19,6 +19,8 @@ if (( COUNT == 0 )); then
     exit 1
 fi
 
+export COLUMNS=1
+
 select WORKDIR in $WORKDIRS; do
     if [[ -n "$WORKDIR" ]]; then
         SELECTION=$REPLY
