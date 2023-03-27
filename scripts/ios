@@ -29,3 +29,5 @@ select WORKDIR in $WORKDIRS; do
 done
 
 cd $LOCATIONS[SELECTION]
+
+export COLUMNS=
