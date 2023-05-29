@@ -64,7 +64,7 @@ find ./Sources \
 PATTERN="\"BASE_URL\", \'\"\(.*\)\"\'"
 REPLACE="\"BASE_URL\", \'\"${BASE_URL}\/\"\'"
 
-find ../android-app/app \
+find ../../android-app/app \
     -name "build.gradle" \
     -print \
     -exec sed -i "" -e "s|${PATTERN}|${REPLACE}|" \

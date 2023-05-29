@@ -30,17 +30,17 @@ struct Issue: Decodable, Sendable {
     }
 
     var type: IssueType {
-        if fields.issuetype?.name == "Story (Capex)" { return .added }
-        if fields.issuetype?.name == "Task (Capex)" { return .changed }
-        if fields.issuetype?.name == "Bug (Opex)" { return .defect }
-        if fields.issuetype?.name == "Support (Opex)" { return .changed }
+        if fields.issuetype?.name == "Story" { return .added }
+        if fields.issuetype?.name == "Task" { return .changed }
+        if fields.issuetype?.name == "Bug" { return .defect }
+        if fields.issuetype?.name == "Support" { return .changed }
 
         if fields.issuetype?.name == "Sub-task" {
             if let issuetype = fields.parent?.fields.issuetype.name {
-                if issuetype == "Story (Capex)" { return .added }
-                if issuetype == "Task (Capex)" { return .changed }
-                if issuetype == "Bug (Opex)" { return .defect }
-                if issuetype == "Support (Opex)" { return .changed }
+                if issuetype == "Story" { return .added }
+                if issuetype == "Task" { return .changed }
+                if issuetype == "Bug" { return .defect }
+                if issuetype == "Support" { return .changed }
             }
         }
 

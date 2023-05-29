@@ -17,15 +17,21 @@ struct Diff: AsyncParsableCommand {
         guard let user = getUser() else { return }
         guard let repo = getTopLevelDir() else { return }
         let refs = getIssues(repo: repo, ref1: ref1, ref2: ref2)
+//        printRefs(refs)
         let issues = await fetchIssues(user: user, refs: refs)
 
         guard !issues.isEmpty else {
             print("\nNo issues available.\n".red)
             return
         }
-
         printJiraDescription(issues)
         printChangelogDescription(issues)
+    }
+}
+
+private func printRefs(_ refs: [String]) {
+    for ref in refs {
+        print("* [\(ref)](https://adoreme.atlassian.net/browse/\(ref))")
     }
 }
 
@@ -33,7 +39,7 @@ private func printJiraDescription(_ issues: [Issue]) {
     func jiraIssue(_ issue: Issue) {
         let key = issue.key.lightGreen
         let summary = issue.fields.summary.lightWhite.bold
-        print("* [\(key)] \(summary)")
+        print("* [\(key)](https://adoreme.atlassian.net/browse/\(key)) \(summary)")
     }
 
     print("")
@@ -62,7 +68,7 @@ private func printChangelogDescription(_ issues: [Issue]) {
     func changelogIssue(_ issue: Issue) {
         let key = issue.key.lightGreen
         let summary = issue.fields.summary.lightWhite.bold
-        print("* [\(key)](https://jira.adoreme.com/browse/\(key)) \(summary)")
+        print("* [\(key)](https://adoreme.atlassian.net/browse/\(key)) \(summary)")
     }
 
     print("")
@@ -134,11 +140,10 @@ private func fetchIssue(user: User, ref: String) async -> Issue? {
             arguments: [
                 "-s",
                 "-u", "\(user.name):\(user.password)",
-                "https://jira.adoreme.com/rest/api/2/issue/\(ref)?fields=summary,issuetype,parent",
+                "https://adoreme.atlassian.net/rest/api/2/issue/\(ref)?fields=summary,issuetype,parent",
             ]),
         let data = output.data(using: .utf8)
     else { return nil }
-
     do {
         var issue = try JSONDecoder().decode(Issue.self, from: data)
         issue.fields.summary = String(issue.fields.summary.trimmingPrefix("[iOS] "))
@@ -155,6 +160,7 @@ private let regex = Regex {
         ChoiceOf {
             "AMA"
             "PN"
+            "ZONE"
         }
         "-"
         OneOrMore(.digit)

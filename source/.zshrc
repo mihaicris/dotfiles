@@ -41,7 +41,7 @@ HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 grep -slR "PRIVATE" ~/.ssh | xargs ssh-add --apple-use-keychain &> /dev/null
 
 alias ..=".. && ll"
-alias android='cd ~/adoreme/android-app'
+alias android='cd ~/android-app'
 alias bun="bundle exec pod install"
 alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"

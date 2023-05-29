@@ -4,7 +4,7 @@ func getUser() -> User? {
     do {
         let output = try shellOut(
             to: "security",
-            arguments: ["find-generic-password", "-w", "-s", "JIRA_SCRIPTS", "-a", "delta"])
+            arguments: ["find-generic-password", "-w", "-s", "JIRA_SCRIPTS", "-a", "mihai.cristescu@adoreme.com"])
         return User(password: output)
     } catch {
         print(error)
