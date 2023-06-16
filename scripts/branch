@@ -11,11 +11,11 @@ JIRA_NUMBER=$1
 #printf "Enter JIRA username: (mihai.cristescu@adoreme.com)"
 #read USER
 #[[ $USER ]] || { USER="mihai.cristescu@adoreme.com"; }
-USER="delta"
-PASS=$(security find-generic-password -w -s 'JIRA_SCRIPTS' -a 'delta')
+USER="mihai.cristescu@adoreme.com"
+PASS=$(security find-generic-password -w -s 'JIRA_SCRIPTS' -a 'mihai.cristescu@adoreme.com')
 
 print "Fetching JIRA issue: ${LIGHT_GREEN}$JIRA_NUMBER${NORMAL}"
-TITLE=$(curl -s -u "${USER}:${PASS}" "https://jira.adoreme.com/rest/api/2/issue/AMA-$JIRA_NUMBER?fields=summary" | jq -r .fields.summary)
+TITLE=$(curl -s -u "${USER}:${PASS}" "https://adoreme.atlassian.net/rest/api/2/issue/AMA-$JIRA_NUMBER?fields=summary" | jq -r .fields.summary)
 
 [[ $TITLE ]] || { print "${LIGHT_GREEN}Could not get the issue title${NORMAL}\n"; exit ; }
 

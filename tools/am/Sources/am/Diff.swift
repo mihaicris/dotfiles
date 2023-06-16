@@ -24,7 +24,6 @@ struct Diff: AsyncParsableCommand {
             print("\nNo issues available.\n".red)
             return
         }
-        printJiraDescription(issues)
         printChangelogDescription(issues)
     }
 }
@@ -33,35 +32,6 @@ private func printRefs(_ refs: [String]) {
     for ref in refs {
         print("* [\(ref)](https://adoreme.atlassian.net/browse/\(ref))")
     }
-}
-
-private func printJiraDescription(_ issues: [Issue]) {
-    func jiraIssue(_ issue: Issue) {
-        let key = issue.key.lightGreen
-        let summary = issue.fields.summary.lightWhite.bold
-        print("* [\(key)](https://adoreme.atlassian.net/browse/\(key)) \(summary)")
-    }
-
-    print("")
-    print("JIRA Release".blue.bold.underline, "\n")
-    print("Tickets included in this release:")
-
-    for (idx, issue) in issues.added {
-        if idx == 0 { print("\nh2. Added") }
-        jiraIssue(issue)
-    }
-
-    for (idx, issue) in issues.changed {
-        if idx == 0 { print("\nh2. Changed") }
-        jiraIssue(issue)
-    }
-
-    for (idx, issue) in issues.defects {
-        if idx == 0 { print("\nh2. Fixed") }
-        jiraIssue(issue)
-    }
-
-    print("")
 }
 
 private func printChangelogDescription(_ issues: [Issue]) {
