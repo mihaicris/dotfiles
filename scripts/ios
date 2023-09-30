@@ -2,7 +2,7 @@
 
 heading "Choose project worktree:"
 
-TOP_LEVEL_DIR=~/adoreme/develop
+TOP_LEVEL_DIR=~/adoreme/main
 
 WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list)
 WORKDIRS=(${(f)WORKDIRS})

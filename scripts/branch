@@ -5,6 +5,8 @@ is_git_folder || exit 1
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 
 JIRA_NUMBER=$1
+PROJECT="${2:-AMA}"
+
 
 [[ $1 ]] || { print "${LIGHT_GREEN}JIRA issue number${NORMAL} not specified.\nUsage: branch ${LIGHT_GREEN}<JIRA_NUMBER>${NORMAL}\n"; exit ; }
 
@@ -15,7 +17,7 @@ USER="mihai.cristescu@adoreme.com"
 PASS=$(security find-generic-password -w -s 'JIRA_SCRIPTS' -a 'mihai.cristescu@adoreme.com')
 
 print "Fetching JIRA issue: ${LIGHT_GREEN}$JIRA_NUMBER${NORMAL}"
-TITLE=$(curl -s -u "${USER}:${PASS}" "https://adoreme.atlassian.net/rest/api/2/issue/AMA-$JIRA_NUMBER?fields=summary" | jq -r .fields.summary)
+TITLE=$(curl -s -u "${USER}:${PASS}" "https://adoreme.atlassian.net/rest/api/2/issue/$PROJECT-$JIRA_NUMBER?fields=summary" | jq -r .fields.summary)
 
 [[ $TITLE ]] || { print "${LIGHT_GREEN}Could not get the issue title${NORMAL}\n"; exit ; }
 

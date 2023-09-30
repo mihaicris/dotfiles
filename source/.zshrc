@@ -15,14 +15,14 @@ setopt HIST_VERIFY
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PATH="$HOME/.dotfiles/scripts:$PATH"
-export PATH="$HOME/.jenv/bin:$PATH"
-export PATH="$HOME/.rbenv/bin:$PATH"
-export PATH="$HOME/.rbenv/shims:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-# export PYENV_ROOT="$HOME/.pyenv"
-# export PATH="$PYENV_ROOT/bin:$PATH"
+# export PATH="$HOME/.jenv/bin:$PATH"
+# export PATH="$HOME/.rbenv/bin:$PATH"
+# export PATH="$HOME/.rbenv/shims:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
@@ -42,16 +42,12 @@ grep -slR "PRIVATE" ~/.ssh | xargs ssh-add --apple-use-keychain &> /dev/null
 
 alias ..=".. && ll"
 alias android='cd ~/android-app'
-alias bun="bundle exec pod install"
-alias cart="carthage bootstrap --platform iOS --configuration Debug --cache-builds --no-use-binaries"
-alias cart_update="carthage update --platform iOS --configuration Debug --cache-builds --no-use-binaries"
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
-alias connect='open "https://appstoreconnect.apple.com/apps/661053119/appstore/ios/version/deliverable"'
+alias connect='open "https://appstoreconnect.apple.com"'
 alias cram='open -a "Google Chrome" "https://cramberry.adoreme.com"'
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
 alias deeplink='~/.dotfiles/tools/deeplinks/.build/release/deeplinks'
 alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
-alias fastlane="bundle exec fastlane"
 alias ga4='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/p152238647'
 alias ga4s='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/p167739832'
 alias ga='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/report-home/a25560459w76793507p79384694'
@@ -96,4 +92,3 @@ source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
 source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-#. /opt/homebrew/opt/asdf/libexec/asdf.sh
