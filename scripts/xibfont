@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+grep --include \*.storyboard --include \*.xib -l -r -E ".*customFonts.*" Sources | uniq | sort | awk '{print "\""$0"\""}'
