@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+# Input string
+my_string="Hello, World!"
+
+# Split the string into an array of characters
+characters=("${(@s::)my_string}")
+
+# Loop over each character
+for char in "${characters[@]}"; do
+  echo "Character: $char"
+done

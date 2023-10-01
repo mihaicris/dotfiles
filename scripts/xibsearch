@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+
+if [[ -z "$1" ]]; then
+	echo "Error: Must provide an argument, the color name."
+	exit 1
+fi
+
+search_alternatives=()
+search_alternatives+=("color key.*name=\\\"$1\\\"")
+search_alternatives+=("namedColor name=\\\"$1\\\"")
+regular_expression="(${(j:|:)search_alternatives})"
+awk_command='{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print "\"" $1 "\"" " " "\033[34m" $2 "\033[0m"}'
+
+components=("grep")
+components+=("-r")  
+components+=("--include \*.storyboard")
+components+=("--include \*.xib")
+components+=("-E \"$regular_expression\"")
+components+=("Sources")
+components+=("| awk -F ':\s*' '$awk_command'")	
+command="${(j: :)components}"
+
+eval $command
