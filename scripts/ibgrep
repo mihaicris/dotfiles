@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-#
-grep -R --include "*.xib" --include "*.storyboard" "namedColor name=\"$1\"" .

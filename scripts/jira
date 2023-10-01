@@ -1,9 +1,10 @@
 #!/usr/bin/env zsh
 
 TICKET=$1
+PROJECT=${2:-AMA}
 
 if [[ $TICKET ]]; then
-    open "https://adoreme.atlassian.net/browse/AMA-$TICKET"
+    open "https://adoreme.atlassian.net/browse/$PROJECT-$TICKET"
 else
     open "https://adoreme.atlassian.net/jira/software/c/projects/AMA/boards/14?quickFilter=27"
 fi

@@ -22,6 +22,6 @@ REPOS=($TOP_LEVEL_DIR ${(f)SUBMODULES})
 } | grep -oE "AMA-\d+" \
   | sort -u \
   | while read i; do
-    printf "https://jira.adoreme.com/browse/${LIGHT_GREEN}$i${NORMAL}\n"
+    printf "https://adoreme.atlassian.net/browse/${LIGHT_GREEN}$i${NORMAL}\n"
 done
 print ""
