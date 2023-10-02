@@ -11,17 +11,8 @@ components+=("--include \*.storyboard")
 components+=("--include \*.xib")
 components+=("-E \"$1\"")
 components+=("Sources")
+components+=('| awk -F '\'':\s*'\'' '\''{ gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); gsub(/'"$1"'/, "\033[31m" "'"$1"'" "\033[34m", $2); print "\"" $1 "\"" " " "\033[34m" $2 "\033[0m" }'\''')	
 
-awk_components=("| awk -F ':\s*'")
-awk_components+=("'{")
-awk_components+=('blue="\033[34m"; red="\033[31m"; green="\033[32m"; reset="\033[0m";')
-awk_components+=('gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2);')
-awk_components+=("gsub(/$1/, red")
-awk_components+=("\"$1\"")
-awk_components+=(' blue, $2);')
-awk_components+=('print "\"" $1 "\"" " " blue $2 reset')
-awk_components+=("}'")
-awk_command="${(j: :)awk_components}"
-components+=($awk_command)	
 command="${(j: :)components}"
+# echo $command
 eval $command

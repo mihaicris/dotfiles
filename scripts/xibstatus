@@ -19,11 +19,9 @@ fi
 components+=("Sources")
 
 if [[ "$1" == "-f" ]]; then
-	awk_command='{ print "\"" $0 "\"" }'
-	components+=("| awk '$awk_command'")	
+	components+=('| awk '\''{ print "\"" $0 "\"" }'\''')	
 else
-	awk_command='{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print "\"" $1 "\"" " " "\033[34m" $2 "\033[0m"}'
-	components+=("| awk -F ':\s*' '$awk_command'")	
+	components+=('| awk -F '\'':\s*'\'' '\''{ gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print "\"" $1 "\"" " " "\033[34m" $2 "\033[0m" }'\'' ')	
 fi
 
 command="${(j: :)components}"
