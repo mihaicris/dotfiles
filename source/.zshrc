@@ -15,10 +15,6 @@ setopt HIST_VERIFY
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PATH="$HOME/.dotfiles/scripts:$PATH"
-# export PATH="$HOME/.jenv/bin:$PATH"
-# export PATH="$HOME/.rbenv/bin:$PATH"
-# export PATH="$HOME/.rbenv/shims:$PATH"
-# export PATH="$HOME/.cargo/bin:$PATH"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
@@ -36,8 +32,6 @@ NEWLINE=$'\n'
 PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{yellow}%~%f $(git_super_status)${NEWLINE}%T $ '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
-# eval "$(jenv init -)"
-#. /usr/local/opt/asdf/libexec/asdf.sh
 grep -slR "PRIVATE" ~/.ssh | xargs ssh-add --apple-use-keychain &> /dev/null
 
 alias ..=".. && ll"
@@ -72,7 +66,7 @@ alias meet='open -a "Google Chrome" https://meet.google.com'
 alias meetc='open -a "Google Chrome" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
 alias oo="xed ."
-alias ooa=cd "~/adoreme/android && open -a 'Android Studio' ~/adoreme/android"
+alias ooa='cd ~/android-app && open -a "Android Studio" ~/android-app'
 alias p='open https://github.com/adore-me/app-iOS/pulls'
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias python="python3"
@@ -83,9 +77,9 @@ alias s="git status"
 alias t="tuist edit"
 alias tca="~/adoreme/TCA/ios-app-tca && make"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
-alias ytp="youtube-dl -f best --external-downloader aria2c -o '%(release_date) - %(title)s'"
-alias ytp1="youtube-dl --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
-alias ytp2="youtube-dl --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
+alias ytp="yt-dlp -f best --external-downloader aria2c -o '%(release_date) - %(title)s'"
+alias ytp1="yt-dlp --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
+alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
 
 GIT_PROMPT_EXECUTABLE="python"
 source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"

@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+curl \
+--location \
+--request PUT "https://ms-customer.prd.adoreme.com/v1/customers/$1/segments/membership" \
+--header 'Content-Type: application/json' \
+--data '{
+    "segment_value": [["vip"]],
+    "initiated_by": "apps_test",
+    "initiated_by_id": "43",
+    "initiated_by_ip": "127.0.0.1"
+}'

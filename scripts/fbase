@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+heading "Change AppDelegate Firebase activation"
+
+grep=$(which grep)
+sed=$(which sed)
+cat=$(which cat)
+
+PATH=$(git f appdelegate)
+FLAG=`$cat $PATH | $grep -oE "setupFirebase\(enabled:\s(false|true)\)" | $grep -oE "(true|false)"`
+
+if [[ $FLAG == "false" ]]; then
+    NEW="true"
+else
+    NEW="false"
+fi
+
+$sed -i "" -e "s/setupFirebase(enabled: $FLAG)/setupFirebase(enabled: $NEW)/" $PATH

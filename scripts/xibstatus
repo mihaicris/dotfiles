@@ -1,28 +1,48 @@
 #!/usr/bin/env zsh
 
-search_alternatives=()
-search_alternatives+=("color key.*name=")
-search_alternatives+=("namedColor name=")
-search_alternatives+=("<customFonts key=")
-regular_expression="(${(j:|:)search_alternatives})"
+fixes() {
+	search_alternatives=()
+	search_alternatives+=("<color.*name=")
+	search_alternatives+=("<namedColor name=")
+	search_alternatives+=("<customFonts key=")
+	regular_expression="(${(j:|:)search_alternatives})"
+	components=("grep")
+	components+=("-r")
+	components+=("--include \*.storyboard")
+	components+=("--include \*.xib")
+	components+=("-E \"$regular_expression\"")
+	if [[ "$1" == "-f" ]]; then
+	    components+=("-l")
+	fi
+	components+=("Sources")
+	if [[ "$1" == "-f" ]]; then
+		components+=('| awk '\''{ print "\"" $0 "\"" }'\''')
+	else
+		components+=('| awk -F '\'':\s*'\'' '\''{ gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print "\"" $1 "\"" " " "\033[31m" "Fix: " "\033[0m" "\033[34m" $2 "\033[0m" }'\'' ')
+	fi
+	command="${(j: :)components}"
+	eval $command	
+}
 
-components=("grep")
-components+=("-r")  
-components+=("--include \*.storyboard")
-components+=("--include \*.xib")
-components+=("-E \"$regular_expression\"")
+checks() {
+	components=("grep")
+	components+=("-r")
+	components+=("--include \*.storyboard")
+	components+=("--include \*.xib")
+	components+=("-E \"<color\"")
+	if [[ "$1" == "-f" ]]; then
+	    components+=("-l")
+	fi
+	components+=("Sources")
+	if [[ "$1" == "-f" ]]; then
+		components+=('| awk '\''{ print "\"" $0 "\"" }'\''')
+	else
+	 	components+=('| awk -F '\'':\s*'\'' '\''{ gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print "\"" $1 "\"" " " "\033[33m" "Check: " "\033[0m" "\033[34m" $2 "\033[0m" }'\'' ')
+	fi
+	components+=("| grep -vE \"name=\"")
+	command="${(j: :)components}"
+	eval $command
+}
 
-if [[ "$1" == "-f" ]]; then
-    components+=("-l")    
-fi
-
-components+=("Sources")
-
-if [[ "$1" == "-f" ]]; then
-	components+=('| awk '\''{ print "\"" $0 "\"" }'\''')	
-else
-	components+=('| awk -F '\'':\s*'\'' '\''{ gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print "\"" $1 "\"" " " "\033[34m" $2 "\033[0m" }'\'' ')	
-fi
-
-command="${(j: :)components}"
-eval $command
+fixes $1
+checks $1

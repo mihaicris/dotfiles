@@ -9,7 +9,7 @@
 		<string>All</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>@IBOutlet private weak var &lt;#name#&gt;: UIStackView!</string>
+	<string>@IBOutlet weak var &lt;#name#&gt;: UIStackView!</string>
 	<key>IDECodeSnippetIdentifier</key>
 	<string>16BF51F6-CCA1-4F67-98EB-082223C74999</string>
 	<key>IDECodeSnippetLanguage</key>
