@@ -1,6 +1,14 @@
 #!/usr/bin/env zsh
 
 TICKET=$1
+
+if [[ -n $TICKET ]]; then
+    
+else
+    BRANCH=$(git branch --show-current)
+    TICKET=$(echo $BRANCH | grep -oE '[0-9]+')
+fi
+
 PROJECT=${2:-AMA}
 
 if [[ $TICKET ]]; then
