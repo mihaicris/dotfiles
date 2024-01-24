@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env zshA
 
 setopt COMPLETE_ALIASES
 setopt AUTOCD
@@ -35,6 +35,7 @@ HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 grep -slR "PRIVATE" ~/.ssh | xargs ssh-add --apple-use-keychain &> /dev/null
 
 alias ..=".. && ll"
+alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
 alias android='cd ~/android-app'
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
 alias connect='open "https://appstoreconnect.apple.com"'
@@ -65,6 +66,7 @@ alias mc="mc --nosubshell"
 alias meet='open -a "Google Chrome" https://meet.google.com'
 alias meetc='open -a "Google Chrome" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
+alias mt="fork log -- "
 alias oo="xed ."
 alias ooa='cd ~/android-app && open -a "Android Studio" ~/android-app'
 alias p='open https://github.com/adore-me/app-iOS/pulls'
@@ -81,6 +83,7 @@ alias ytp="yt-dlp -f best --external-downloader aria2c -o '%(release_date) - %(t
 alias ytp1="yt-dlp --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
 alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
 
+eval "$(/opt/homebrew/bin/mise activate zsh)"
 GIT_PROMPT_EXECUTABLE="python"
 source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
 source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"

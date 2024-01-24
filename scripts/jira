@@ -1,18 +1,16 @@
 #!/usr/bin/env zsh
 
 TICKET=$1
-
-if [[ -n $TICKET ]]; then
-    
-else
-    BRANCH=$(git branch --show-current)
-    TICKET=$(echo $BRANCH | grep -oE '[0-9]+')
-fi
-
 PROJECT=${2:-AMA}
 
-if [[ $TICKET ]]; then
+if [[ -n $TICKET ]]; then
     open "https://adoreme.atlassian.net/browse/$PROJECT-$TICKET"
 else
-    open "https://adoreme.atlassian.net/jira/software/c/projects/AMA/boards/14?quickFilter=27"
+    BRANCH=$(git branch --show-current 2> /dev/null)
+    TICKET=$(echo $BRANCH | grep -oE '[A-Z]+-[0-9]+')
+    if [[ -n $TICKET ]]; then
+        open "https://adoreme.atlassian.net/browse/$TICKET"
+    else
+        open "https://adoreme.atlassian.net/jira/software/c/projects/AMA/boards/14"
+    fi
 fi

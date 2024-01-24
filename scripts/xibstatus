@@ -44,5 +44,4 @@ checks() {
 	eval $command
 }
 
-fixes $1
-checks $1
+{ fixes $1 ; checks $1 } | sort | uniq

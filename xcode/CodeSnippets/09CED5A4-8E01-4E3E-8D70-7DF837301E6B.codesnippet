@@ -6,10 +6,10 @@
 	<string>cn</string>
 	<key>IDECodeSnippetCompletionScopes</key>
 	<array>
-		<string>CodeExpression</string>
+		<string>ClassImplementation</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>Color.New.</string>
+	<string>Color.New.backgroundDefault.ui</string>
 	<key>IDECodeSnippetIdentifier</key>
 	<string>09CED5A4-8E01-4E3E-8D70-7DF837301E6B</string>
 	<key>IDECodeSnippetLanguage</key>
