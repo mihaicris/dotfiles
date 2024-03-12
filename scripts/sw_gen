@@ -3,19 +3,30 @@
 print "# Rules for swiftlint version: $(swiftlint version)"
 print ""
 
+print "included:"
+print " - Sources"
+print " - Tests"
+print " - Project.swift"
+print " - Tuist"
+print " - Modules"
+print ""
+
 print "disabled_rules:"
 print ""
 print "# ---- Autocorrectable rules ----"
 print ""
 
-swiftlint rules \
-| tail +4 \
+swiftlint rules --config .swiftlint.yml \
 | sed '$d' \
 | awk \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /no/ && $4 ~ /yes/) print " -"$2
+	if ($3 ~ /no/ && $4 ~ /yes/ && $7 ~ /no/)
+		if ($5 ~ /yes/)
+			print "# -"$2
+		else 
+			print " -"$2
 }
 END {}'
 
@@ -23,14 +34,16 @@ print ""
 print "# ---- Not autocorrectable rules ----"
 print ""
 
-swiftlint rules \
-| tail +4 \
-| sed '$d' \
+swiftlint rules --config .swiftlint.yml \
 | awk \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /no/ && $4 ~ /no/) print " -"$2
+	if ($3 ~ /no/ && $4 ~ /no/ && $7 ~ /no/) 
+		if ($5 ~ /yes/)
+			print "# -"$2
+		else 
+			print " -"$2
 }
 END {}'
 
@@ -40,14 +53,17 @@ print ""
 print "# ---- Autocorrectable rules ----"
 print ""
 
-swiftlint rules \
-| tail +4 \
+swiftlint rules --config .swiftlint.yml \
 | sed '$d' \
 | awk \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /yes/ && $4 ~ /yes/) print "# -"$2
+	if ($3 ~ /yes/ && $4 ~ /yes/ && $7 ~ /no/)
+		if ($5 ~ /yes/)
+			print " -"$2
+		else 
+			print "# -"$2
 }
 END {}'
 
@@ -55,20 +71,32 @@ print ""
 print "# ---- Not autocorrectable rules ----"
 print ""
 
-swiftlint rules \
-| tail +4 \
+swiftlint rules --config .swiftlint.yml \
 | sed '$d' \
 | awk \
 '
 BEGIN { FS = "|" }
 {
-	if ($3 ~ /yes/ && $4 ~ /no/) print "# -"$2
+	if ($3 ~ /yes/ && $4 ~ /no/ && $7 ~ /no/) 
+		if ($5 ~ /yes/)
+			print " -"$2
+		else 
+			print "# -"$2
 }
 END {}'
 
 print ""
-print "line_length:"
-print "  warning: 180"
-print "  error: 400"
-print "  ignores_comments: true"
+print "analyzer_rules:"
+print ""
+
+swiftlint rules --config .swiftlint.yml \
+| sed '$d' \
+| awk \
+'
+BEGIN { FS = "|" }
+{
+	if ($7 ~ /yes/) 
+		print " -"$2
+}
+END {}'
 

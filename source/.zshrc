@@ -55,7 +55,6 @@ alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
 alias gtm='open -a "Google Chrome" "https://tagmanager.google.com/#/container/accounts/131805499/containers/6116323/workspaces/126?orgId=wO26D2aFTgy1rvfFYjn9Sw"'
-alias gg='open "https://github.com/adore-me/app-iOS"'
 alias ios=". ios"
 alias kand="killall studio; killall qemu-system-x86_64"
 alias ll="ls -Flh"

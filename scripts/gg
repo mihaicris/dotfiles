@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+REPO=$(git remote -v | grep origin | grep push | sed 's/.*github.com\///' | sed 's/.*github.com://' | sed 's/\.git.*$//')
+open "https://github.com/$REPO"

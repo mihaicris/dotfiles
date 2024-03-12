@@ -12,8 +12,8 @@ XCODE_CONTENTS=${XCODE_PATH%"/Developer"}
 # # Add Themes
 # ln -f -s ~/.dotfiles/xcode/FontAndColorThemes/CodeSlicing_01.xccolortheme ~/Library/Developer/Xcode/UserData/FontAndColorThemes/CodeSlicing_01.xccolortheme
 
-# # Link KeyBindings
-# ln -f -s ~/.dotfiles/xcode/KeyBindings/Mihai.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
+# Link KeyBindings
+ln -f -s ~/.dotfiles/xcode/KeyBindings/Mihai.idekeybindings ~/Library/Developer/Xcode/UserData/KeyBindings/Mihai.idekeybindings
 
 # Link CodeSnippets
 ln -f -s -h ~/.dotfiles/xcode/CodeSnippets ~/Library/Developer/Xcode/UserData/CodeSnippets
