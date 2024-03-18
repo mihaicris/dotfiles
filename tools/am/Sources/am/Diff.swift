@@ -43,20 +43,20 @@ private func printChangelogDescription(_ issues: [Issue]) {
 
     print("")
     print("CHANGELOG.md".blue.bold.underline, "\n")
-    print("## Version")
+    print("# Version")
 
     for (idx, issue) in issues.added {
-        if idx == 0 { print("\n### Added") }
+        if idx == 0 { print("\n#### Added") }
         changelogIssue(issue)
     }
 
     for (idx, issue) in issues.changed {
-        if idx == 0 { print("\n### Changed") }
+        if idx == 0 { print("\n#### Changed") }
         changelogIssue(issue)
     }
 
     for (idx, issue) in issues.defects {
-        if idx == 0 { print("\n### Fixed") }
+        if idx == 0 { print("\n#### Fixed") }
         changelogIssue(issue)
     }
 
