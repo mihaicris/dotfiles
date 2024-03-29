@@ -15,7 +15,7 @@ LOCATIONS=$(git -C $TOP_LEVEL_DIR worktree list --porcelain \
 LOCATIONS=(${(f)LOCATIONS})
 
 if (( COUNT == 0 )); then
-    print "\n There are no  wortrees.\n"
+    print "\n There are no wortrees.\n"
     exit 1
 fi
 

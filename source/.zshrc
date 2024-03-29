@@ -18,11 +18,11 @@ export PATH="$HOME/.dotfiles/scripts:$PATH"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*:*:make:*' tag-order 'targets'
+fpath=(~/.zsh/completion $fpath)
 autoload -Uz promptinit && promptinit
 autoload -Uz compinit && compinit
 autoload -Uz colors && colors
@@ -78,13 +78,12 @@ alias s="git status"
 alias t="tuist edit"
 alias tca="~/adoreme/TCA/ios-app-tca && make"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
-alias ytp="yt-dlp -f best --external-downloader aria2c -o '%(release_date) - %(title)s'"
-alias ytp1="yt-dlp --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
-alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c -o '%(release_date) - %(title)s'"
+alias ytp="yt-dlp -f best --external-downloader aria2c"
+alias ytp1="yt-dlp --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c"
+alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c"
 
-eval "$(/opt/homebrew/bin/mise activate zsh)"
 GIT_PROMPT_EXECUTABLE="python"
 source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
 source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
+eval "$(/opt/homebrew/bin/mise activate zsh)"

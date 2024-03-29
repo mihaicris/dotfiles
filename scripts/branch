@@ -23,7 +23,7 @@ TITLE=$(curl -s -u "${USER}:${PASS}" "https://adoreme.atlassian.net/rest/api/2/i
 
 print "\nIssue title: ${LIGHT_GREEN}$TITLE${NORMAL}\n"
 
-TYPES=("FEATURE" "BUGFIX" "SPIKE" "TASK")
+TYPES=("FEATURE" "BUGFIX" "SPIKE" "TASK" "RELEASE")
 select BRANCH_TYPE in "${TYPES[@]}"; do
     break
 done
