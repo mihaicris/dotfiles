@@ -11,6 +11,6 @@ else
     if [[ -n $TICKET ]]; then
         open "https://adoreme.atlassian.net/browse/$TICKET"
     else
-        open "https://adoreme.atlassian.net/jira/software/c/projects/AMA/boards/14"
+        open "https://adoreme.atlassian.net/jira/software/c/projects/AMA/boards/14/backlog"
     fi
 fi
