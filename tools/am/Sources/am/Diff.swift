@@ -1,7 +1,6 @@
 import ArgumentParser
 import Foundation
 import Rainbow
-import RegexBuilder
 import ShellOut
 
 
@@ -18,7 +17,7 @@ struct Diff: AsyncParsableCommand {
         guard let repo = getTopLevelDir() else { return }
         let refs = getIssues(repo: repo, ref1: ref1, ref2: ref2)
 //        printRefs(refs)
-        let issues = await fetchIssues(user: user, refs: refs)
+        let issues = await fetchIssues(user: user, numbers: refs)
 
         guard !issues.isEmpty else {
             print("\nNo issues available.\n".red)
@@ -63,27 +62,6 @@ private func printChangelogDescription(_ issues: [Issue]) {
     print("")
 }
 
-private func fetchIssues(user: User, refs: [String]) async -> [Issue] {
-    return await withTaskGroup(of: Issue?.self) { group in
-        var issues = [Issue?]()
-        issues.reserveCapacity(refs.count)
-
-        for ref in refs {
-            group.addTask {
-                return await fetchIssue(user: user, ref: ref)
-            }
-        }
-
-        for await issue in group {
-            issues.append(issue)
-        }
-
-        return issues
-            .compactMap { $0 }
-            .sorted(by: { $0.key < $1.key })
-    }
-}
-
 private func getIssues(repo: String, ref1: String, ref2: String) -> [String] {
     guard
         let output = try? shellOut(
@@ -101,42 +79,6 @@ private func getIssues(repo: String, ref1: String, ref2: String) -> [String] {
     issues = Array(Set(issues)).sorted()
 
     return issues
-}
-
-private func fetchIssue(user: User, ref: String) async -> Issue? {
-    guard
-        let output = try? shellOut(
-            to: "curl",
-            arguments: [
-                "-s",
-                "-u", "\(user.name):\(user.password)",
-                "https://adoreme.atlassian.net/rest/api/2/issue/\(ref)?fields=summary,issuetype,parent",
-            ]),
-        let data = output.data(using: .utf8)
-    else { return nil }
-    do {
-        var issue = try JSONDecoder().decode(Issue.self, from: data)
-        issue.fields.summary = String(issue.fields.summary.trimmingPrefix("[iOS] "))
-        return issue
-    } catch {
-        return nil
-    }
-}
-
-private let regex = Regex {
-    OneOrMore(.any)
-    "["
-    Capture {
-        ChoiceOf {
-            "AMA"
-            "PN"
-            "ZONE"
-        }
-        "-"
-        OneOrMore(.digit)
-    }
-    "]"
-    OneOrMore(.any)
 }
 
 extension Array where Element == Issue {
