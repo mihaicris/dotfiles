@@ -30,20 +30,30 @@ struct Issue: Decodable, Sendable {
     }
 
     var type: IssueType {
-        if fields.issuetype?.name == "Story" { return .added }
-        if fields.issuetype?.name == "Task" { return .changed }
-        if fields.issuetype?.name == "Bug" { return .defect }
-        if fields.issuetype?.name == "Support" { return .changed }
-
-        if fields.issuetype?.name == "Sub-task" {
-            if let issuetype = fields.parent?.fields.issuetype.name {
-                if issuetype == "Story" { return .added }
-                if issuetype == "Task" { return .changed }
-                if issuetype == "Bug" { return .defect }
-                if issuetype == "Support" { return .changed }
+        func getType(for name: String) -> IssueType {
+            switch name {
+            case "Bug": return .defect
+            case "Discovery": return .added
+            case "Epic": return .added
+            case "Idea": return .added
+            case "Learning": return .added
+            case "Operation": return .changed
+            case "Question": return .changed
+            case "Spike": return .added
+            case "Story": return .added
+            case "Support": return .changed
+            case "Task": return .changed
+            case "Test": return .added
+            case "Troubleshooting": return .defect
+            case "Sub-task":
+                guard let parentName = fields.parent?.fields.issuetype.name else { return .added }
+                return getType(for: parentName)
+            default: return .added
             }
         }
 
-        return .added
+        guard let issuetypeName = fields.issuetype?.name else { return .added }
+        return getType(for: issuetypeName)
+
     }
 }

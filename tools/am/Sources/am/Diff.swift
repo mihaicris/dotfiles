@@ -42,7 +42,6 @@ private func printChangelogDescription(_ issues: [Issue]) {
 
     print("")
     print("CHANGELOG.md".blue.bold.underline, "\n")
-    print("# Version")
 
     for (idx, issue) in issues.added {
         if idx == 0 { print("\n#### Added") }

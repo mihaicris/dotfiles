@@ -13,11 +13,20 @@ struct Daily: AsyncParsableCommand {
         guard let repo = getTopLevelDir() else { return }
         let numbers = getTickets(repo: repo)
         let issues = await fetchIssues(user: user, numbers: numbers)
+        print("")
+        if issues.isEmpty {
+            print("No issues for this daily.".blue.bold.underline)
+            print("")
+            return
+        }
+        print("Issues for this daily:".blue.bold.underline)
+        print("")
         for issue in issues {
             let key = issue.key.lightGreen
             let summary = issue.fields.summary.lightWhite.bold
             print("https://adoreme.atlassian.net/browse/\(key)  \(summary)")
         }
+        print("")
     }
 
     var isTotaySpecialDay: Bool {
