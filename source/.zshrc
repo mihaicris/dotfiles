@@ -48,7 +48,6 @@ alias ga4s='open -a "Google Chrome" https://analytics.google.com/analytics/web/#
 alias ga='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/report-home/a25560459w76793507p79384694'
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
-alias gcm="git add -A && git commit"
 alias gcount="git rev-list --count" # argument a branch name
 alias gmes="git log --oneline HEAD...develop --format='%s' | cut -d' ' -f2-"
 alias gsf="git submodule foreach"
@@ -81,6 +80,20 @@ alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflig
 alias ytp="yt-dlp -f best --external-downloader aria2c"
 alias ytp1="yt-dlp --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c"
 alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c"
+
+function gcm() {
+    git add .
+    if [ -n "$1" ]
+    then
+        git commit -m "$1"
+    else
+        git commit -m Updates
+    fi
+}
+
+function ca() {
+    open "https://order.adoreme.com/customers/$1"
+}
 
 GIT_PROMPT_EXECUTABLE="python"
 source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
