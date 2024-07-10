@@ -73,6 +73,7 @@ let regex = Regex {
             "AMA"
             "PN"
             "ZONE"
+            "PR"
         }
         "-"
         OneOrMore(.digit)
