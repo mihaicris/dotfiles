@@ -1,4 +1,4 @@
-#!/usr/bin/env zshA
+#!/usr/bin/env zsh
 
 setopt COMPLETE_ALIASES
 setopt AUTOCD
@@ -18,6 +18,7 @@ export PATH="$HOME/.dotfiles/scripts:$PATH"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export PATH="/Users/mihai.c/.cargo/bin:$PATH"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
@@ -31,13 +32,17 @@ autoload -Uz zmv
 NEWLINE=$'\n'
 PROMPT='%(?.%F{green}✔.%F{red}?%?)%f %F{yellow}%~%f $(git_super_status)${NEWLINE}%T $ '
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
-
+MAILCHECK=0
 grep -slR "PRIVATE" ~/.ssh | xargs ssh-add --apple-use-keychain &> /dev/null
+
 
 alias ..=".. && ll"
 alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
+alias actions='open "https://github.com/adore-me/app-iOS/actions"'
+alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
 alias android='cd ~/android-app'
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
+alias confluence='open "https://adoreme.atlassian.net/wiki/spaces/AMA/pages/174555212/For+You+as+Homepage"'
 alias connect='open "https://appstoreconnect.apple.com"'
 alias cram='open -a "Google Chrome" "https://cramberry.adoreme.com"'
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
@@ -71,23 +76,29 @@ alias p='open https://github.com/adore-me/app-iOS/pulls'
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias python="python3"
 alias rb="source ~/.zshrc"
-alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
 alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
 alias s="git status"
 alias t="tuist edit"
 alias tca="~/adoreme/TCA/ios-app-tca && make"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
-alias ytp="yt-dlp -f best --external-downloader aria2c"
+alias vim="nvim"
+alias vv="vim ."
 alias ytp1="yt-dlp --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c"
 alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c"
+alias ytp="yt-dlp -f best --external-downloader aria2c"
+alias tg="tuist graph"
+alias chirie="open 'https://docs.google.com/spreadsheets/d/1Kwa-8Z5SJUAEyrtdOHES0Z436ys0ujOskxHh_RwfwbU/edit?gid=341339929#gid=341339929'"
 
 function gcm() {
     git add .
     if [ -n "$1" ]
     then
-        git commit -m "$1"
+      str="$1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11"
+      trimmed="${str## }"  # Remove leading spaces
+      trimmed="${trimmed%% }"  # Remove trailing spaces
+      git commit -m "$trimmed"  
     else
-        git commit -m Updates
+      git commit -m Updates
     fi
 }
 

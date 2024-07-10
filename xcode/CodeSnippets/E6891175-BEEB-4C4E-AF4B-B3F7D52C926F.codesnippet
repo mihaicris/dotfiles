@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>IDECodeSnippetCompletionPrefix</key>
-	<string>ds</string>
+	<string>ddd</string>
 	<key>IDECodeSnippetCompletionScopes</key>
 	<array>
-		<string>TopLevel</string>
+		<string>All</string>
 	</array>
 	<key>IDECodeSnippetContents</key>
-	<string>import DesignSystem</string>
+	<string>#if DEBUG
+&lt;#name#&gt;
+#endif</string>
 	<key>IDECodeSnippetIdentifier</key>
-	<string>90BB1058-33C3-4982-9293-F49C2C33F053</string>
+	<string>E6891175-BEEB-4C4E-AF4B-B3F7D52C926F</string>
 	<key>IDECodeSnippetLanguage</key>
 	<string>Xcode.SourceCodeLanguage.Swift</string>
 	<key>IDECodeSnippetSummary</key>
 	<string></string>
 	<key>IDECodeSnippetTitle</key>
-	<string>DesignSystem</string>
+	<string>Debug</string>
 	<key>IDECodeSnippetUserSnippet</key>
 	<true/>
 	<key>IDECodeSnippetVersion</key>

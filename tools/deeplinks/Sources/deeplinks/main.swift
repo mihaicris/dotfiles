@@ -1,14 +1,14 @@
 import Foundation
 
 let userExVip = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJ6bFMwRVZycnFWS3duOXRmTnFpVDJQMXFlMGZPWmRiejZWcHVVMFBCTTgifQ.eyJleHAiOjE3MDIzNTMwMDgsImlzcyI6Ikd3LU1haW4iLCJpYXQiOjE2ODY1NzMwMDgsImF1ZCI6ImF1dGhvcml6YXRpb24iLCJqdGkiOiIyZTk5YjFhYi04MTAyLTQwZmUtYjllMi02ZWI1MTczNDcwOTEiLCJzdWIiOjI1OTQ4MzA0fQ.lY_zehZtVtqvIlQ1KQPYYNN-2zRQSFWiyJTbPyyggkZx5ZLcNXTg12RMHl9RRVXfpNQAdvRMqQZvGPS8DKnyBy8bTxwiV97p_ltWTzGpkPqeIFNC61ZvF4eM5doSD_lXI6RN3PSkC6cDyU6uOY11tttNjV5iXEkXsO19kY-W0jbaX3ocyrfCHP28hP0it7kNkRoO_m8Vw-8O0hF4nqx5c_Dus-j05H33GykRSuzOqt2hrwutwCLoKNGoH1BrKaCe898g2Ppy9SNcSbI7TYA3i4FqnVODpf87V_v1pnUY3_nlRQyNJincG9JEF4944k5Q5EuHl2WPRdKbUw-dBPWepw"
-let userVip = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJ6bFMwRVZycnFWS3duOXRmTnFpVDJQMXFlMGZPWmRiejZWcHVVMFBCTTgifQ.eyJpc3MiOiJHdy1NYWluIiwiaWF0IjoxNjQ5MjQzNjQ2LCJleHAiOjE2NjUwMjM2NDYsInN1YiI6IjI1NjM2NjU2In0.rJsWpyTguBi9CI671QslBflLR3n3J6vceGQKwwEDdO-tlucMZa0mOlwF6PscLbB50h3HJMg3MA0PPxPYh_I4ors_DSvRrefbzf2dOTxMT3KRvcfR09zzorUaYSt8_BjNMp44cbvUgA7rTBPC6RU1LCqNltOa3HRbSAsaiaBfX0ixgUYf4hnsc5GEVQq06dhzbZodoWQpa9pJwOBvY-sExYWuKVsVNYie9m3fVjR_cj6Kru2ojrAKnF8snGGs-fAwGmgrKeql2D4QUc7OIOOzM2yXxomrKWQ5PevapL0xvqQfkzwXVjkFraxEUtY6-j0-pskbvaZt4E8jL_ZJwYWaPQ"
+let userVip = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJ6bFMwRVZycnFWS3duOXRmTnFpVDJQMXFlMGZPWmRiejZWcHVVMFBCTTgifQ.eyJleHAiOjE3MzAyNDU3NzEsImlzcyI6Ikd3LU1haW4iLCJpYXQiOjE3MTQ0NjU3NzEsImF1ZCI6ImF1dGhvcml6YXRpb24iLCJqdGkiOiIzMmI4MDhmNy0yNWNjLTQwNGUtOGU0Zi03ODBmNjVjMzEyNTIiLCJzdWIiOjI1OTQ4MzA0fQ.qjqbWiY_j33oZn1-HBw5E5Nm6lm67fAuzseH46wGOuiVm2GLuhtWFE6p8xDZhY3Qrz5_VBG7g7EzUlvxyaAih_f23-IHOmHoegiUL_ncK1XRSQYpL_6oHOos1DRbe6CamuaugBisrzHwSvaWehNNcJ6WogAEYjWT4YREN686eYljCNpuD7EBL6LSxIgAz6Re1-WXU5oyL-jwSIyI1I1j7MqqOxzB224qQyOpHXAHt1jrqcsDJ2cjtF9fWlEap_ViTz6KiwGRebVSv_RKlihjYRwc9RscY1DnSDr9_vncePINJ4lwvukyb0nfU8a5xFUXsmZlgA64he6DUlSYV5ck_w"
 
 let userElite = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJ6bFMwRVZycnFWS3duOXRmTnFpVDJQMXFlMGZPWmRiejZWcHVVMFBCTTgifQ.eyJpc3MiOiJHdy1NYWluIiwiaWF0IjoxNjQ5MjUyMTg0LCJleHAiOjE2NjUwMzIxODQsInN1YiI6IjI2MzkyODU0In0.nRtn0ZOt8AMvTP2Bt1QfwmfVwrOiC9CnWkthr4jGG4Wu9zRRJ-dYx5wQkXzrfN9pRAGTbGc2QHHdIbdVh3_UFvRxYFAcqtPq01hT-KcQe2CmdZ0hugFPvoAmo7E6tmVMuRCCV5XtdpxMgSPjFBqL9MrNuOloQbJH7sPmOkCyXnD40Fx_T7s57kOKrjuFnwHjoNu0CLMbKbRtaU9yT5yO6YsUMkYlvg3hTAdd8BBa5e_Ki9yCMYch4DbLipCNDE9DMWmefmrWxEVb9cMn1Fpln_ECxwOmk3eTbFxLpqQ3cgDN7hdy7kQCLYO6_erDhtkkbp__FdJLuPawqQxO2j2wxw"
 
 struct Action {
     let title: String
-    var userToken: String? = nil
-    var deeplink: Deeplink? = nil
+    var userToken: String?
+    var deeplink: Deeplink?
 }
 
 let actions = [
@@ -174,15 +174,12 @@ let deeplinks: [Deeplink] = [
     "/sales/order/view/order_id/{ORDER_ID}",
     "/try-adoreme-elite",
     "/upgrade-to-elite",
-    "/wishlist"
-].map { Deeplink(path:$0)}
+    "/wishlist",
+].map { Deeplink(path: $0) }
 
-//append(Deeplink(path: "/auth/reset-password", queryItems: [URLQueryItem(name: "reset_password_token", value: "TOKEN_MISSING")]))
-
-
+// append(Deeplink(path: "/auth/reset-password", queryItems: [URLQueryItem(name: "reset_password_token", value: "TOKEN_MISSING")]))
 
 func makeDeeplink() {
-
     // SELECT ACTION
     print("Choose softlogin user: (Press ENTER for no user)")
     let userListing = actions.enumerated().map { index, user in
@@ -192,7 +189,7 @@ func makeDeeplink() {
     print(userListing)
     var answer = readLine(strippingNewline: true) ?? "0"
     var index: Int = answer.isEmpty ? 0 : Int(answer) ?? 0
-    guard index >= 0 && index <= actions.count else {
+    guard index >= 0, index <= actions.count else {
         print("Invalid selection, try again.")
         return
     }
@@ -208,7 +205,7 @@ func makeDeeplink() {
         print(deeplinkListing)
         answer = readLine(strippingNewline: true) ?? "0"
         index = answer.isEmpty ? 0 : Int(answer) ?? 0
-        guard index >= 0 && index <= deeplinks.count else {
+        guard index >= 0, index <= deeplinks.count else {
             print("Invalid selection, try again.")
             return
         }
@@ -240,7 +237,8 @@ func makeDeeplink() {
     let urlString = generateURL(action: action, deeplink: deeplink)
 
     if action.title.starts(with: "Firebase"),
-       let urlString = urlString {
+       let urlString = urlString
+    {
         let firebaseUrlString = generateFirebaseDynamicLinkURL(urlString: urlString)
         sendLink(firebaseUrlString)
     } else {
@@ -251,4 +249,3 @@ func makeDeeplink() {
 while true {
     makeDeeplink()
 }
-

@@ -48,8 +48,8 @@ if [[ "$REPLY" -eq "1" ]]; then
     BASE_URL="$ENVIRONMENT"
     WEB_URL="$ENVIRONMENT"
 else
-    BASE_URL="http://gw-main-ns-${ENVIRONMENT}.stg.adoreme.com"
-    WEB_URL="http://adoreme-js-ns-${ENVIRONMENT}.stg.adoreme.com"
+    BASE_URL="http://gw-main-ns-${ENVIRONMENT}.dev.adoreme.com"
+    WEB_URL="http://adoreme-js-ns-${ENVIRONMENT}.dev.adoreme.com"
 fi
 
 #iOS
