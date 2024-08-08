@@ -111,3 +111,4 @@ source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
 source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 eval "$(/opt/homebrew/bin/mise activate zsh)"
+export PATH=$HOME/flutter/bin:$PATH
