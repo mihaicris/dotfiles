@@ -42,7 +42,7 @@ alias actions='open "https://github.com/adore-me/app-iOS/actions"'
 alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
 alias android='cd ~/android-app'
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
-alias confluence='open "https://adoreme.atlassian.net/wiki/spaces/AMA/pages/174555212/For+You+as+Homepage"'
+alias confluence='open "https://adoreme.atlassian.net/wiki/spaces/AMA/overview"'
 alias connect='open "https://appstoreconnect.apple.com"'
 alias cram='open -a "Google Chrome" "https://cramberry.adoreme.com"'
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
