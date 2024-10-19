@@ -23,6 +23,7 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*:*:make:*' tag-order 'targets'
+
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz promptinit && promptinit
 autoload -Uz compinit && compinit
@@ -35,6 +36,12 @@ HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 MAILCHECK=0
 grep -slR "PRIVATE" ~/.ssh | xargs ssh-add --apple-use-keychain &> /dev/null
 
+GIT_PROMPT_EXECUTABLE="python"
+source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
+source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+eval "$(/opt/homebrew/bin/mise activate zsh)"
+export PATH=$HOME/flutter/bin:$PATH
 
 alias ..=".. && ll"
 alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
@@ -48,9 +55,6 @@ alias cram='open -a "Google Chrome" "https://cramberry.adoreme.com"'
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
 alias deeplink='~/.dotfiles/tools/deeplinks/.build/release/deeplinks'
 alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
-alias ga4='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/p152238647'
-alias ga4s='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/p167739832'
-alias ga='open -a "Google Chrome" https://analytics.google.com/analytics/web/#/report-home/a25560459w76793507p79384694'
 alias gbf="git branch --contains" # argument a commit hash
 alias gcfl='git diff --name-only --diff-filter=U | uniq | xargs $EDITOR'
 alias gcount="git rev-list --count" # argument a branch name
@@ -58,7 +62,6 @@ alias gmes="git log --oneline HEAD...develop --format='%s' | cut -d' ' -f2-"
 alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
-alias gtm='open -a "Google Chrome" "https://tagmanager.google.com/#/container/accounts/131805499/containers/6116323/workspaces/126?orgId=wO26D2aFTgy1rvfFYjn9Sw"'
 alias ios=". ios"
 alias kand="killall studio; killall qemu-system-x86_64"
 alias ll="ls -Flh"
@@ -79,7 +82,6 @@ alias rb="source ~/.zshrc"
 alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
 alias s="git status"
 alias t="tuist edit"
-alias tca="~/adoreme/TCA/ios-app-tca && make"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
 alias vim="nvim"
 alias vv="vim ."
@@ -106,9 +108,3 @@ function ca() {
     open "https://order.adoreme.com/customers/$1"
 }
 
-GIT_PROMPT_EXECUTABLE="python"
-source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
-source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-eval "$(/opt/homebrew/bin/mise activate zsh)"
-export PATH=$HOME/flutter/bin:$PATH
