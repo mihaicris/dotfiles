@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+git add .
+if [ -n "$1" ]; then
+	str="$1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11"
+	trimmed="${str## }"     # Remove leading spaces
+	trimmed="${trimmed%% }" # Remove trailing spaces
+	git commit -m "$trimmed"
+else
+	git commit -m Updates
+fi
