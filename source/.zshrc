@@ -91,20 +91,3 @@ alias ytp="yt-dlp -f best --external-downloader aria2c"
 alias tg="tuist graph"
 alias chirie="open 'https://docs.google.com/spreadsheets/d/1Kwa-8Z5SJUAEyrtdOHES0Z436ys0ujOskxHh_RwfwbU/edit?gid=341339929#gid=341339929'"
 
-function gcm() {
-    git add .
-    if [ -n "$1" ]
-    then
-      str="$1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11"
-      trimmed="${str## }"  # Remove leading spaces
-      trimmed="${trimmed%% }"  # Remove trailing spaces
-      git commit -m "$trimmed"  
-    else
-      git commit -m Updates
-    fi
-}
-
-function ca() {
-    open "https://order.adoreme.com/customers/$1"
-}
-
