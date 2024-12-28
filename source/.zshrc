@@ -45,7 +45,7 @@ export PATH=$HOME/flutter/bin:$PATH
 
 alias ..=".. && ll"
 alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
-alias actions='open -a Safari "https://github.com/adore-me/app-iOS/actions" --args Profile=Work'
+alias actions='open -a Safari "https://github.com/adore-me/app-iOS/actions"
 alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
 alias android='cd ~/android-app'
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
