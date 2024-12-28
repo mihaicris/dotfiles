@@ -6,7 +6,7 @@ TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 
 JIRA_NUMBER=$1
 PROJECT="${2:-AMA}"
-
+BRANCH_LENGTH=30
 
 [[ $1 ]] || { print "${LIGHT_GREEN}JIRA issue number${NORMAL} not specified.\nUsage: branch ${LIGHT_GREEN}<JIRA_NUMBER>${NORMAL}\n"; exit ; }
 
@@ -28,12 +28,25 @@ select BRANCH_TYPE in "${TYPES[@]}"; do
     break
 done
 
-TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\[|\]|\/|\?|\.|\*|\&|\(|\))//g" | sed -r "s/\ +/-/g" | sed -r "s/-+/-/g")
+TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\[|\]|\/|\?|\.|\*|\&|\(|\))//g" | sed -r "s/\ +/-/g" | sed -r "s/-+/-/g" | cut -c 1-$BRANCH_LENGTH | sed -r 's/[^a-zA-Z]*$//')
+BRANCHES=($(git branch | grep -v 'HEAD' | sed 's|remotes/||' | sed 's|^+ ||' | sed 's|^[[:space:]]*||' | sed 's|^* ||'))
 
-FINAL_BRANCH=${BRANCH_TYPE:l}/$PROJECT-${JIRA_NUMBER}-${TITLE_DASHED:l}
-print "\nSwitching to branch:${LIGHT_GREEN} ${FINAL_BRANCH} ${NORMAL}?"
+select BRANCH_FROM in "${BRANCHES[@]}"; do
+    break
+done
+
+
+SHA=$(git rev-parse --short $BRANCH_FROM)
+
+PROCESSED_BRANCH_FROM=$(echo ${BRANCH_FROM} | sed -r "s/\//-/g" | cut -c 1-$BRANCH_LENGTH | sed "s/[^a-zA-Z]*$//")
+
+NEW_BRANCH=${BRANCH_TYPE:l}/$PROJECT-${JIRA_NUMBER}-${TITLE_DASHED}-${SHA}-${PROCESSED_BRANCH_FROM}
+
+print "\nSwitching to branch:${LIGHT_GREEN} ${NEW_BRANCH} ${NORMAL}?"
 printf "Press a key to confirm or CTRL+C to cancel..."
 read -k1 -s
 
-git switch -c ${FINAL_BRANCH} develop
+git switch -c ${NEW_BRANCH} ${BRANCH_FROM}
+
+
 

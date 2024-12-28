@@ -45,14 +45,15 @@ export PATH=$HOME/flutter/bin:$PATH
 
 alias ..=".. && ll"
 alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
-alias actions='open "https://github.com/adore-me/app-iOS/actions"'
+alias actions='open -a Safari "https://github.com/adore-me/app-iOS/actions" --args Profile=Work'
 alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
 alias android='cd ~/android-app'
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
 alias confluence='open "https://adoreme.atlassian.net/wiki/spaces/AMA/overview"'
 alias connect='open "https://appstoreconnect.apple.com"'
 alias cram='open -a "Google Chrome" "https://cramberry.adoreme.com"'
-alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-seven-days&type=crash"'
+alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-ninety-days&type=crash"'
+alias nonfatals='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-ninety-days&tag=all&sort=eventCount"'
 alias deeplink='~/.dotfiles/tools/deeplinks/.build/release/deeplinks'
 alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
 alias gbf="git branch --contains" # argument a commit hash
@@ -84,7 +85,7 @@ alias s="git status"
 alias t="tuist edit"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
 alias vim="nvim"
-alias vv="vim ."
+alias vv="nvim ."
 alias ytp1="yt-dlp --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c"
 alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c"
 alias ytp="yt-dlp -f best --external-downloader aria2c"
