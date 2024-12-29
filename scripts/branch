@@ -1,52 +1,75 @@
 #!/usr/bin/env zsh
 
+# Check if the current directory is a Git repository, and exit if not
 is_git_folder || exit 1
 
+# Get the top-level directory of the Git repository (the root directory)
 TOP_LEVEL_DIR=$(git rev-parse --show-toplevel)
 
+# Set the JIRA issue number from the first argument passed to the script
 JIRA_NUMBER=$1
+
+# Set the project name from the second argument or default to "AMA"
 PROJECT="${2:-AMA}"
+
+# Set the maximum length of the branch name
 BRANCH_LENGTH=30
 
+# Check if the JIRA issue number is provided, if not, print an error and exit
 [[ $1 ]] || { print "${LIGHT_GREEN}JIRA issue number${NORMAL} not specified.\nUsage: branch ${LIGHT_GREEN}<JIRA_NUMBER>${NORMAL}\n"; exit ; }
 
-#printf "Enter JIRA username: (mihai.cristescu@adoreme.com)"
-#read USER
-#[[ $USER ]] || { USER="mihai.cristescu@adoreme.com"; }
+# The script hardcodes the JIRA username
 USER="mihai.cristescu@adoreme.com"
+# Get the JIRA password stored in macOS Keychain using `security`
 PASS=$(security find-generic-password -w -s 'JIRA_SCRIPTS' -a 'mihai.cristescu@adoreme.com')
 
+# Print a message that we are fetching the JIRA issue
 print "Fetching JIRA issue: ${LIGHT_GREEN}$JIRA_NUMBER${NORMAL}"
+# Use `curl` to get the issue title from JIRA's API and parse it with `jq`
 TITLE=$(curl -s -u "${USER}:${PASS}" "https://adoreme.atlassian.net/rest/api/2/issue/$PROJECT-$JIRA_NUMBER?fields=summary" | jq -r .fields.summary)
 
+# Check if we successfully retrieved the title, otherwise print an error and exit
 [[ $TITLE ]] || { print "${LIGHT_GREEN}Could not get the issue title${NORMAL}\n"; exit ; }
 
+# Print the retrieved JIRA issue title
 print "\nIssue title: ${LIGHT_GREEN}$TITLE${NORMAL}\n"
 
+# Define an array of possible branch types
 TYPES=("FEATURE" "BUGFIX" "SPIKE" "TASK" "RELEASE")
+# Prompt the user to select a branch type from the array
 select BRANCH_TYPE in "${TYPES[@]}"; do
-    break
+    break  # Exit the loop once a branch type is selected
 done
 
-TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\[|\]|\/|\?|\.|\*|\&|\(|\))//g" | sed -r "s/\ +/-/g" | sed -r "s/-+/-/g" | cut -c 1-$BRANCH_LENGTH | sed -r 's/[^a-zA-Z]*$//')
+# Process the title to create a safe branch name:
+# - Remove "[iOS]" from the title
+# - Remove special characters ('[', ']', '?', '.', etc.)
+# - Replace spaces with hyphens and remove redundant hyphens
+# - Limit the length to the value of BRANCH_LENGTH and remove non-letter characters at the end
+TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\'|\[|\]|\/|\?|\.|\*|\&|\(|\))//g" | sed -r "s/\ +/-/g" | sed -r "s/-+/-/g" | cut -c 1-$BRANCH_LENGTH | sed -r 's/[^a-zA-Z]*$//')
+
+# Get a list of local branches, excluding HEAD and cleaning up the branch names
 BRANCHES=($(git branch | grep -v 'HEAD' | sed 's|remotes/||' | sed 's|^+ ||' | sed 's|^[[:space:]]*||' | sed 's|^* ||'))
 
+# Prompt the user to select a branch to base the new branch on
 select BRANCH_FROM in "${BRANCHES[@]}"; do
-    break
+    break  # Exit the loop once a branch is selected
 done
 
-
+# Get the short commit hash for the selected branch
 SHA=$(git rev-parse --short $BRANCH_FROM)
 
+# Process the branch name to remove slashes and limit the length, keeping only letters at the end
 PROCESSED_BRANCH_FROM=$(echo ${BRANCH_FROM} | sed -r "s/\//-/g" | cut -c 1-$BRANCH_LENGTH | sed "s/[^a-zA-Z]*$//")
 
-NEW_BRANCH=${BRANCH_TYPE:l}/$PROJECT-${JIRA_NUMBER}-${TITLE_DASHED}-${SHA}-${PROCESSED_BRANCH_FROM}
+# Create the new branch name using the selected type, JIRA issue number, sanitized title, commit hash, and processed branch name
+NEW_BRANCH=${BRANCH_TYPE:l}/$PROJECT-${JIRA_NUMBER}-${TITLE_DASHED:l}-${SHA}-${PROCESSED_BRANCH_FROM}
 
+# Print a message showing the new branch name and ask the user for confirmation
 print "\nSwitching to branch:${LIGHT_GREEN} ${NEW_BRANCH} ${NORMAL}?"
 printf "Press a key to confirm or CTRL+C to cancel..."
+# Wait for user input (single key press) to confirm
 read -k1 -s
 
+# Create and switch to the new branch
 git switch -c ${NEW_BRANCH} ${BRANCH_FROM}
-
-
-
