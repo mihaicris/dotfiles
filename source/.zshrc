@@ -45,7 +45,7 @@ export PATH=$HOME/flutter/bin:$PATH
 
 alias ..=".. && ll"
 alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
-alias actions='open -a Safari "https://github.com/adore-me/app-iOS/actions"
+alias actions='open -a Safari "https://github.com/adore-me/app-iOS/actions"'
 alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
 alias android='cd ~/android-app'
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
@@ -91,4 +91,5 @@ alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c"
 alias ytp="yt-dlp -f best --external-downloader aria2c"
 alias tg="tuist graph"
 alias chirie="open 'https://docs.google.com/spreadsheets/d/1Kwa-8Z5SJUAEyrtdOHES0Z436ys0ujOskxHh_RwfwbU/edit?gid=341339929#gid=341339929'"
+alias xx="killAll Xcode Fork"
 
