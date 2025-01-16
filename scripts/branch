@@ -20,33 +20,31 @@ BRANCH_LENGTH=30
 
 # The script hardcodes the JIRA username
 USER="mihai.cristescu@adoreme.com"
+
 # Get the JIRA password stored in macOS Keychain using `security`
 PASS=$(security find-generic-password -w -s 'JIRA_SCRIPTS' -a 'mihai.cristescu@adoreme.com')
 
 # Print a message that we are fetching the JIRA issue
 print "Fetching JIRA issue: ${LIGHT_GREEN}$JIRA_NUMBER${NORMAL}"
+
 # Use `curl` to get the issue title from JIRA's API and parse it with `jq`
 TITLE=$(curl -s -u "${USER}:${PASS}" "https://adoreme.atlassian.net/rest/api/2/issue/$PROJECT-$JIRA_NUMBER?fields=summary" | jq -r .fields.summary)
+
+# Print the retrieved JIRA issue title
+print "\nIssue title: ${LIGHT_GREEN}$TITLE${NORMAL}"
+
+# Remove leading [iOS] and lowercase the string
+TITLE=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | tr '[:upper:]' '[:lower:]')
 
 # Check if we successfully retrieved the title, otherwise print an error and exit
 [[ $TITLE ]] || { print "${LIGHT_GREEN}Could not get the issue title${NORMAL}\n"; exit ; }
 
-# Print the retrieved JIRA issue title
-print "\nIssue title: ${LIGHT_GREEN}$TITLE${NORMAL}\n"
-
-# Define an array of possible branch types
-TYPES=("FEATURE" "BUGFIX" "SPIKE" "TASK" "RELEASE")
-# Prompt the user to select a branch type from the array
-select BRANCH_TYPE in "${TYPES[@]}"; do
-    break  # Exit the loop once a branch type is selected
-done
-
 # Process the title to create a safe branch name:
-# - Remove "[iOS]" from the title
 # - Remove special characters ('[', ']', '?', '.', etc.)
 # - Replace spaces with hyphens and remove redundant hyphens
 # - Limit the length to the value of BRANCH_LENGTH and remove non-letter characters at the end
-TITLE_DASHED=$(echo ${TITLE} | sed -r "s/\[iOS\] //g" | sed -r "s/(\'|\[|\]|\/|\?|\.|\*|\&|\(|\))//g" | sed -r "s/\ +/-/g" | sed -r "s/-+/-/g" | cut -c 1-$BRANCH_LENGTH | sed -r 's/[^a-zA-Z]*$//')
+TITLE_DASHED=$(echo ${TITLE} | sed -r "s/(\'|\[|\]|\/|\?|\*|\&|\(|\))//g" | sed -r "s/\ +/-/g" | sed -r "s/-+/-/g" | cut -c 1-$BRANCH_LENGTH | sed -r 's/[-_\.]*$//g')
+print "\nSelect branch to start from:\n"
 
 # Get a list of local branches, excluding HEAD and cleaning up the branch names
 BRANCHES=($(git branch | grep -v 'HEAD' | sed 's|remotes/||' | sed 's|^+ ||' | sed 's|^[[:space:]]*||' | sed 's|^* ||'))
@@ -63,11 +61,12 @@ SHA=$(git rev-parse --short $BRANCH_FROM)
 PROCESSED_BRANCH_FROM=$(echo ${BRANCH_FROM} | sed -r "s/\//-/g" | cut -c 1-$BRANCH_LENGTH | sed "s/[^a-zA-Z]*$//")
 
 # Create the new branch name using the selected type, JIRA issue number, sanitized title, commit hash, and processed branch name
-NEW_BRANCH=${BRANCH_TYPE:l}/$PROJECT-${JIRA_NUMBER}-${TITLE_DASHED:l}-${SHA}-${PROCESSED_BRANCH_FROM}
+NEW_BRANCH=$PROJECT-${JIRA_NUMBER}-${TITLE_DASHED}-${SHA}-${PROCESSED_BRANCH_FROM}
 
 # Print a message showing the new branch name and ask the user for confirmation
 print "\nSwitching to branch:${LIGHT_GREEN} ${NEW_BRANCH} ${NORMAL}?"
 printf "Press a key to confirm or CTRL+C to cancel..."
+
 # Wait for user input (single key press) to confirm
 read -k1 -s
 

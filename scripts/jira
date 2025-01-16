@@ -7,7 +7,7 @@ if [[ -n $TICKET ]]; then
     open "https://adoreme.atlassian.net/browse/$PROJECT-$TICKET"
 else
     BRANCH=$(git branch --show-current 2> /dev/null)
-    TICKET=$(echo $BRANCH | grep -oE '[A-Z]+-[0-9]+')
+    TICKET=$(echo $BRANCH | grep -oE '[A-Z]+-[0-9]+' | head -n 1)
     if [[ -n $TICKET ]]; then
         open "https://adoreme.atlassian.net/browse/$TICKET"
     else

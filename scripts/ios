@@ -4,19 +4,25 @@ heading "Choose project worktree:"
 
 TOP_LEVEL_DIR=~/adoreme/main
 
-WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list)
+if [[ -n "$1" ]]; then
+    FILTER="$1"
+    WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list | grep "$FILTER")
+else
+    WORKDIRS=$(git -C $TOP_LEVEL_DIR worktree list)
+fi
+
 WORKDIRS=(${(f)WORKDIRS})
 COUNT=$#WORKDIRS
 
-LOCATIONS=$(git -C $TOP_LEVEL_DIR worktree list --porcelain \
-            | grep worktree \
-            | awk '{ print $2 }')
-
-LOCATIONS=(${(f)LOCATIONS})
-
 if (( COUNT == 0 )); then
     print "\n There are no wortrees.\n"
-    exit 1
+    return 1
+fi
+
+if (( COUNT == 1 )); then
+    SELECTION_PATH=$(echo $WORKDIRS[1] | awk '{ print $1 }')
+    cd $SELECTION_PATH
+    return 0
 fi
 
 select WORKDIR in $WORKDIRS; do
@@ -26,6 +32,8 @@ select WORKDIR in $WORKDIRS; do
     fi
 done
 
-cd $LOCATIONS[SELECTION]
+SELECTION_PATH=$(echo $WORKDIRS[SELECTION] | awk '{ print $1 }')
 
-export COLUMNS=
+cd $SELECTION_PATH
+return 0
+
