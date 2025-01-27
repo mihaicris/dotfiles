@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-heading "Choose project worktree:"
 
 TOP_LEVEL_DIR=~/adoreme/main
 
@@ -24,6 +23,8 @@ if (( COUNT == 1 )); then
     cd $SELECTION_PATH
     return 0
 fi
+
+heading "Choose project worktree:"
 
 select WORKDIR in $WORKDIRS; do
     if [[ -n "$WORKDIR" ]]; then

@@ -43,16 +43,16 @@ source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 eval "$(/opt/homebrew/bin/mise activate zsh)"
 export PATH=$HOME/flutter/bin:$PATH
 alias ..=".. && ll"
-alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
 alias aaa='open -a Safari "https://github.com/adore-me/app-iOS/actions"'
+alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
 alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
 alias android='cd ~/android-app'
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
+alias chirie="open 'https://docs.google.com/spreadsheets/d/1Kwa-8Z5SJUAEyrtdOHES0Z436ys0ujOskxHh_RwfwbU/edit?gid=341339929#gid=341339929'"
 alias confluence='open "https://adoreme.atlassian.net/wiki/spaces/AMA/overview"'
 alias connect='open "https://appstoreconnect.apple.com"'
 alias cram='open -a "Google Chrome" "https://cramberry.adoreme.com"'
 alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-ninety-days&type=crash"'
-alias nonfatals='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-ninety-days&tag=all&sort=eventCount"'
 alias deeplink='~/.dotfiles/tools/deeplinks/.build/release/deeplinks'
 alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
 alias gbf="git branch --contains" # argument a commit hash
@@ -73,6 +73,7 @@ alias meet='open -a "Google Chrome" https://meet.google.com'
 alias meetc='open -a "Google Chrome" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
 alias mt="fork log -- "
+alias nonfatals='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-ninety-days&tag=all&sort=eventCount"'
 alias oo="xed ."
 alias ooa='cd ~/android-app && open -a "Android Studio" ~/android-app'
 alias p='open https://github.com/adore-me/app-iOS/pulls'
@@ -83,12 +84,12 @@ alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/p
 alias s="git status"
 alias t="tuist edit"
 alias testflight="open https://appstoreconnect.apple.com/apps/661053119/testflight"
+alias tg="tuist graph"
 alias vim="nvim"
 alias vv="nvim ."
+alias vdot="nvim ~/.config/nvim"
+alias xx="killAll Xcode Fork"
 alias ytp1="yt-dlp --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c"
 alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c"
 alias ytp="yt-dlp -f best --external-downloader aria2c"
-alias tg="tuist graph"
-alias chirie="open 'https://docs.google.com/spreadsheets/d/1Kwa-8Z5SJUAEyrtdOHES0Z436ys0ujOskxHh_RwfwbU/edit?gid=341339929#gid=341339929'"
-alias xx="killAll Xcode Fork"
 
