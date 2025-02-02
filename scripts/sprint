@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+
+# The script hardcodes the JIRA username
+USER="mihai.cristescu@adoreme.com"
+
+# Get the JIRA password stored in macOS Keychain using `security`
+PASS=$(security find-generic-password -w -s 'JIRA_SCRIPTS' -a 'mihai.cristescu@adoreme.com')
+
+BOARD_ID=14  # Replace with the actual board ID
+
+ACTIVE_SPRINT_ID=$(curl -s -u "${USER}:${PASS}" \
+"https://adoreme.atlassian.net/rest/agile/1.0/board/$BOARD_ID/sprint" | \
+jq '.values[] | select(.state=="active") | .id')
+
+# The script hardcodes the JIRA username
+ASSIGNEE="mihai.cristescu@adoreme.com"
+
+TICKETS=$(curl -s -u "${USER}:${PASS}" \
+"https://adoreme.atlassian.net/rest/agile/1.0/sprint/$ACTIVE_SPRINT_ID/issue" | \
+jq -r --arg ASSIGNEE "$ASSIGNEE" '.issues[] | select(.fields.assignee.emailAddress==$ASSIGNEE) | "[https://adoreme.atlassian.net/browse/\(.key)]: [\(.fields.status.name)] - \(.fields.summary)"')
+
+print $TICKETS
