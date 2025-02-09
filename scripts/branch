@@ -47,7 +47,7 @@ TITLE_DASHED=$(echo ${TITLE} | sed -r "s/(\'|\[|\]|\/|\?|\*|\&|\(|\))//g" | sed 
 print "\nSelect branch to start from:\n"
 
 # Get a list of local branches, excluding HEAD and cleaning up the branch names
-BRANCHES=($(git branch | grep -v 'HEAD' | sed 's|remotes/||' | sed 's|^+ ||' | sed 's|^[[:space:]]*||' | sed 's|^* ||'))
+BRANCHES=($(git branch | grep -v 'HEAD' | sed 's|remotes/||' | sed 's|^+ ||' | sed 's|^[[:space:]]*||' | sed 's|^* ||' | awk '{ print length, $0 }' | sort -n | cut -d' ' -f2-))
 
 # Prompt the user to select a branch to base the new branch on
 select BRANCH_FROM in "${BRANCHES[@]}"; do

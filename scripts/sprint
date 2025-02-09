@@ -1,22 +1,116 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env python3
 
-# The script hardcodes the JIRA username
-USER="mihai.cristescu@adoreme.com"
+import os
+import subprocess
+import json
+import requests
+import urllib.parse
+import sys
 
-# Get the JIRA password stored in macOS Keychain using `security`
-PASS=$(security find-generic-password -w -s 'JIRA_SCRIPTS' -a 'mihai.cristescu@adoreme.com')
+# Hardcoded JIRA credentials
+USER = "mihai.cristescu@adoreme.com"
+PASS = subprocess.run(['security', 'find-generic-password', '-w', '-s', 'JIRA_SCRIPTS', '-a', USER], capture_output=True, text=True).stdout.strip()
 
-BOARD_ID=14  # Replace with the actual board ID
+BOARD_ID = 14  # Replace with actual board ID
 
-ACTIVE_SPRINT_ID=$(curl -s -u "${USER}:${PASS}" \
-"https://adoreme.atlassian.net/rest/agile/1.0/board/$BOARD_ID/sprint" | \
-jq '.values[] | select(.state=="active") | .id')
+# Use the provided assignee if the first argument is passed, otherwise fallback to default
+ASSIGNEE = sys.argv[1] if len(sys.argv) > 1 else "mihai.cristescu@adoreme.com"
 
-# The script hardcodes the JIRA username
-ASSIGNEE="mihai.cristescu@adoreme.com"
+# Fetch active sprint ID
+def get_active_sprint_id():
+    url = f"https://adoreme.atlassian.net/rest/agile/1.0/board/{BOARD_ID}/sprint"
+    response = requests.get(url, auth=(USER, PASS))
+    if response.status_code == 200:
+        sprints = response.json().get('values', [])
+        for sprint in sprints:
+            if sprint['state'] == 'active':
+                return sprint['id']
+    return None
 
-TICKETS=$(curl -s -u "${USER}:${PASS}" \
-"https://adoreme.atlassian.net/rest/agile/1.0/sprint/$ACTIVE_SPRINT_ID/issue" | \
-jq -r --arg ASSIGNEE "$ASSIGNEE" '.issues[] | select(.fields.assignee.emailAddress==$ASSIGNEE) | "[https://adoreme.atlassian.net/browse/\(.key)]: [\(.fields.status.name)] - \(.fields.summary)"')
+ACTIVE_SPRINT_ID = get_active_sprint_id()
 
-print $TICKETS
+# Colorize status
+def colorize_status(status):
+    status_padded = f"{status:^17}"  # Pad to 17 characters
+    color_codes = {
+        "To Do": "\033[1;31m",  # Red
+        "In Progress": "\033[1;33m",  # Yellow
+        "Done": "\033[1;32m",  # Green
+        "On Hold": "\033[1;35m",  # Magenta
+        "Out of Scope": "\033[1;34m",  # Blue
+        "Ready for Testing": "\033[1;36m",  # Cyan
+        "Closed": "\033[1;37m",  # White
+        "In Review": "\033[1;34m",  # Blue
+    }
+    color_code = color_codes.get(status, "\033[1;37m")  # Default to white
+    return f"[ {color_code}{status_padded}\033[0m ] "
+
+# Status priority mapping
+def status_priority(status):
+    priorities = {
+        "To Do": 1,
+        "In Progress": 2,
+        "In Review": 3,
+        "Ready for Testing": 4,
+        "On Hold": 5,
+        "Done": 6,
+        "Closed": 7,
+        "Out of Scope": 8
+    }
+    return priorities.get(status, 9)  # Default if status is unknown
+
+# Fetch JIRA tickets assigned to the user
+def fetch_tickets():
+    escaped_assignee = ASSIGNEE.replace("@", "\\u0040")
+    jql_query = urllib.parse.quote(f'assignee="{escaped_assignee}"')
+    url = f"https://adoreme.atlassian.net/rest/agile/1.0/sprint/{ACTIVE_SPRINT_ID}/issue?maxResults=100&jql={jql_query}"
+    response = requests.get(url, auth=(USER, PASS))
+    if response.status_code == 200:
+        issues = response.json().get('issues', [])
+        tickets = []
+        for issue in issues:
+            assignee = issue['fields']['assignee']
+            if assignee and assignee.get('emailAddress') == ASSIGNEE:
+                ticket_url = f"https://adoreme.atlassian.net/browse/{issue['key']}"
+                status = issue['fields']['status']['name']
+                summary = issue['fields']['summary']
+                tickets.append({
+                    'url': ticket_url,
+                    'status': status,
+                    'summary': summary
+                })
+        return tickets
+    return []
+
+# Padding URL to a fixed length
+def pad_url(url, length=47):
+    return url.ljust(length)
+
+# Main logic
+def main():
+    tickets = fetch_tickets()
+
+    # Process tickets and colorize the status
+    sorted_tickets = []
+
+    for ticket in tickets:
+        status = ticket['status']
+        colorized_status = colorize_status(status)
+        priority = status_priority(status)
+        padded_url = pad_url(ticket['url'])
+        
+        # Create a formatted ticket
+        formatted_ticket = f"{padded_url} {colorized_status} {ticket['summary']}"
+        
+        # Add to sorted list with priority
+        sorted_tickets.append((priority, formatted_ticket))
+
+    # Sort tickets by priority
+    sorted_tickets.sort(key=lambda x: x[0])
+
+    # Output the sorted tickets
+    for _, ticket in sorted_tickets:
+        print(ticket)
+
+if __name__ == "__main__":
+    main()
