@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+
+import asyncio
+import edge_tts
+import subprocess
+import os
+
+async def main():
+    text = "Tests failed!"
+    
+    voices = [
+        "en-US-AriaNeural",
+        "en-US-JennyNeural",
+        "en-US-GuyNeural",
+        "en-US-ChristopherNeural",
+        "en-US-KateNeural",
+        "en-US-OliviaNeural",
+        "en-US-MichelleNeural",
+        "en-US-LibbyNeural"
+    ]
+    
+    for voice in voices:
+        try:
+            temp_file = "failed.mp3"
+            print(f"Speaking with voice: {voice}")
+
+            # Generate speech and save to file
+            tts = edge_tts.Communicate(text, voice)
+            await tts.save(temp_file)
+
+            # Play the MP3 file using afplay
+            subprocess.run(['afplay', temp_file], check=True)
+
+            # Delete the temporary file after playing
+            os.remove(temp_file)
+
+        except Exception as e:
+            print(f"⚠️ Skipping voice {voice} due to error: {e}")
+
+    print("✅ All voices processed.")
+
+# Run the main function asynchronously
+asyncio.run(main())

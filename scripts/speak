@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+
+import asyncio
+import edge_tts
+import subprocess
+import os
+
+async def main():
+    text = "Tests failed!"
+    voice = "en-US-ChristopherNeural"  # One of the most natural-sounding voices
+    temp_file = "failed.mp3"  # Temporary file to save the audio
+
+    # Generate the speech and save it to a file
+    tts = edge_tts.Communicate(text, voice)
+    await tts.save(temp_file)
+
+    # Play the MP3 file using afplay (macOS audio player)
+    subprocess.run(['afplay', temp_file])
+
+    # Delete the temporary file after playing
+    # os.remove(temp_file)
+
+    print("Audio played and file deleted.")
+
+# Run the main function asynchronously
+asyncio.run(main())
