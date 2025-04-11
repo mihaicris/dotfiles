@@ -41,14 +41,11 @@ source "/opt/homebrew/opt/zsh-git-prompt/zshrc.sh"
 source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 eval "$(/opt/homebrew/bin/mise activate zsh)"
-export PATH=$HOME/flutter/bin:$PATH
 alias ..=".. && ll"
 alias aaa='open -a Safari "https://github.com/adore-me/app-iOS/actions"'
 alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
 alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
-alias android='cd ~/android-app'
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
-alias chirie="open 'https://docs.google.com/spreadsheets/d/1Kwa-8Z5SJUAEyrtdOHES0Z436ys0ujOskxHh_RwfwbU/edit?gid=341339929#gid=341339929'"
 alias confluence='open "https://adoreme.atlassian.net/wiki/spaces/AMA/overview"'
 alias connect='open "https://appstoreconnect.apple.com"'
 alias cram='open -a "Google Chrome" "https://cramberry.adoreme.com"'
@@ -64,19 +61,16 @@ alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
 alias ios=". ios"
 alias kand="killall studio; killall qemu-system-x86_64"
-alias ll="ls -Flh"
+alias ll="ls -lG"
 alias lla="ll -A"
 alias ls="ls -G"
 alias mc-edit="mc-edit --nosubshell"
 alias mc="mc --nosubshell"
 alias meet='open -a "Google Chrome" https://meet.google.com'
-alias meetc='open -a "Google Chrome" https://meet.google.com/eeu-pgga-wsm'
 alias mm="fork ."
 alias mt="fork log -- "
 alias nonfatals='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-ninety-days&tag=all&sort=eventCount"'
 alias oo="xed ."
-alias ooa='cd ~/android-app && open -a "Android Studio" ~/android-app'
-alias p='open https://github.com/adore-me/app-iOS/pulls'
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias python="python3"
 alias rb="source ~/.zshrc"
