@@ -11,12 +11,23 @@ while $HAS_NEXT
 do
     REPOS=$(curl "https://api.github.com/orgs/$ORG/repos?per_page=100&page=$i" \
         -H "Accept: application/vnd.github.machine-man-preview+json" \
-         | jq ".[].ssh_url")
-    if [[ $(echo $REPOS | wc -w) -eq 0 ]]
+        | jq -r ".[].ssh_url")
+
+    if [[ -z "$REPOS" ]]
     then
         HAS_NEXT=false
     fi
-    echo $REPOS | xargs -n 1 git clone
 
-    i=$(expr $i + 1)
+    for REPO in ${(f)REPOS}; do
+        FOLDER=$(basename $REPO .git)
+        if [ -d "$FOLDER/.git" ]; then
+            echo "Repo '$FOLDER' exists. Pulling latest changes..."
+            git -C "$FOLDER" pull
+        else
+            echo "Cloning $REPO..."
+            git clone $REPO
+        fi
+    done
+
+    ((i++))
 done
