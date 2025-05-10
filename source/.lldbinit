@@ -1,1 +1,0 @@
-log enable -f /Users/mihai.c/lldb-log.txt lldb types

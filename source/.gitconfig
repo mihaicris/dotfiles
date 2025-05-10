@@ -4,7 +4,7 @@
 [core]
     longpaths = true
     pager = diff-so-fancy | less --tabs=4 -RFX
-    editor = vim
+    editor = nvim
     excludesfile = /Users/mihaicris/.gitignore_global
 
 [merge]
@@ -70,11 +70,11 @@
     editor = interactive-rebase-tool
 [user]
 	name = Mihai Cristescu
-	email = mihai.cristescu@adoreme.com
+	email = mihai.cristescu@gmail.com
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
 [mergetool "vimdiff3"]
-	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+	cmd = nvim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"

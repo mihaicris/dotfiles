@@ -86,4 +86,8 @@ alias xx="killAll Xcode Fork"
 alias ytp1="yt-dlp --playlist-reverse --socket-timeout 20 -f worst --external-downloader aria2c"
 alias ytp2="yt-dlp --socket-timeout 20 -f worst --external-downloader aria2c"
 alias ytp="yt-dlp -f best --external-downloader aria2c"
-
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_EMOJI=1
+export HOMEBREW_NO_ENV_HINTS=1
