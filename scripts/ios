@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-TOP_LEVEL_DIR=~/cloned/adoreme/ios-app/main
+TOP_LEVEL_DIR=$1
 
 if [[ -n "$1" ]]; then
     FILTER="$1"

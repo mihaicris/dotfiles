@@ -24,7 +24,8 @@ zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*:*:make:*' tag-order 'targets'
 
-fpath=(~/.zsh/completion $fpath)
+fpath=(~/.zsh/completions $fpath)
+
 autoload -Uz promptinit && promptinit
 autoload -Uz compinit && compinit
 autoload -Uz colors && colors
@@ -43,13 +44,9 @@ source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 eval "$(/opt/homebrew/bin/mise activate zsh)"
 alias ..=".. && ll"
 alias aaa='open -a Safari "https://github.com/adore-me/app-iOS/actions"'
-alias ab='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/experiments/list"'
 alias am="~/.dotfiles/tools/am/.build/arm64-apple-macosx/release/am"
 alias cdot="git -C ~/.dotfiles commit -am 'Updates' ; git -C ~/.dotfiles push"
-alias confluence='open "https://adoreme.atlassian.net/wiki/spaces/AMA/overview"'
 alias connect='open "https://appstoreconnect.apple.com"'
-alias cram='open -a "Google Chrome" "https://cramberry.adoreme.com"'
-alias crash='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-ninety-days&type=crash"'
 alias deeplink='~/.dotfiles/tools/deeplinks/.build/release/deeplinks'
 alias edot="pdot && vim ~/.dotfiles/source/.zshrc"
 alias gbf="git branch --contains" # argument a commit hash
@@ -59,7 +56,8 @@ alias gmes="git log --oneline HEAD...develop --format='%s' | cut -d' ' -f2-"
 alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
-alias ios=". ios"
+alias ios=". ios ~/cloned/lucru/Tests/BeReal/Instagram"
+alias adoreme=". ios ~/cloned/adoreme/ios-app/main"
 alias kand="killall studio; killall qemu-system-x86_64"
 alias ll="ls -lG"
 alias lla="ll -A"
@@ -69,12 +67,10 @@ alias mc="mc --nosubshell"
 alias meet='open -a "Google Chrome" https://meet.google.com'
 alias mm="fork ."
 alias mt="fork log -- "
-alias nonfatals='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/crashlytics/app/ios:com.adoreme.qmobile/issues?state=open&time=last-ninety-days&tag=all&sort=eventCount"'
 alias oo="xed ."
 alias pdot="git -C ~/.dotfiles pull && rb"
 alias python="python3"
 alias rb="source ~/.zshrc"
-alias remote='open -a "Google Chrome" "https://console.firebase.google.com/u/0/project/adoreme-ios/config"'
 alias s="git status"
 alias t="tuist edit"
 alias tg="tuist graph"
