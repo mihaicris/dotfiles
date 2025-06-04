@@ -12,7 +12,7 @@ print ""
 print "# ---- Autocorrectable rules ----"
 print ""
 
-swiftlint rules --config .swiftlint.yml \
+swiftlint rules --config $1 \
 | sed '$d' \
 | awk \
 '
@@ -31,7 +31,7 @@ print ""
 print "# ---- Not autocorrectable rules ----"
 print ""
 
-swiftlint rules --config .swiftlint.yml \
+swiftlint rules --config $1 \
 | awk \
 '
 BEGIN { FS = "|" }
@@ -51,7 +51,7 @@ print ""
 print "# ---- Autocorrectable rules ----"
 print ""
 
-swiftlint rules --config .swiftlint.yml \
+swiftlint rules --config $1 \
 | sed '$d' \
 | awk \
 '
@@ -70,7 +70,7 @@ print ""
 print "# ---- Not autocorrectable rules ----"
 print ""
 
-swiftlint rules --config .swiftlint.yml \
+swiftlint rules --config $1 \
 | sed '$d' \
 | awk \
 '
@@ -89,7 +89,7 @@ print ""
 print "analyzer_rules:"
 print ""
 
-swiftlint rules --config .swiftlint.yml \
+swiftlint rules --config $1 \
 | sed '$d' \
 | awk \
 '
