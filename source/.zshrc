@@ -56,7 +56,7 @@ alias gmes="git log --oneline HEAD...develop --format='%s' | cut -d' ' -f2-"
 alias gsf="git submodule foreach"
 alias gtf="git tag --contains" # argument a commit hash
 alias gti="git"
-alias ios=". ios ~/cloned/lucru/Tests/BeReal/Instagram"
+alias ios=". ios ~/cloned/lucru/JobTests/BeReal/Instagram"
 alias adoreme=". ios ~/cloned/adoreme/ios-app/main"
 alias kand="killall studio; killall qemu-system-x86_64"
 alias ll="ls -lG"
