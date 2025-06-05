@@ -78,3 +78,10 @@ keymap.set("n", "<A-s>", "<cmd>silent cc | silent cp<cr>zz", { desc = "Jump to p
 keymap.set("n", "<leader>mm", "<cmd>messages<cr>", { desc = "Show messages" })
 keymap.set("n", "}", '<cmd>execute "keepjumps norm! }"<cr>', { desc = "Next Paragraph" })
 keymap.set("n", "{", '<cmd>execute "keepjumps norm! {"<cr>', { desc = "Previous Paragraph" })
+
+vim.keymap.set("n", "<leader>cp", function()
+  vim.cmd("Copilot enable")
+  vim.defer_fn(function()
+    vim.cmd("Copilot auth")
+  end, 100) -- Add a small delay to ensure it initializes properly
+end, { desc = "Enable GitHub Copilot" })

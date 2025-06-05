@@ -9,6 +9,7 @@ return {
       -- flavour = "frappe",
       -- flavour = "macchiato",
       flavour = "mocha",
+      no_italic = false, -- Force no italic
       transparent_background = false,
       dim_inactive = {
         enabled = false, -- dims the background color of inactive window

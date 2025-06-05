@@ -15,11 +15,14 @@ opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
 
 -- line wrapping
-opt.wrap = false -- enable line wrapping
+opt.wrap = true -- enable line wrapping
 
 -- search settings
 opt.ignorecase = true -- ignore case when searching
 opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
+
+-- textwrap at n cols
+opt.tw = 140
 
 -- cursor line
 opt.cursorline = true -- highlight the current cursor line
@@ -44,3 +47,7 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.swapfile = false
+
+opt.wildmenu = true
+opt.wildmode = "list:longest,list:full" -- don't insert, show options
+

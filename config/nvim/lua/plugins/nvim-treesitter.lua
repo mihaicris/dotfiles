@@ -17,10 +17,8 @@ return {
             node_decremental = "z",
           },
         },
-        highlight = {
-          enable = true,
-        },
-        -- indent = { enable = true },
+        highlight = { enable = true },
+        indent = { enable = true },
         autotag = { enable = false },
         ensure_installed = {
           "asm",
